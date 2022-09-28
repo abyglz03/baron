@@ -7274,7 +7274,7 @@ body {
   line-height: 1.8;
   font-weight: 300;
   color: gray;
-  background: url(../images/bg_4.jpg) no-repeat fixed;
+  *//background: url(../images/bg_4.jpg) no-repeat fixed;
   background-size: cover; }
   body.menu-show {
     overflow: hidden;
