@@ -1,6 +1,6 @@
-<html lang="en">
 
-<body>
+
+
      <?php
         include 'cabecera.php';
     ?>
