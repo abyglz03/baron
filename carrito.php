@@ -31,7 +31,7 @@ echo "<title>Carrito</title>";
                     <th scope="col">Categoria</th>
                     <th scope="col">Imagen</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Eliminar</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -43,7 +43,9 @@ echo "<title>Carrito</title>";
                     <td>Pizza</td>
                     <td><img src="dist/img/rosso.JPEG" alt="pizza peperoni" width="100px"></td>
                     <td>$ 215</td>
+                    <td><button type="button" class="btn btn-primary">Agregar</button></td>
                     <td><button type="button" class="btn btn-danger">Eliminar</button></td>
+                
                 </tr>
                 <tr>
                     <td>Pizza Mexicana 14"</td>
@@ -53,6 +55,7 @@ echo "<title>Carrito</title>";
                     <td>Pizza</td>
                     <td><img src="dist/img/hawaiana.JPEG" alt="piza hawaina" width="100px"></td>
                     <td>$250</td>
+                    <td><button type="button" class="btn btn-primary">Agregar</button></td>
                     <td><button type="button" class="btn btn-danger">Eliminar</button></td>
                 </tr>
                 <tr>
@@ -63,6 +66,7 @@ echo "<title>Carrito</title>";
                     <td>Pizza</td>
                     <td><img src="dist/img/pboneless.JPEG" alt="pizza boneless" width="100px"></td>
                     <td>$ 199</td>
+                    <td><button type="button" class="btn btn-primary">Agregar</button></td>
                     <td><button type="button" class="btn btn-danger">Eliminar</button></td>
                 </tr>
                 <tr>
@@ -74,4 +78,17 @@ echo "<title>Carrito</title>";
                     <td>Total</td>
                     <td> $ 664</td>
                     <td></td>
-                    
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button type="button" class="btn btn-success">Ordenar Ahora</button></td>
+                    <td></td>
+                </tr>
+        </table>
