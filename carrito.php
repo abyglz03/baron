@@ -37,7 +37,7 @@ echo "<title>Carrito</title>";
             <tbody>
                 <tr>
                     <td>Rosso Pizza 14"</td>
-                    <td>Peperoni con queso  1</td>
+                    <td>Peperoni con queso 1</td>
                     <td>$ 215</td>
                     <td>1</td>
                     <td>Pizza</td>
@@ -74,4 +74,3 @@ echo "<title>Carrito</title>";
                     <td>Total</td>
                     <td> $ 664</td>
                     <td></td>
-                    
