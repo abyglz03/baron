@@ -2,7 +2,9 @@
 <?php
 //include 'db/conexion.php';
 include 'cabecera.php';
+echo "<title>Carrito</title>";
 ?>
+
 <!-- libreia de jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- libreia de bootstrap 4-->
@@ -70,6 +72,6 @@ include 'cabecera.php';
                     <td></td>
                     <td></td>
                     <td>Total</td>
-                    <td></td>
+                    <td> $ 664</td>
                     <td></td>
                     
