@@ -1,7 +1,15 @@
 <!-- Carrito de compras -->
 <?php
-//include 'db/conexion.php';
-include 'cabecera.php';
+//require 'db/conexion.php';
+//Conexión a la base de datos
+$host = "localhost";
+$user = "root";
+$pass = "root";
+$db = "pizzeria";
+$conn = mysqli_connect($host, $user, $pass, $db);
+echo "Conexion exitosa";
+
+include_once 'cabecera.php';
 echo "<title>Carrito</title>";
 ?>
 
@@ -28,7 +36,7 @@ echo "<title>Carrito</title>";
                     <th scope="col">Descripcion</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Cantidad</th>
-                    <th scope="col">Categoria</th>
+                    <th scope="col">Categoria</th>//
                     <th scope="col">Imagen</th>
                     <th scope="col">Total</th>
                     <th scope="col"></th>
