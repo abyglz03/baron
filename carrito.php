@@ -45,7 +45,7 @@ echo "<title>Carrito</title>";
             <tbody>
                 <tr>
                     <td>Rosso Pizza 14"</td>
-                    <td>Peperoni con queso  1</td>
+                    <td>Peperoni con queso 1</td>
                     <td>$ 215</td>
                     <td>1</td>
                     <td>Pizza</td>
@@ -85,6 +85,9 @@ echo "<title>Carrito</title>";
                     <td></td>
                     <td>Total</td>
                     <td> $ 664</td>
+<<<<<<< HEAD
+                    <td></td>
+=======
                     <td></td>
                 </tr>
             </tbody>
@@ -100,3 +103,4 @@ echo "<title>Carrito</title>";
                     <td></td>
                 </tr>
         </table>
+>>>>>>> be336248345aa5032fdad72fae8a1b9dddcb6910
