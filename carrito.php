@@ -1,13 +1,8 @@
 <!-- Carrito de compras -->
 <?php
-//require 'db/conexion.php';
+require 'db/conexion.php';
 //Conexión a la base de datos
-$host = "localhost";
-$user = "root";
-$pass = "root";
-$db = "pizzeria";
-$conn = mysqli_connect($host, $user, $pass, $db);
-echo "Conexion exitosa";
+
 
 include_once 'cabecera.php';
 echo "<title>Carrito</title>";
@@ -36,7 +31,7 @@ echo "<title>Carrito</title>";
                     <th scope="col">Descripcion</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Cantidad</th>
-                    <th scope="col">Categoria</th>//
+                    <th scope="col">Categoria</th>
                     <th scope="col">Imagen</th>
                     <th scope="col">Total</th>
                     <th scope="col"></th>
@@ -85,22 +80,4 @@ echo "<title>Carrito</title>";
                     <td></td>
                     <td>Total</td>
                     <td> $ 664</td>
-<<<<<<< HEAD
                     <td></td>
-=======
-                    <td></td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button type="button" class="btn btn-success">Ordenar Ahora</button></td>
-                    <td></td>
-                </tr>
-        </table>
->>>>>>> be336248345aa5032fdad72fae8a1b9dddcb6910
