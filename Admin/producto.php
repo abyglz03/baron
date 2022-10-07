@@ -166,73 +166,60 @@
         </ul>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="row">
-                <div class="col-md-6 grid-margin stretch-card">
-                    <div class="card">
-                      <div class="card-body">
-                        <h4 class="card-title">Crear Producto</h4>
-                        <p class="card-description">
-                        </p>
-                        <form class="forms-sample">
-                          <div class="form-group">
-                            <label for="exampleInputUsername1">Nombre</label>
-                            <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nombre">
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputEmail1">Descripcion</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Descripcion">
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Cantidad</label>
-                            <input type="Number" class="form-control" id="exampleInputPassword1" placeholder="Cantidad">
-                          </div>
-                          <div class="form-group">
-                            <label for="Categoria">Categoria </label>
-                            <select class="form-control" id="Categoria">
-                              <option>Comida</option>
-                              <option>Bebidas</option>
-                              <option>Postres</option>
-                              <option>Licores</option>
-                            </select>
-                          </div>
-                            <div class="form-group">
-                                <label for="exampleInputConfirmPassword1">Precio</label>
-                                <input type="Number" class="form-control" id="exampleInputConfirmPassword1" placeholder="Precio">
-                                </div>
-                            <div class="form-group">
-                                <label for="exampleInputConfirmPassword1">Imagen</label>
-                                <input type="file" class="form-control" id="exampleInputConfirmPassword1" placeholder="Imagen">
-                                </div>
-                            </div>
-                          
-                          <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                          <button class="btn btn-light">Cancel</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
+      
+      <div class="content-wrapper">
+        <div class="content">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Productos</h4>
+                    <!-- boton para agregar -->
+                    <button type="button" class="btn btn-primary btn-fw" data-toggle="modal" data-target="#exampleModal">
+                        <i class="mdi mdi-plus"></i>Agregar
                 </div>
+                <div class="card-body">
+                <table class="table ">
+                            <thead> <tr>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                                <th>Categoria</th>
+                                <th>Precio</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr></thead>
+                           <tbody>
+                            <?php
+                            include '../db/conexion.php';
+                            
+                                  $sql = "SELECT * FROM productos";
+                                  $query = mysqli_query($conexion,$sql);
+                                  $resuldato = $conexion->query($sql);
+                                    while($row = $resuldato->fetch_assoc()){
+                                        $id = $row['ID'];
+                                        $nombre = $row['Nombre'];
+                                        $descripcion = $row['Descripcion'];
+                                        $cantidad = $row['Cantidad'];
+                                        $categoria = $row['Categoria'];
+                                        $precio = $row['Precio'];
+                                        $imagen = $row['Imagen'];
+                                        echo "<tr>";
+                                        echo "<td>$nombre</td>";
+                                        echo "<td>$descripcion</td>";
+                                        echo "<td>$cantidad</td>";
+                                        echo "<td>$categoria</td>";?>
+                                        <td><?php number_format($precio,2);?></td>
+                                        <?php
+                                        echo "<td>$imagen</td>";
+                                        echo "<td><a href='editar.php?id=$id' class='btn btn-primary'>Editar</a> <a href='eliminar.php?id=$id' class='btn btn-danger'>Eliminar</a></td>";
+                                        echo "</tr>";
+                                    }
+                            ?>
 
-              </div>
+                           </tbody>
+                        </table>
+                </div>
             </div>
-          </div>
-          
-        
-          
-          <div class="row">
-            
-           
-          </div>
-         
-          
         </div>
-        
-        <!-- partial -->
       </div>
       <!-- main-panel ends -->
     </div>
@@ -261,6 +248,53 @@
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+  <!-- modal agregar productos -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Agregar Producto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form action="crear_productos.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="ID">
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Nombre:</label>
+                <input type="text" class="form-control" name="nombre" id="Nombre">
+                </div>
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Descripcion:</label>
+                <input type="text" class="form-control" name="descripcion" id="Descripcion">
+                </div>
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Cantidad:</label>
+                <input type="text" class="form-control" name="cantidad" id="Cantidad">
+                </div>
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Categoria:</label>
+                <input type="text" class="form-control" name="categoria" id="Categoria">
+                </div>
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Precio:</label>
+                <input type="text" class="form-control" name="precio" id="Precio">
+                </div>
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Imagen:</label>
+                <input type="file" class="form-control" name="imagen" id="Imagen">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Agregar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- fin modal agregar productos -->
 </body>
 
 </html>
