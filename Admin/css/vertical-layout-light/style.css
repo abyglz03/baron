@@ -8807,13 +8807,13 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: yellow;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #0056b3;
+  color: yellow;
   text-decoration: underline;
 }
 
@@ -19712,7 +19712,12 @@ code {
 }
 
 .footer a {
+<<<<<<< HEAD
   color: #FFD919;
+=======
+  /*Cambiando el color del footer*/
+  color: yellowgreen; 
+>>>>>>> 08ce18c8177a029e6a556abe09cf84a4fd5fbeaa
   font-size: inherit;
 }
 
@@ -20338,7 +20343,11 @@ code {
 }
 
 .accordion > .card .card-header a[aria-expanded="true"] {
+<<<<<<< HEAD
   color: #FFD919;
+=======
+  color: yellow;
+>>>>>>> 08ce18c8177a029e6a556abe09cf84a4fd5fbeaa
 }
 
 .accordion > .card .card-header a[aria-expanded="true"]:before {
@@ -20442,8 +20451,13 @@ code {
 
 .accordion.accordion-filled .card .card-body {
   padding: 0 2rem 2rem 2rem;
+<<<<<<< HEAD
   background: #248AFD;
   color: #fffff;
+=======
+  background: yellow;
+  color: #ffffff;
+>>>>>>> 08ce18c8177a029e6a556abe09cf84a4fd5fbeaa
 }
 
 .accordion.accordion-solid-header .card {
@@ -29124,7 +29138,11 @@ div.tagsinput span.tag a {
 }
 
 .navbar.navbar-primary .navbar-menu-wrapper {
+<<<<<<< HEAD
   background: #FFD919;
+=======
+  background: #4d4ce2;
+>>>>>>> 08ce18c8177a029e6a556abe09cf84a4fd5fbeaa
 }
 
 .navbar.navbar-primary:not(.navbar-light) .navbar-menu-wrapper .navbar-toggler {
