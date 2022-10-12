@@ -7,15 +7,15 @@ $Descripcion = $_POST['Descripcion'];
 $Cantidad = $_POST['Cantidad'];
 $categoria = $_POST['Categoria'];
 $precio = $_POST['Precio'];
-$imagen = addslashes(file_get_contents($_FILES['Imagen']['tmp_name']));
+
 // Insertamos los datos en la base de datos
-$insertar = "INSERT INTO producto (Id, Nombre, Descripcion, Cantidad, Categoria, Precio, Imagen) VALUES ('$Id', '$nombre', '$Descripcion', '$Cantidad', '$categoria', '$precio', '$imagen')";
-$resultado = mysqli_query($conexion, $insertar);
-if (!$resultado) {
+$insertar = "INSERT INTO productos (ID, Nombre, Descripcion, Cantidad, Categoria, Precio) VALUES ('$Id', '$nombre', '$Descripcion', '$Cantidad', '$categoria', '$precio')";
+if (!$insertar) {
     echo 'Error al registrarse';
 } else {
     echo 'Producto registrado exitosamente';
 }
 // Cerramos la conexion
 mysqli_close($conexion);
+header("location:producto.php");
 
