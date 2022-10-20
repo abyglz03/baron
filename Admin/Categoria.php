@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+      include 'global\ServerConfiguration.php';
+      include 'global\DbConnection.php';
+      ?> 
 
 <head>
     <!-- Required meta tags -->
@@ -23,14 +27,31 @@
 </head>
 
 <body>
+
+    <?php
+    $categoryQuery = $pdo->prepare("SELECT * FROM category;");
+    $UsertypeQuery->execute();
+    $Listcategory = $categoryQuery->fetchAll(PDO::FETCH_ASSOC);
+    var_dump($Listcategory);
+
+    ?>
     <div class="container-scroller">
-        <!-- partial:partials/_navbar.html -->
+    <?php foreach ($Listcategory as $category) {?>
+                          <td><?php echo $vategory['idCategory'];?></td>
+                            <td><?php echo $cateory['Nombre'];?></td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="txtID" value="<?php echo $category['idCategory']?>">
+                                    <input type="submit" name="accion" value="Modify" class="btn-primary">
+                                    <input type="submit" name="accion" value="Delete" class="btn-danger">
+                                 </form>
+                            </td>
+        <!-- partial:partials/_navbar.h
+        <?php } ?>tml -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png"
-                        class="mr-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/LOGO-BARON-EFECTO.png"
-                        alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -44,16 +65,14 @@
                                     <i class="icon-search"></i>
                                 </span>
                             </div>
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                                aria-label="search" aria-describedby="search" />
+                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search" />
                         </div>
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item dropdown">
 
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                            aria-labelledby="notificationDropdown">
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
                             <p class="mb-0 font-weight-normal float-left dropdown-header">
                                 Notifications
                             </p>
@@ -105,8 +124,7 @@
 
 
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-                    data-toggle="offcanvas">
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                     <span class="icon-menu"></span>
                 </button>
             </div>
@@ -140,23 +158,19 @@
                 <i class="settings-close ti-close"></i>
                 <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
-                            aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
-                            aria-controls="chats-section">CHATS</a>
+                        <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="setting-content">
-                    <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel"
-                        aria-labelledby="todo-section">
+                    <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
                         <div class="add-items d-flex px-3 mb-0">
                             <form class="form w-100">
                                 <div class="form-group d-flex">
                                     <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                                    <button type="submit" class="add btn btn-primary todo-list-add-btn"
-                                        id="add-task">Add</button>
+                                    <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
                                 </div>
                             </form>
                         </div>
@@ -231,14 +245,12 @@
                     <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
                         <div class="d-flex align-items-center justify-content-between border-bottom">
                             <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
-                            <small
-                                class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See
+                            <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See
                                 All</small>
                         </div>
                         <ul class="chat-list">
                             <li class="list active">
-                                <div class="profile"><img src="images/faces/face1.jpg" alt="image"><span
-                                        class="online"></span></div>
+                                <div class="profile"><img src="images/faces/face1.jpg" alt="image"><span class="online"></span></div>
                                 <div class="info">
                                     <p>Thomas Douglas</p>
                                     <p>Available</p>
@@ -246,8 +258,7 @@
                                 <small class="text-muted my-auto">19 min</small>
                             </li>
                             <li class="list">
-                                <div class="profile"><img src="images/faces/face2.jpg" alt="image"><span
-                                        class="offline"></span></div>
+                                <div class="profile"><img src="images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
                                 <div class="info">
                                     <div class="wrapper d-flex">
                                         <p>Catherine</p>
@@ -258,8 +269,7 @@
                                 <small class="text-muted my-auto">23 min</small>
                             </li>
                             <li class="list">
-                                <div class="profile"><img src="images/faces/face3.jpg" alt="image"><span
-                                        class="online"></span></div>
+                                <div class="profile"><img src="images/faces/face3.jpg" alt="image"><span class="online"></span></div>
                                 <div class="info">
                                     <p>Daniel Russell</p>
                                     <p>Available</p>
@@ -267,8 +277,7 @@
                                 <small class="text-muted my-auto">14 min</small>
                             </li>
                             <li class="list">
-                                <div class="profile"><img src="images/faces/face4.jpg" alt="image"><span
-                                        class="offline"></span></div>
+                                <div class="profile"><img src="images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
                                 <div class="info">
                                     <p>James Richardson</p>
                                     <p>Away</p>
@@ -276,8 +285,7 @@
                                 <small class="text-muted my-auto">2 min</small>
                             </li>
                             <li class="list">
-                                <div class="profile"><img src="images/faces/face5.jpg" alt="image"><span
-                                        class="online"></span></div>
+                                <div class="profile"><img src="images/faces/face5.jpg" alt="image"><span class="online"></span></div>
                                 <div class="info">
                                     <p>Madeline Kennedy</p>
                                     <p>Available</p>
@@ -285,8 +293,7 @@
                                 <small class="text-muted my-auto">5 min</small>
                             </li>
                             <li class="list">
-                                <div class="profile"><img src="images/faces/face6.jpg" alt="image"><span
-                                        class="online"></span></div>
+                                <div class="profile"><img src="images/faces/face6.jpg" alt="image"><span class="online"></span></div>
                                 <div class="info">
                                     <p>Sarah Graves</p>
                                     <p>Available</p>
@@ -347,15 +354,14 @@
                                     <form class="forms-sample">
                                         <div class="form-group">
                                             <label for="exampleInputUsername1">Nombre de categoria</label>
-                                            <input type="text" class="form-control" id="exampleInputUsername1"
-                                                placeholder="Nombre">
+                                            <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nombre">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputUsername1">Departamento</label>
                                             <select class="form-control" id="Categoria">
                                                 <option>cocina</option>
                                                 <option>barra</option>
-                                             
+
                                             </select>
 
                                         </div>
@@ -386,13 +392,13 @@
                                                 <tr>
                                                     <td>Peperoni</td>
                                                     <td class="font-weight-bold">cocina</td>
-                                                   
+
 
                                                 </tr>
                                                 <tr>
                                                     <td>Coca cola</td>
                                                     <td class="font-weight-bold">barra/td>
-                                                  
+
                                                 </tr>
                                                 <tr>
                                                 </tr>
