@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-      include 'global\ServerConfiguration.php';
-      include 'global\DbConnection.php';
+      include 'global/ServerConfiguration.php';
+      include 'global/DbConnection.php';
       ?> 
 
 <head>
