@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
+?>
 
 <head>
   <!-- Required meta tags -->
@@ -27,9 +31,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/baron-logo.png" class="mr-2"
-            alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/baron-logo.png" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -43,24 +46,21 @@
                   <i class="icon-search"></i>
                 </span>
               </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                aria-label="search" aria-describedby="search">
+              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
             </div>
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-              data-toggle="dropdown">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-              aria-labelledby="notificationDropdown">
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              
-              
-              
+
+
+
             </div>
           </li>
           <li class="nav-item nav-profile dropdown">
@@ -84,8 +84,7 @@
             </a>
           </li>
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-          data-toggle="offcanvas">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
         </button>
       </div>
@@ -115,7 +114,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -127,103 +126,175 @@
             </a>
           </li>
 
-
-
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-                <li class="nav-item"> <a class="nav-link" href="usuarios.html"> Usuarios </a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Comida</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="categoria.html"> Categorias </a></li>
-                <li class="nav-item"> <a class="nav-link" href="producto.html"> Producto </a></li>
-              </ul>
-            </div>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
-      
-      <div class="content-wrapper">
-        <div class="content">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Productos</h4>
-                    <!-- boton para agregar -->
-                    <button type="button" class="btn btn-primary btn-fw" data-toggle="modal" data-target="#exampleModal">
-                        <i class="mdi mdi-plus"></i>Agregar
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="row">
+                <div class="col-md-6 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Crear Producto</h4>
+                      <p class="card-description">
+                      </p>
+                      <form class="forms-sample">
+                        <div class="form-group">
+                          <label for="exampleInputUsername1">Nombre</label>
+                          <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nombre">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Descripcion</label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Descripcion">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Cantidad</label>
+                          <input type="Number" class="form-control" id="exampleInputPassword1" placeholder="Cantidad">
+                        </div>
+                        <div class="form-group">
+                          <label for="Categoria">Medidas </label>
+                          <select class="form-control" id="Categoria">
+                            <option>9"</option>
+                            <option>14"</option>
+                            <option>No tiene</option>
+
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="Categoria">Categoria </label>
+                          <select class="form-control" id="Categoria">
+                            <option>Pizza</option>
+                            <option>Boneless</option>
+                            <option>Entradas</option>
+                            <option>Bebidas</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputConfirmPassword1">Precio</label>
+                          <input type="Number" class="form-control" id="exampleInputConfirmPassword1" placeholder="Precio">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputConfirmPassword1">Imagen</label>
+                          <input type="file" class="form-control" id="exampleInputConfirmPassword1" placeholder="Imagen">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mr-2">Guardar</button>
+                    <button class="btn btn-light">Cancel</button>
+                    </form>
+                  </div>
                 </div>
-                <div class="card-body">
-                <table class="table ">
-                            <thead> <tr>
+                <?php
+
+                $ProductoQuery = $pdo->prepare("SELECT * FROM Producto;");
+                $ProductoQuery->execute();
+                $ListProductos = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
+                var_dump($ListProductos);
+                ?>
+
+                <div class="row">
+                  <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <p class="card-title mb-0">Producto</p>
+                        <div class="table-responsive">
+                          <table class="table table-striped table-borderless">
+                            <thead>
+                              <tr>
                                 <th>Nombre</th>
                                 <th>Descripcion</th>
                                 <th>Cantidad</th>
+                                <th>Medida</th>
                                 <th>Categoria</th>
                                 <th>Precio</th>
-                                <th>Imagen</th>
-                                <th>Acciones</th>
-                            </tr></thead>
-                           <tbody>
-                            <?php
-                            include '../db/conexion.php';
-                            
-                                  $sql = "SELECT * FROM productos";
-                                  $query = mysqli_query($conexion,$sql);
-                                  $resuldato = $conexion->query($sql);
-                                    while($row = $resuldato->fetch_assoc()){
-                                        $id = $row['ID'];
-                                        $nombre = $row['Nombre'];
-                                        $descripcion = $row['Descripcion'];
-                                        $cantidad = $row['Cantidad'];
-                                        $categoria = $row['Categoria'];
-                                        $precio = $row['Precio'];
-                                        $imagen = $row['Imagen'];
-                                        echo "<tr>";
-                                        echo "<td>$nombre</td>";
-                                        echo "<td>$descripcion</td>";
-                                        echo "<td>$cantidad</td>";
-                                        echo "<td>$categoria</td>";?>
-                                        <td><?php number_format($precio,2);?></td>
-                                        <?php
-                                        echo "<td>$imagen</td>";
-                                        echo "<td><a href='editar.php?id=$id' class='btn btn-primary'>Editar</a> <a href='eliminar.php?id=$id' class='btn btn-danger'>Eliminar</a></td>";
-                                        echo "</tr>";
-                                    }
-                            ?>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($ListProductos as $Productos) { ?>
+                             <tr class="table-row">
+                              <td><?php echo $Productos['idProducto']; ?> </td>
+                              <td><?php echo $Productos['nombre']; ?> </td>
+                              <td><?php echo $Productos['descripcion']; ?> </td>
+                              <td><?php echo $Productos['cantidad']; ?> </td>
+                              <td><?php echo $Productos['medida']; ?> </td>
+                              <td><?php echo $Productos['categoria']; ?> </td>
+                              <td><?php echo $Productos['precio']; ?> </td>
 
-                           </tbody>
-                        </table>
+                                                        
+                                                            <form method="POST" enctype="multipart/form-data">
+                                                                <!--change method to POST, we use enctype to allow file submission-->
+                                                                <div class="form-group">
+                                                                    <label for="txtName">Name</label>
+                                                                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Name">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtPrice">Price</label>
+                                                                    <input type="text" name="txtPrice" id="txtPrice" value="<?php echo $txtPrice; ?>" class="form-control progress-table-wrap" placeholder="Product price">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtDescription">Description</label>
+                                                                    <input type="text" name="txtDescription" value="<?php echo $txtDescription; ?>" id="txtDescription" class="form-control progress-table-wrap" placeholder="Product description">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtCategory">Categories</label>
+                                                                    <?php echo $txtCategory; ?>
+                                                                    <select class="form-control" name="txtCategory" id="txtCategory">
+                                                                        <option value="00">-- Seleccione --</option>
+                                                                        <?php $sentenciaCategories = $pdo->prepare("SELECT * from Category;");
+                                                                        $sentenciaCategories->execute();
+                                                                        $ListCategories = $sentenciaCategories->fetchAll();
+                                                                        foreach ($ListCategories as $category) {
+                                                                            echo '<option value="' . $category['CategoryID'] . '">' . $category['NameCategory'] . '</option>';
+                                                                        } ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtImage"></label>
+                                                                    <?php echo $txtImage; ?>
+                                                                    <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <button type="submit" name="accion" value="add" class="genric-btn success circle arrow">Add</button>
+                                                                    <!--value must match with switch-->
+                                                                    <button type="submit" name="accion" value="Cancel" class="genric-btn danger circle arrow">Cancel</button>
+
+                                                                    <form method="post">
+                                                                        <input type="hidden" name="txtID" value="<?php echo $Productos['idProducto']; ?>">
+                                                                        <input type="submit" name="accion" value="modify" class="btn btn-primary">
+                                                                        <input type="submit" name="accion" value="delete" class="btn btn-danger">   
+
+                                                        
+                            <?php } ?>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+
+
+
+        <div class="row">
+
+
+        </div>
+
+
       </div>
-      <!-- main-panel ends -->
+
+
+      <!-- partial -->
     </div>
-    <!-- page-body-wrapper ends -->
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
 
@@ -248,53 +319,6 @@
   <script src="js/dashboard.js"></script>
   <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
-  <!-- modal agregar productos -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Agregar Producto</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-            <form action="crear_productos.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" id="ID">
-                <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Nombre:</label>
-                <input type="text" class="form-control" name="nombre" id="Nombre">
-                </div>
-                <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Descripcion:</label>
-                <input type="text" class="form-control" name="descripcion" id="Descripcion">
-                </div>
-                <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Cantidad:</label>
-                <input type="text" class="form-control" name="cantidad" id="Cantidad">
-                </div>
-                <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Categoria:</label>
-                <input type="text" class="form-control" name="categoria" id="Categoria">
-                </div>
-                <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Precio:</label>
-                <input type="text" class="form-control" name="precio" id="Precio">
-                </div>
-                <div class="form-group">
-                <label for="recipient-name" class="col-form-label">Imagen:</label>
-                <input type="file" class="form-control" name="imagen" id="Imagen">
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Agregar</button>
-                </div>
-            </form>
-            </div>
-        </div>
-        </div>
-    </div>
-    <!-- fin modal agregar productos -->
 </body>
 
 </html>

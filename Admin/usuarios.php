@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
+?>
 
 <head>
   <!-- Required meta tags -->
@@ -23,12 +27,12 @@
 </head>
 
 <body>
+
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/baron-logo.png" class="mr-2"
-            alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/baron-logo.png" class="mr-2" alt="logo" /></a>
         <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -43,20 +47,17 @@
                   <i class="icon-search"></i>
                 </span>
               </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                aria-label="search" aria-describedby="search">
+              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
             </div>
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-              data-toggle="dropdown">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="icon-bell mx-0"></i>
               <span class="count"></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-              aria-labelledby="notificationDropdown">
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
@@ -120,8 +121,7 @@
             </a>
           </li>
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-          data-toggle="offcanvas">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
         </button>
       </div>
@@ -155,17 +155,14 @@
         <i class="settings-close ti-close"></i>
         <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
-              aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
-              aria-controls="chats-section">CHATS</a>
+            <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
           </li>
         </ul>
         <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel"
-            aria-labelledby="todo-section">
+          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
             <div class="add-items d-flex px-3 mb-0">
               <form class="form w-100">
                 <div class="form-group d-flex">
@@ -368,9 +365,15 @@
               </div>
             </div>
           </div>
-          
-        
-          
+
+          <?php
+          $UsertyoeQuery = $pdo->prepare("SELECT * FROM Usertype;");
+          $UsertypeQuery->execute();
+          $ListUsertypes = $UsertypeQuery->fetchAll(PDO::FETCH_ASSOC);
+          var_dump($ListUsertypes);
+         
+          ?>
+
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
@@ -383,63 +386,81 @@
                           <th>ID</th>
                           <th>Nombre</th>
                           <th>Correo</th>
-                          <th>Imagen</th>
                           <th>Cargo</th>
                           <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Javier Gonzalez</td>
-                          <td>javo@baron.mx </td>
-                          <td><img src="images/faces/face1.jpg" alt="image"></td>
-                          <td>Administrador</td>
-                          <td><label class="badge badge-success">Activo</label></td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Abigail Gonzalez</td>
-                          <td> aby@baron.mx </td>
-                          <td><img src="images/faces/face2.jpg" alt="image"></td>
-                          <td>Empleado</td>
-                          <td><label class="badge badge-success">Activo</label></td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>Carlos Lopez</td>
-                          <td> Carlos@baron.mx </td>
-                          <td><img src="images/faces/face3.jpg" alt="image"></td>
-                          <td>Cocinero</td>
-                          <td><label class="badge badge-success">Activo</label></td>
-                        </tr>
-                       
+                        <?php foreach ($ListUsertypes as $Usertypes) { ?>
+                          <tr class="table-row">
+                            <td><?php echo $Usertypes['idUsertype']; ?></td>
+                            <td><?php echo $Usertypes['usuario']; ?></td>
+                            <td><?php echo $Usertypes['nombre']; ?></td>
+                            <?php
+                            //isset(what we check)-?-if true-:-if false;
+                            $txtID = (isset($_POST['txtidUdertype'])) ? $_POST['txtidusertype'] : ""; //['name of your form input']
+                            $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+                            $action = (isset($_POST['action'])) ? $_POST['action'] : "";
+                            ?>
+                            <form method="POST" enctype="multipart/form-data">
+                              <!--change method to POST, we use enctype to allow file submission-->
+                              <div class="form-group">
+                                <label for="txtName">Name</label>
+                                <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Name">
+                              </div>
+                              <div class="form-group">
+                                <label for="txtPrice">Price</label>
+                                <input type="text" name="txtPrice" id="txtPrice" value="<?php echo $txtPrice; ?>" class="form-control progress-table-wrap" placeholder="Product price">
+                              </div>
+                              <div class="form-group">
+                                <label for="txtDescription">Description</label>
+                                <input type="text" name="txtDescription" value="<?php echo $txtDescription; ?>" id="txtDescription" class="form-control progress-table-wrap" placeholder="Product description">
+                              </div>
+                              <div class="form-group">
+                                <label for="txtUserype">Usertypes</label>
+                                <?php echo $txtUsertype; ?>
+                                <select class="form-control" name="txtUsertype" id="txtUsertype">
+                                  <option value="00">-- Seleccione --</option>
+                                  <?php $sentenciaUsertypes = $pdo->prepare("SELECT * from Usertype;");
+                                  $sentenciaUsertypes->execute();
+                                  $ListUsertypes = $sentenciaUsertypes->fetchAll();
+                                  foreach ($ListUsertypess as $Usertype) {
+                                    echo '<option value="' . $Usertype['CategoryID'] . '">' . $Usertype['NameUsertype'] . '</option>';
+                                  } ?>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="txtImage"></label>
+                                <?php echo $txtImage; ?>
+                                <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
+                              </div>
+                              <div class="btn-group" role="group">
+                                <button type="submit" name="accion" value="add" class="genric-btn success circle arrow">Add</button>
+                                <!--value must match with switch-->
+                                <button type="submit" name="accion" value="Cancel" class="genric-btn danger circle arrow">Cancel</button>
+                                
+                                
+                                <form method="post">
+                                  <input type="hidden" name="txtID" value="<?php echo $Usertypes['idUsertype']; ?>">
+                                  <input type="submit" name="accion" value="Modify" class="btn-primary">
+                                  <input type="submit" name="accion" value="Delete" class="btn-danger">
+                                </form>
+                          </tr>
+                        <?php } ?>
+
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
-           
+
           </div>
-         
-          
+
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021. Premium <a
-                href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.
-              All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
-                class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a
-                href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
-          </div>
-        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->

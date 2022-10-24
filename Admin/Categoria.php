@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-      include 'global/ServerConfiguration.php';
-      include 'global/DbConnection.php';
-      ?> 
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
+?>
 
 <head>
     <!-- Required meta tags -->
@@ -28,26 +28,8 @@
 
 <body>
 
-    <?php
-    $categoryQuery = $pdo->prepare("SELECT * FROM category;");
-    $UsertypeQuery->execute();
-    $Listcategory = $categoryQuery->fetchAll(PDO::FETCH_ASSOC);
-    var_dump($Listcategory);
-
-    ?>
     <div class="container-scroller">
-    <?php foreach ($Listcategory as $category) {?>
-                          <td><?php echo $vategory['idCategory'];?></td>
-                            <td><?php echo $cateory['Nombre'];?></td>
-                            <td>
-                                <form method="post">
-                                    <input type="hidden" name="txtID" value="<?php echo $category['idCategory']?>">
-                                    <input type="submit" name="accion" value="Modify" class="btn-primary">
-                                    <input type="submit" name="accion" value="Delete" class="btn-danger">
-                                 </form>
-                            </td>
-        <!-- partial:partials/_navbar.h
-        <?php } ?>tml -->
+        <!-- partial:partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo" /></a>
@@ -356,15 +338,6 @@
                                             <label for="exampleInputUsername1">Nombre de categoria</label>
                                             <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nombre">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputUsername1">Departamento</label>
-                                            <select class="form-control" id="Categoria">
-                                                <option>cocina</option>
-                                                <option>barra</option>
-
-                                            </select>
-
-                                        </div>
                                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                         <button class="btn btn-light">Cancel</button>
                                     </form>
@@ -374,7 +347,16 @@
                             </div>
 
                         </div>
+                        <?php
+
+                        $CategoryQuery = $pdo->prepare("SELECT * FROM Category;");
+                        $CategoryQuery->execute();
+                        $ListCategories = $CategoryQuery->fetchAll(PDO::FETCH_ASSOC);
+                        var_dump($ListCategories);
+                        ?>
+
                     </div>
+
                     <div class="row">
                         <div class="col-md-12 grid-margin stretch-card">
                             <div class="card">
@@ -384,62 +366,147 @@
                                         <table class="table table-striped table-borderless">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre categoria</th>
-                                                    <th>Departamento</th>
+                                                    <th>ID</th>
+
+                                                    <th>Categoria</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Peperoni</td>
-                                                    <td class="font-weight-bold">cocina</td>
+                                                <?php foreach ($ListCategories as $Categories) { ?>
+                                                    <tr class="table-row">
+                                                        <td><?php echo $Categories['idCategoria'] ?> </td>
+                                                        <td><?php echo $Categories['categoria']; ?> </td>
+                                                        <td>
 
+                                                            <?php
+                                                            //isset(what we check)-?-if true-:-if false;
+                                                            $txtID = (isset($_POST['txtidCategoria'])) ? $_POST['txtidCategoria'] : ""; 
+                                                            $txtName = (isset($_POST['txtNamecategoria'])) ? $_POST['txtNamecategoria'] : "";
+                                                            $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
-                                                </tr>
-                                                <tr>
-                                                    <td>Coca cola</td>
-                                                    <td class="font-weight-bold">barra/td>
+                                                            switch ($action) {
+                                                                case 'Add':
+                                                                    $InsertQuery = $pdo->prepare("INSERT INTO Category (namecategoria) VALUES 
+                                                                        (:namecategoria)");
+                                                                        $InsertQuery->bindParam('namecategoria',$txtNamecategoria);
+                                                                        $InsertQuery->execute();
+                                                                        break;
 
-                                                </tr>
-                                                <tr>
-                                                </tr>
+                                                                    case 'Select':
+                                                                        $SelectQuery = $pdo->prepare("SELECT * FROM Category Where idCategory=:id");
+                                                                        $SelectQuery->bindParam('id', $txtID);
+                                                                        $InsertQuery->is_execute();
+                                                                        $ACategory = $InsertQuery->fetch(PDO::FETCH_LAZY);
+                                                                        $txtName=$ACategory['nameCategory'];
+                                                                        break;
+                                                                    
+                                                                    case 'Cancel';
+
+                                                                          break;
+
+                                                                    case 'Modify';
+
+                                                                          break;
+
+                                                                    case 'Delete';
+                                                                          $DeleteQuery = $pdo->prepare("DELETE FROM Category WHERE idCategory=:id;");
+                                                                          $DeleteQuery->bindParam('id',$txtID);
+                                                                          $DeleteQuery->execute();
+                                                                          break;
+
+                                                                    default;
+                                                                     #code...
+                                                                    break;
+                                                            }
+                                                        
+                                                            ?>
+                                                            <form method="POST" enctype="multipart/form-data">
+                                                                <!--change method to POST, we use enctype to allow file submission-->
+                                                                <div class="form-group">
+                                                                    <label for="txtName">Name</label>
+                                                                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Name">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtPrice">Price</label>
+                                                                    <input type="text" name="txtPrice" id="txtPrice" value="<?php echo $txtPrice; ?>" class="form-control progress-table-wrap" placeholder="Product price">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtDescription">Description</label>
+                                                                    <input type="text" name="txtDescription" value="<?php echo $txtDescription; ?>" id="txtDescription" class="form-control progress-table-wrap" placeholder="Product description">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtCategory">Categories</label>
+                                                                    <?php echo $txtCategory; ?>
+                                                                    <select class="form-control" name="txtCategory" id="txtCategory">
+                                                                        <option value="00">-- Seleccione --</option>
+                                                                        <?php $sentenciaCategories = $pdo->prepare("SELECT * from Category;");
+                                                                        $sentenciaCategories->execute();
+                                                                        $ListCategories = $sentenciaCategories->fetchAll();
+                                                                        foreach ($ListCategories as $category) {
+                                                                            echo '<option value="' . $category['CategoryID'] . '">' . $category['NameCategory'] . '</option>';
+                                                                        } ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="txtImage"></label>
+                                                                    <?php echo $txtImage; ?>
+                                                                    <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
+                                                                </div>
+                                                                <div class="btn-group" role="group">
+                                                                    <button type="submit" name="accion" value="add" class="genric-btn success circle arrow">Add</button>
+                                                                    <!--value must match with switch-->
+                                                                    <button type="submit" name="accion" value="Cancel" class="genric-btn danger circle arrow">Cancel</button>
+
+                                                                    <form method="post">
+                                                                        <input type="hidden" name="txtID" value="<?php echo $Categories['idCategoria']; ?>">
+                                                                        <input type="submit" name="accion" value="modify" class="btn btn-primary">
+                                                                        <input type="submit" name="accion" value="delete" class="btn btn-danger">
+
+                                                        </td>
+                                                        </form>
+                                                    </tr>
+                                                <?php } ?>
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        </form>
                     </div>
-                    <!-- partial -->
+
                 </div>
-                <!-- main-panel ends -->
+                <!-- partial -->
             </div>
-            <!-- page-body-wrapper ends -->
+            <!-- main-panel ends -->
         </div>
+        <!-- page-body-wrapper ends -->
+    </div>
 
-        <!-- container-scroller -->
+    <!-- container-scroller -->
 
-        <!-- plugins:js -->
-        <script src="vendors/js/vendor.bundle.base.js"></script>
-        <!-- endinject -->
-        <!-- Plugin js for this page -->
-        <script src="vendors/chart.js/Chart.min.js"></script>
-        <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-        <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-        <script src="js/dataTables.select.min.js"></script>
+    <!-- plugins:js -->
+    <script src="vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="vendors/chart.js/Chart.min.js"></script>
+    <script src="vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="js/dataTables.select.min.js"></script>
 
-        <!-- End plugin js for this page -->
-        <!-- inject:js -->
-        <script src="js/off-canvas.js"></script>
-        <script src="js/hoverable-collapse.js"></script>
-        <script src="js/template.js"></script>
-        <script src="js/settings.js"></script>
-        <script src="js/todolist.js"></script>
-        <!-- endinject -->
-        <!-- Custom js for this page-->
-        <script src="js/dashboard.js"></script>
-        <script src="js/Chart.roundedBarCharts.js"></script>
-        <!-- End custom js for this page-->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="js/off-canvas.js"></script>
+    <script src="js/hoverable-collapse.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="js/dashboard.js"></script>
+    <script src="js/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 
 </html>
