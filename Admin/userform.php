@@ -26,22 +26,23 @@ include 'global/DbConnection.php';
 </head>
 
 <body>
-  <?php
+<?php
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
   $txtTipo = (isset($_POST['txtTipo'])) ? $_POST['txtTipo'] : "";
   $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
-  $txtContraseña = (isset($_POST['txtContraseña'])) ? $_POST['txtContraseña'] : "";
+  $txtPassword = (isset($_POST['txtPassword'])) ? $_POST['txtPassword'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, tipo, email, contraseña) VALUES (:nombre, :tipo, :email, :contraseña);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, tipo, email, password) VALUES (:nombre, :tipo, :email, :password);");
       $InsertQuery->bindParam(':nombre', $txtName);
       $InsertQuery->bindParam(':tipo', $txtTipo);
       $InsertQuery->bindParam(':email', $txtEmail);
-      $InsertQuery->bindParam(':contraseña', $txtContraseña);
+      $InsertQuery->bindParam(':password', $txtPassword);
+      var_dump($pdo);
       $InsertQuery->execute();
       break;
 
@@ -53,7 +54,7 @@ include 'global/DbConnection.php';
       $txtName = $AUserform['nombre'];
       $txtTipo = $AUserform['tipo'];
       $txtEmail = $AUserform['email'];
-      $txtContraseña = $AUserform['contraseña'];
+      $txtPassword = $AUserform['password'];
       break;
 
     case 'Modify':
@@ -61,7 +62,7 @@ include 'global/DbConnection.php';
       $ModifyQuery->bindParam(':nombre', $txtName);
       $ModifyQuery->bindParam(':tipo', $txtTipo);
       $ModifyQuery->bindParam(':email', $txtEmail);
-      $ModifyQuery->bindParam(':contraseña', $txtContraseña);
+      $ModifyQuery->bindParam(':password', $txtPassword);
       $ModifyQuery->bindParam(':id', $txtID);
       $ModifyQuery->execute();
       break;
@@ -381,9 +382,6 @@ include 'global/DbConnection.php';
             </a>
           </li>
           <li class="nav-item">
-
-          <li class="nav-item">
-
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
@@ -420,9 +418,9 @@ include 'global/DbConnection.php';
                     <br>
                   </div>
                     <div class="form-group">
-                      <label for="txtContraseña
-                      ">Contraseña</label>
-                      <input type="password" name="txtContraseña" id="txtContraseña" value="<?php echo $txtContraseña; ?>" class="form-control single-input" placeholder="Password">
+                      <label for="txtPassword
+                      ">Password</label>
+                      <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
                     </div>
                     <input type="submit" name="action" value="Add" class="btn btn-primary">
                     <input type="submit" name="action" value="Cancel" class="btn btn-danger">
@@ -452,7 +450,7 @@ include 'global/DbConnection.php';
                       <th>Nombre</th>
                       <th>Tipo de empleado</th>
                       <th>Email</th>
-                      <th>Contraseña</th>
+                      <th>Password</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -462,7 +460,7 @@ include 'global/DbConnection.php';
                       <td><?php echo $Userform['nombre']; ?> </td>
                       <td><?php echo $Userform['tipo']; ?> </td>
                       <td><?php echo $Userform['email']; ?> </td>
-                      <td><?php echo $Userform['contraseña']; ?> </td>
+                      <td><?php echo $Userform['password']; ?> </td>
                       <td>
                         <form method="POST">
                           <input type="hidden" name="txtID" value="<?php echo $Userform['idUserform']; ?>">

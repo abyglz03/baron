@@ -74,6 +74,7 @@ include 'global/DbConnection.php';
       $ModifyQuery->bindParam(':descripcion', $txtDescripcion);
       $ModifyQuery->execute();
       break;
+      
     case 'Delete':
       $DeleteQuery = $pdo->prepare("DELETE FROM Producto WHERE idProducto=:idProducto;");
       $DeleteQuery->bindParam(':idProducto', $txtID);
