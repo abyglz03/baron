@@ -27,7 +27,44 @@ include 'global/DbConnection.php';
 </head>
 
 <body>
+<?php
+                                    //isset(what we check)-?-if true-:-if false;
+                                    $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+                                    $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+                                    $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
+                                    switch ($action) {
+                                        case 'Add':
+                                            $InsertQuery = $pdo->prepare("INSERT INTO Category (categoria) VALUES (:categoria);");
+                                            $InsertQuery->bindParam(':categoria', $txtName);
+                                            $InsertQuery->execute();
+                                            break;
+
+                                        case 'Select':
+                                            $SelectQuery = $pdo->prepare("SELECT * FROM Category WHERE idCategoria=:idCategoria;");
+                                            $SelectQuery->bindParam(':idCategoria', $txtID);
+                                            $SelectQuery->execute();
+                                            $ACategory = $SelectQuery->fetch(PDO::FETCH_LAZY);
+                                            $txtName = $ACategory['categoria'];
+                                            break;
+
+                                        case 'Modify':
+                                            $ModifyQuery = $pdo->prepare("UPDATE Category SET categoria = :categoria WHERE idCategoria=:id;");
+                                            $ModifyQuery->bindParam(':categoria', $txtName);
+                                            $ModifyQuery->bindParam(':id', $txtID);
+                                            $ModifyQuery->execute();
+                                            break;
+
+                                        case 'Delete':
+                                            $DeleteQuery = $pdo->prepare("DELETE FROM Category WHERE idCategoria=:idCategoria;");
+                                            $DeleteQuery->bindParam(':idCategoria', $txtID);
+                                            $DeleteQuery->execute();
+                                            break;
+
+                                        default;
+                                            echo "Invalid option";
+                                            break;
+                                    } ?>
     <div class="container-scroller">
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -39,72 +76,23 @@ include 'global/DbConnection.php';
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
-                <ul class="navbar-nav mr-lg-2">
-                    <li class="nav-item nav-search d-none d-lg-block">
-                        <div class="input-group">
-                            <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                                <span class="input-group-text" id="search">
-                                    <i class="icon-search"></i>
-                                </span>
-                            </div>
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search" />
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item dropdown">
 
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">
-                                Notifications
-                            </p>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-success">
-                                        <i class="ti-info-alt mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <h6 class="preview-subject font-weight-normal">
-                                        Application Error
-                                    </h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Just now
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-warning">
-                                        <i class="ti-settings mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <h6 class="preview-subject font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        Private message
-                                    </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-info">
-                                        <i class="ti-user mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <h6 class="preview-subject font-weight-normal">
-                                        New user registration
-                                    </h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted">
-                                        2 days ago
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-
-
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item">
+                        <i class="ti-settings text-primary"></i>
+                        Settings
+                    </a>
+                    <a class="dropdown-item">
+                        <i class="ti-power-off text-primary"></i>
+                        Logout
+                    </a>
+                </div>
+                </li>
+                <li class="nav-item nav-settings d-none d-lg-flex">
+                    <a class="nav-link" href="#">
+                        <i class="icon-ellipsis"></i>
+                    </a>
+                </li>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                     <span class="icon-menu"></span>
@@ -227,8 +215,7 @@ include 'global/DbConnection.php';
                     <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
                         <div class="d-flex align-items-center justify-content-between border-bottom">
                             <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
-                            <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See
-                                All</small>
+                            <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See All</small>
                         </div>
                         <ul class="chat-list">
                             <li class="list active">
@@ -297,9 +284,6 @@ include 'global/DbConnection.php';
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
-
-
-
                     <li class="nav-item">
                         <div class="collapse" id="auth">
                             <ul class="nav flex-column sub-menu">
@@ -320,43 +304,37 @@ include 'global/DbConnection.php';
                                     <h3 class="font-weight-bold">Bienvenido Administrador</h3>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
-
-
                     <div class="row">
                         <div class="col-md-6 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Crear Categoria</h4>
-
-                                    <form class="forms-sample">
+                                    <form method="post">
+                                        <h4 class="card-title">Crear Categoria</h4>
                                         <div class="form-group">
                                             <label for="exampleInputUsername1">Nombre de categoria</label>
-                                            <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nombre">
+                                            <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Nombre de categoria">
                                         </div>
-                                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                                        <button class="btn btn-light">Cancel</button>
+                                        <label for="txtID"></label>
+                                        <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
+                                        <div>
+                                            <input type="submit" name="action" value="Add" class="btn btn-primary">
+                                            <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                                            <input type="submit" name="action" value="Modify" class="btn btn-danger">
+                                        </div>
                                     </form>
-
                                 </div>
-
                             </div>
-
                         </div>
                         <?php
-
                         $CategoryQuery = $pdo->prepare("SELECT * FROM Category;");
                         $CategoryQuery->execute();
-                        $ListCategories = $CategoryQuery->fetchAll(PDO::FETCH_ASSOC);
-                        var_dump($ListCategories);
+                        $ListCategory = $CategoryQuery->fetchAll(PDO::FETCH_ASSOC);
+                        //var_dump($ListCategories);
                         ?>
-
                     </div>
-
                     <div class="row">
                         <div class="col-md-12 grid-margin stretch-card">
                             <div class="card">
@@ -367,118 +345,37 @@ include 'global/DbConnection.php';
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-
                                                     <th>Categoria</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($ListCategories as $Categories) { ?>
-                                                    <tr class="table-row">
-                                                        <td><?php echo $Categories['idCategoria'] ?> </td>
-                                                        <td><?php echo $Categories['categoria']; ?> </td>
+                                                <?php foreach ($ListCategory as $Category) { ?>
+                                                    <tr class="odd">
+                                                        <td><?php echo $Category['idCategoria']; ?></td>
+                                                        <td><?php echo $Category['categoria']; ?></td>
                                                         <td>
-
-                                                            <?php
-                                                            //isset(what we check)-?-if true-:-if false;
-                                                            $txtID = (isset($_POST['txtidCategoria'])) ? $_POST['txtidCategoria'] : ""; 
-                                                            $txtName = (isset($_POST['txtNamecategoria'])) ? $_POST['txtNamecategoria'] : "";
-                                                            $action = (isset($_POST['action'])) ? $_POST['action'] : "";
-
-                                                            switch ($action) {
-                                                                case 'Add':
-                                                                    $InsertQuery = $pdo->prepare("INSERT INTO Category (namecategoria) VALUES 
-                                                                        (:namecategoria)");
-                                                                        $InsertQuery->bindParam('namecategoria',$txtNamecategoria);
-                                                                        $InsertQuery->execute();
-                                                                        break;
-
-                                                                    case 'Select':
-                                                                        $SelectQuery = $pdo->prepare("SELECT * FROM Category Where idCategory=:id");
-                                                                        $SelectQuery->bindParam('id', $txtID);
-                                                                        $InsertQuery->is_execute();
-                                                                        $ACategory = $InsertQuery->fetch(PDO::FETCH_LAZY);
-                                                                        $txtName=$ACategory['nameCategory'];
-                                                                        break;
-                                                                    
-                                                                    case 'Cancel';
-
-                                                                          break;
-
-                                                                    case 'Modify';
-
-                                                                          break;
-
-                                                                    case 'Delete';
-                                                                          $DeleteQuery = $pdo->prepare("DELETE FROM Category WHERE idCategory=:id;");
-                                                                          $DeleteQuery->bindParam('id',$txtID);
-                                                                          $DeleteQuery->execute();
-                                                                          break;
-
-                                                                    default;
-                                                                     #code...
-                                                                    break;
-                                                            }
-                                                        
-                                                            ?>
-                                                            <form method="POST" enctype="multipart/form-data">
-                                                                <!--change method to POST, we use enctype to allow file submission-->
-                                                                <div class="form-group">
-                                                                    <label for="txtName">Name</label>
-                                                                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Name">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtPrice">Price</label>
-                                                                    <input type="text" name="txtPrice" id="txtPrice" value="<?php echo $txtPrice; ?>" class="form-control progress-table-wrap" placeholder="Product price">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtDescription">Description</label>
-                                                                    <input type="text" name="txtDescription" value="<?php echo $txtDescription; ?>" id="txtDescription" class="form-control progress-table-wrap" placeholder="Product description">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtCategory">Categories</label>
-                                                                    <?php echo $txtCategory; ?>
-                                                                    <select class="form-control" name="txtCategory" id="txtCategory">
-                                                                        <option value="00">-- Seleccione --</option>
-                                                                        <?php $sentenciaCategories = $pdo->prepare("SELECT * from Category;");
-                                                                        $sentenciaCategories->execute();
-                                                                        $ListCategories = $sentenciaCategories->fetchAll();
-                                                                        foreach ($ListCategories as $category) {
-                                                                            echo '<option value="' . $category['CategoryID'] . '">' . $category['NameCategory'] . '</option>';
-                                                                        } ?>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtImage"></label>
-                                                                    <?php echo $txtImage; ?>
-                                                                    <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <button type="submit" name="accion" value="add" class="genric-btn success circle arrow">Add</button>
-                                                                    <!--value must match with switch-->
-                                                                    <button type="submit" name="accion" value="Cancel" class="genric-btn danger circle arrow">Cancel</button>
-
-                                                                    <form method="post">
-                                                                        <input type="hidden" name="txtID" value="<?php echo $Categories['idCategoria']; ?>">
-                                                                        <input type="submit" name="accion" value="modify" class="btn btn-primary">
-                                                                        <input type="submit" name="accion" value="delete" class="btn btn-danger">
-
+                                                            <form method="post">
+                                                                <input type="hidden" name="txtID" value="<?php echo $Category['idCategoria']; ?>">
+                                                                <input type="submit" name="action" value="Select" class="btn btn-primary">
+                                                                <input type="submit" name="action" value="Delete" class="btn btn-danger">
+                                                            </form>
                                                         </td>
-                                                        </form>
                                                     </tr>
                                                 <?php } ?>
-
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </form>
                     </div>
 
+
                 </div>
+
                 <!-- partial -->
             </div>
+
             <!-- main-panel ends -->
         </div>
         <!-- page-body-wrapper ends -->

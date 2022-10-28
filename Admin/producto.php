@@ -27,6 +27,63 @@ include 'global/DbConnection.php';
 </head>
 
 <body>
+  <?php
+  //isset(what we check)-?-if true-:-if false;
+  $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
+  $txtCantidad = (isset($_POST['txtCantidad'])) ? $_POST['txtCantidad'] : "";
+  $txtMedida = (isset($_POST['txtMedida'])) ? $_POST['txtMedida'] : "";
+  $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
+  $txtPrecio = (isset($_POST['txtPrecio'])) ? $_POST['txtPrecio'] : "";
+  $action = (isset($_POST['action'])) ? $_POST['action'] : "";
+
+  switch ($action) {
+    case 'Add':
+      $InsertQuery = $pdo->prepare("INSERT INTO Producto (nombre, descripcion, cantidad, medida, categoria, precio) VALUES (:nombre, :descripcion, :cantidad, :medida, :categoria, :precio);");
+      $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery->bindParam(':descripcion', $txtDescripcion);
+      $InsertQuery->bindParam(':cantidad', $txtCantidad);
+      $InsertQuery->bindParam(':medida', $txtMedida);
+      $InsertQuery->bindParam(':categoria', $txtCategoria);
+      $InsertQuery->bindParam(':precio', $txtPrecio);
+      $InsertQuery->execute();
+      break;
+
+    case 'Select':
+      $SelectQuery = $pdo->prepare("SELECT * FROM Producto WHERE idProducto=:idProducto;");
+      $SelectQuery->bindParam(':idProducto', $txtID);
+      $SelectQuery->execute();
+      $AProducto = $SelectQuery->fetch(PDO::FETCH_LAZY);
+      $txtName = $AProducto['nombre'];
+      $txtDescripcion = $AProducto['descripcion'];
+      $txtMedida = $AProducto['medida'];
+      $txtCantidad = $AProducto['cantidad'];
+      $txtCategoria = $AProducto['categoria'];
+      $txtPrecio = $AProducto['precio'];
+      break;
+
+    case 'Modify':
+      $ModifyQuery = $pdo->prepare("UPDATE Producto SET nombre = :nombre, descripcion = :descripcion, precio = :precio, cantidad = :cantidad, categoria = :categoria, medida = :medida WHERE idProducto=:id;");
+      $ModifyQuery->bindParam(':id', $txtID);
+      $ModifyQuery->bindParam(':nombre', $txtName);
+      $ModifyQuery->bindParam(':precio', $txtPrecio);
+      $ModifyQuery->bindParam(':cantidad', $txtCantidad);
+      $ModifyQuery->bindParam(':medida', $txtMedida);
+      $ModifyQuery->bindParam(':categoria', $txtCategoria);
+      $ModifyQuery->bindParam(':descripcion', $txtDescripcion);
+      $ModifyQuery->execute();
+      break;
+    case 'Delete':
+      $DeleteQuery = $pdo->prepare("DELETE FROM Producto WHERE idProducto=:idProducto;");
+      $DeleteQuery->bindParam(':idProducto', $txtID);
+      $DeleteQuery->execute();
+      break;
+
+    default;
+      echo "Invalid option";
+      break;
+  } ?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -58,9 +115,6 @@ include 'global/DbConnection.php';
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-
-
-
             </div>
           </li>
           <li class="nav-item nav-profile dropdown">
@@ -137,162 +191,115 @@ include 'global/DbConnection.php';
                 <div class="col-md-6 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <h4 class="card-title">Crear Producto</h4>
-                      <p class="card-description">
-                      </p>
-                      <form class="forms-sample">
+                      <form method="POST">
+                        <h4 class="card-title">Crear Producto</h4>
                         <div class="form-group">
-                          <label for="exampleInputUsername1">Nombre</label>
-                          <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nombre">
+                          <label for="txtName">Nombre</label>
+                          <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Nombre">
+                        </div>
+                        <div class="form-group" <label for="txtDescripcion">Descripcion</label>
+                          <input type="text" name="txtDescripcion" id="txtDescripcion" value="<?php echo $txtDescripcion; ?>" class="form-control single-input" placeholder="Descripcion">
                         </div>
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Descripcion</label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Descripcion">
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Cantidad</label>
-                          <input type="Number" class="form-control" id="exampleInputPassword1" placeholder="Cantidad">
+                          <label for="txtCantidad">Cantidad</label>
+                          <input type="number" name="txtCantidad" id="txtCantidad" value="<?php echo $txtCantidad; ?>" class="form-control single-input" placeholder="Cantidad">
                         </div>
                         <div class="form-group">
                           <label for="Categoria">Medidas </label>
-                          <select class="form-control" id="Categoria">
-                            <option>9"</option>
-                            <option>14"</option>
-                            <option>No tiene</option>
-
-                          </select>
+                          <input type="txt" name="txtMedida" id="txtMedida" value="<?php echo $txtMedida; ?>" class="form-control single-input" placeholder="Medidas">
                         </div>
                         <div class="form-group">
                           <label for="Categoria">Categoria </label>
-                          <select class="form-control" id="Categoria">
-                            <option>Pizza</option>
-                            <option>Boneless</option>
-                            <option>Entradas</option>
-                            <option>Bebidas</option>
-                          </select>
+                          <input type="txt" name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>" class="form-control single-input" placeholder="Categoria">
                         </div>
                         <div class="form-group">
-                          <label for="exampleInputConfirmPassword1">Precio</label>
-                          <input type="Number" class="form-control" id="exampleInputConfirmPassword1" placeholder="Precio">
+                          <label for="txtPrecio">Precio</label>
+                          <input type="price" name="txtPrecio" id="txtPrecio" value="<?php echo $txtPrecio; ?>" class="form-control single-input" placeholder="Precio">
                         </div>
-                        <div class="form-group">
-                          <label for="exampleInputConfirmPassword1">Imagen</label>
-                          <input type="file" class="form-control" id="exampleInputConfirmPassword1" placeholder="Imagen">
+                        <label for="txtID"></label>
+                        <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
+                        <div>
+                          <input type="submit" name="action" value="Add" class="btn btn-primary">
+                          <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                          <input type="submit" name="action" value="Modify" class="btn btn-danger">
                         </div>
+                      </form>
                     </div>
-
-                    <button type="submit" class="btn btn-primary mr-2">Guardar</button>
-                    <button class="btn btn-light">Cancel</button>
-                    </form>
                   </div>
                 </div>
-                <?php
+              </div>
+              <?php
+              $ProductoQuery = $pdo->prepare("SELECT * FROM Producto;");
+              $ProductoQuery->execute();
+              $ListProducto = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
+              //var_dump($ListCategories);
+              ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title mb-0">Producto</p>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-borderless">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Nombre</th>
+                          <th>Descripcion</th>
+                          <th>Cantidad</th>
+                          <th>Medida</th>
+                          <th>Categoria</th>
+                          <th>Precio</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach ($ListProducto as $Producto) { ?>
+                          <tr class="odd">
+                            <td><?php echo $Producto['idProducto'] ?> </td>
+                            <td><?php echo $Producto['nombre']; ?> </td>
+                            <td><?php echo $Producto['descripcion']; ?> </td>
+                            <td><?php echo $Producto['cantidad']; ?> </td>
+                            <td><?php echo $Producto['medida']; ?> </td>
+                            <td><?php echo $Producto['categoria']; ?> </td>
+                            <td><?php echo $Producto['precio']; ?> </td>
+                            <td>
+                              <form method="POST">
+                                <input type="hidden" name="txtID" value="<?php echo $Producto['idProducto']; ?>">
+                                <input type="submit" name="action" value="Select" class="btn btn-primary">
+                                <input type="submit" name="action" value="Delete" class="btn btn-danger">
+                              </form>
+                            </td>
+                          </tr>
+                        <?php } ?>
 
-                $ProductoQuery = $pdo->prepare("SELECT * FROM Producto;");
-                $ProductoQuery->execute();
-                $ListProductos = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
-                var_dump($ListProductos);
-                ?>
-
-                <div class="row">
-                  <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                      <div class="card-body">
-                        <p class="card-title mb-0">Producto</p>
-                        <div class="table-responsive">
-                          <table class="table table-striped table-borderless">
-                            <thead>
-                              <tr>
-                                <th>Nombre</th>
-                                <th>Descripcion</th>
-                                <th>Cantidad</th>
-                                <th>Medida</th>
-                                <th>Categoria</th>
-                                <th>Precio</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($ListProductos as $Productos) { ?>
-                             <tr class="table-row">
-                              <td><?php echo $Productos['idProducto']; ?> </td>
-                              <td><?php echo $Productos['nombre']; ?> </td>
-                              <td><?php echo $Productos['descripcion']; ?> </td>
-                              <td><?php echo $Productos['cantidad']; ?> </td>
-                              <td><?php echo $Productos['medida']; ?> </td>
-                              <td><?php echo $Productos['categoria']; ?> </td>
-                              <td><?php echo $Productos['precio']; ?> </td>
-
-                                                        
-                                                            <form method="POST" enctype="multipart/form-data">
-                                                                <!--change method to POST, we use enctype to allow file submission-->
-                                                                <div class="form-group">
-                                                                    <label for="txtName">Name</label>
-                                                                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Name">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtPrice">Price</label>
-                                                                    <input type="text" name="txtPrice" id="txtPrice" value="<?php echo $txtPrice; ?>" class="form-control progress-table-wrap" placeholder="Product price">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtDescription">Description</label>
-                                                                    <input type="text" name="txtDescription" value="<?php echo $txtDescription; ?>" id="txtDescription" class="form-control progress-table-wrap" placeholder="Product description">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtCategory">Categories</label>
-                                                                    <?php echo $txtCategory; ?>
-                                                                    <select class="form-control" name="txtCategory" id="txtCategory">
-                                                                        <option value="00">-- Seleccione --</option>
-                                                                        <?php $sentenciaCategories = $pdo->prepare("SELECT * from Category;");
-                                                                        $sentenciaCategories->execute();
-                                                                        $ListCategories = $sentenciaCategories->fetchAll();
-                                                                        foreach ($ListCategories as $category) {
-                                                                            echo '<option value="' . $category['CategoryID'] . '">' . $category['NameCategory'] . '</option>';
-                                                                        } ?>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="txtImage"></label>
-                                                                    <?php echo $txtImage; ?>
-                                                                    <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
-                                                                </div>
-                                                                <div class="btn-group" role="group">
-                                                                    <button type="submit" name="accion" value="add" class="genric-btn success circle arrow">Add</button>
-                                                                    <!--value must match with switch-->
-                                                                    <button type="submit" name="accion" value="Cancel" class="genric-btn danger circle arrow">Cancel</button>
-
-                                                                    <form method="post">
-                                                                        <input type="hidden" name="txtID" value="<?php echo $Productos['idProducto']; ?>">
-                                                                        <input type="submit" name="accion" value="modify" class="btn btn-primary">
-                                                                        <input type="submit" name="accion" value="delete" class="btn btn-danger">   
-
-                                                        
-                            <?php } ?>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-
-        <div class="row">
-
-
-        </div>
-
-
       </div>
-
-
-      <!-- partial -->
     </div>
-    <!-- main-panel ends -->
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+  <!-- partial -->
+  </div>
+  <!-- main-panel ends -->
   </div>
   <!-- page-body-wrapper ends -->
   </div>

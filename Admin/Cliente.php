@@ -7,32 +7,73 @@ include 'global/DbConnection.php';
 
 <head>
   <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Admin Usuarios</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Skydash Admin</title>
   <!-- plugins:css -->
-  <link rel="stylesheet" href="vendors/feather/feather.css">
-  <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="vendors/feather/feather.css" />
+  <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css" />
+  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css" />
   <!-- endinject -->
   <!-- Plugin css for this page -->
-  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-  <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
+  <link rel="stylesheet" href="vendors/select2/select2.min.css" />
+  <link rel="stylesheet" href="vendors/select2-bootstrap-theme/select2-bootstrap.min.css" />
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="css/vertical-layout-light/style.css" />
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
 </head>
 
 <body>
+  <?php
+  //isset(what we check)-?-if true-:-if false;
+  $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
+  switch ($action) {
+    case 'Add':
+      $InsertQuery = $pdo->prepare("INSERT INTO Cliente (Clientes) VALUES
+  (:Clientes)");
+      $InsertQuery->bindParam('Clientes', $txtName);
+      $InsertQuery->execute();
+      break;
+
+    case 'Select':
+      $SelectQuery = $pdo->prepare("SELECT * FROM Cliente Where idCliente=:id");
+      $SelectQuery->bindParam('id', $txtID);
+      $SelectQuery->execute();
+      $ACategory = $InsertQuery->fetch(PDO::FETCH_LAZY);
+      $txtName = $ACategory['Cliente'];
+      break;
+
+    case 'Cancel';
+
+      break;
+
+    case 'Modify';
+
+      break;
+
+
+    case 'Delete':
+      $DeleteQuery = $pdo->prepare("DELETE FROM Cliente WHERE idCliente=:id ");
+      $DeleteQuery->bindParam(':id', $txtID);
+      $DeleteQuery->execute();
+      break;
+
+    default;
+      #code...
+      break;
+  }
+
+  ?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/baron-logo.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo" /></a>
         <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -47,7 +88,7 @@ include 'global/DbConnection.php';
                   <i class="icon-search"></i>
                 </span>
               </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
+              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search" />
             </div>
           </li>
         </ul>
@@ -58,7 +99,9 @@ include 'global/DbConnection.php';
               <span class="count"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              <p class="mb-0 font-weight-normal float-left dropdown-header">
+                Notifications
+              </p>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-success">
@@ -66,7 +109,9 @@ include 'global/DbConnection.php';
                   </div>
                 </div>
                 <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
+                  <h6 class="preview-subject font-weight-normal">
+                    Application Error
+                  </h6>
                   <p class="font-weight-light small-text mb-0 text-muted">
                     Just now
                   </p>
@@ -92,7 +137,9 @@ include 'global/DbConnection.php';
                   </div>
                 </div>
                 <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
+                  <h6 class="preview-subject font-weight-normal">
+                    New user registration
+                  </h6>
                   <p class="font-weight-light small-text mb-0 text-muted">
                     2 days ago
                   </p>
@@ -135,10 +182,12 @@ include 'global/DbConnection.php';
           <i class="settings-close ti-close"></i>
           <p class="settings-heading">SIDEBAR SKINS</p>
           <div class="sidebar-bg-options selected" id="sidebar-light-theme">
-            <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
+            <div class="img-ss rounded-circle bg-light border mr-3"></div>
+            Light
           </div>
           <div class="sidebar-bg-options" id="sidebar-dark-theme">
-            <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
+            <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+            Dark
           </div>
           <p class="settings-heading mt-2">HEADER SKINS</p>
           <div class="color-tiles mx-0 px-4">
@@ -166,8 +215,10 @@ include 'global/DbConnection.php';
             <div class="add-items d-flex px-3 mb-0">
               <form class="form w-100">
                 <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
+                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do" />
+                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">
+                    Add
+                  </button>
                 </div>
               </form>
             </div>
@@ -176,7 +227,7 @@ include 'global/DbConnection.php';
                 <li>
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
+                      <input class="checkbox" type="checkbox" />
                       Team review meeting at 3.00 PM
                     </label>
                   </div>
@@ -185,7 +236,7 @@ include 'global/DbConnection.php';
                 <li>
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
+                      <input class="checkbox" type="checkbox" />
                       Prepare for presentation
                     </label>
                   </div>
@@ -194,7 +245,7 @@ include 'global/DbConnection.php';
                 <li>
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
+                      <input class="checkbox" type="checkbox" />
                       Resolve all the low priority tickets due today
                     </label>
                   </div>
@@ -203,7 +254,7 @@ include 'global/DbConnection.php';
                 <li class="completed">
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
+                      <input class="checkbox" type="checkbox" checked />
                       Schedule meeting for next week
                     </label>
                   </div>
@@ -212,7 +263,7 @@ include 'global/DbConnection.php';
                 <li class="completed">
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
+                      <input class="checkbox" type="checkbox" checked />
                       Project review
                     </label>
                   </div>
@@ -220,13 +271,17 @@ include 'global/DbConnection.php';
                 </li>
               </ul>
             </div>
-            <h4 class="px-3 text-muted mt-5 font-weight-light mb-0">Events</h4>
+            <h4 class="px-3 text-muted mt-5 font-weight-light mb-0">
+              Events
+            </h4>
             <div class="events pt-4 px-3">
               <div class="wrapper d-flex mb-2">
                 <i class="ti-control-record text-primary mr-2"></i>
                 <span>Feb 11 2018</span>
               </div>
-              <p class="mb-0 font-weight-thin text-gray">Creating component page build a js</p>
+              <p class="mb-0 font-weight-thin text-gray">
+                Creating component page build a js
+              </p>
               <p class="text-gray mb-0">The total number of sessions</p>
             </div>
             <div class="events pt-4 px-3">
@@ -234,20 +289,26 @@ include 'global/DbConnection.php';
                 <i class="ti-control-record text-primary mr-2"></i>
                 <span>Feb 7 2018</span>
               </div>
-              <p class="mb-0 font-weight-thin text-gray">Meeting with Alisa</p>
-              <p class="text-gray mb-0 ">Call Sarah Graves</p>
+              <p class="mb-0 font-weight-thin text-gray">
+                Meeting with Alisa
+              </p>
+              <p class="text-gray mb-0">Call Sarah Graves</p>
             </div>
           </div>
           <!-- To do section tab ends -->
           <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
             <div class="d-flex align-items-center justify-content-between border-bottom">
-              <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
+              <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">
+                Friends
+              </p>
               <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See
                 All</small>
             </div>
             <ul class="chat-list">
               <li class="list active">
-                <div class="profile"><img src="images/faces/face1.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile">
+                  <img src="images/faces/face1.jpg" alt="image" /><span class="online"></span>
+                </div>
                 <div class="info">
                   <p>Thomas Douglas</p>
                   <p>Available</p>
@@ -255,18 +316,24 @@ include 'global/DbConnection.php';
                 <small class="text-muted my-auto">19 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face2.jpg" alt="image"><span class="offline"></span></div>
+                <div class="profile">
+                  <img src="images/faces/face2.jpg" alt="image" /><span class="offline"></span>
+                </div>
                 <div class="info">
                   <div class="wrapper d-flex">
                     <p>Catherine</p>
                   </div>
                   <p>Away</p>
                 </div>
-                <div class="badge badge-success badge-pill my-auto mx-2">4</div>
+                <div class="badge badge-success badge-pill my-auto mx-2">
+                  4
+                </div>
                 <small class="text-muted my-auto">23 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face3.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile">
+                  <img src="images/faces/face3.jpg" alt="image" /><span class="online"></span>
+                </div>
                 <div class="info">
                   <p>Daniel Russell</p>
                   <p>Available</p>
@@ -274,7 +341,9 @@ include 'global/DbConnection.php';
                 <small class="text-muted my-auto">14 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face4.jpg" alt="image"><span class="offline"></span></div>
+                <div class="profile">
+                  <img src="images/faces/face4.jpg" alt="image" /><span class="offline"></span>
+                </div>
                 <div class="info">
                   <p>James Richardson</p>
                   <p>Away</p>
@@ -282,7 +351,9 @@ include 'global/DbConnection.php';
                 <small class="text-muted my-auto">2 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face5.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile">
+                  <img src="images/faces/face5.jpg" alt="image" /><span class="online"></span>
+                </div>
                 <div class="info">
                   <p>Madeline Kennedy</p>
                   <p>Available</p>
@@ -290,7 +361,9 @@ include 'global/DbConnection.php';
                 <small class="text-muted my-auto">5 min</small>
               </li>
               <li class="list">
-                <div class="profile"><img src="images/faces/face6.jpg" alt="image"><span class="online"></span></div>
+                <div class="profile">
+                  <img src="images/faces/face6.jpg" alt="image" /><span class="online"></span>
+                </div>
                 <div class="info">
                   <p>Sarah Graves</p>
                   <p>Available</p>
@@ -312,155 +385,119 @@ include 'global/DbConnection.php';
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-
-
+          <li class="nav-item">
 
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">User Pages</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
+
+            <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-                <li class="nav-item"> <a class="nav-link" href="usuarios.html"> Usuarios </a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Comida</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="categorias.html"> Categorias </a></li>
-                <li class="nav-item"> <a class="nav-link" href="producto.html"> Producto </a></li>
-              </ul>
-            </div>
+                <li class="nav-item">
+                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Administrador</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Empleado</a></li>
+                <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Cliente</a></li>
           </li>
         </ul>
-      </nav>
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="row">
-                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                  <h3 class="font-weight-bold">Bienvenido Administrador</h3>
+    </div>
+    </li>
 
-                </div>
+    </nav>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Formulario cliente</h4>
 
-              </div>
-            </div>
-          </div>
-
-          <?php
-          $UsertyoeQuery = $pdo->prepare("SELECT * FROM Usertype;");
-          $UsertypeQuery->execute();
-          $ListUsertypes = $UsertypeQuery->fetchAll(PDO::FETCH_ASSOC);
-          var_dump($ListUsertypes);
-         
-          ?>
-
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title mb-0">Usuarios</p>
-                  <div class="table-responsive">
-                    <table class="table table-striped table-borderless">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Nombre</th>
-                          <th>Correo</th>
-                          <th>Cargo</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php foreach ($ListUsertypes as $Usertypes) { ?>
-                          <tr class="table-row">
-                            <td><?php echo $Usertypes['idUsertype']; ?></td>
-                            <td><?php echo $Usertypes['usuario']; ?></td>
-                            <td><?php echo $Usertypes['nombre']; ?></td>
-                            <?php
-                            //isset(what we check)-?-if true-:-if false;
-                            $txtID = (isset($_POST['txtidUdertype'])) ? $_POST['txtidusertype'] : ""; //['name of your form input']
-                            $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
-                            $action = (isset($_POST['action'])) ? $_POST['action'] : "";
-                            ?>
-                            <form method="POST" enctype="multipart/form-data">
-                              <!--change method to POST, we use enctype to allow file submission-->
-                              <div class="form-group">
-                                <label for="txtName">Name</label>
-                                <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Name">
-                              </div>
-                              <div class="form-group">
-                                <label for="txtPrice">Price</label>
-                                <input type="text" name="txtPrice" id="txtPrice" value="<?php echo $txtPrice; ?>" class="form-control progress-table-wrap" placeholder="Product price">
-                              </div>
-                              <div class="form-group">
-                                <label for="txtDescription">Description</label>
-                                <input type="text" name="txtDescription" value="<?php echo $txtDescription; ?>" id="txtDescription" class="form-control progress-table-wrap" placeholder="Product description">
-                              </div>
-                              <div class="form-group">
-                                <label for="txtUserype">Usertypes</label>
-                                <?php echo $txtUsertype; ?>
-                                <select class="form-control" name="txtUsertype" id="txtUsertype">
-                                  <option value="00">-- Seleccione --</option>
-                                  <?php $sentenciaUsertypes = $pdo->prepare("SELECT * from Usertype;");
-                                  $sentenciaUsertypes->execute();
-                                  $ListUsertypes = $sentenciaUsertypes->fetchAll();
-                                  foreach ($ListUsertypess as $Usertype) {
-                                    echo '<option value="' . $Usertype['CategoryID'] . '">' . $Usertype['NameUsertype'] . '</option>';
-                                  } ?>
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <label for="txtImage"></label>
-                                <?php echo $txtImage; ?>
-                                <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
-                              </div>
-                              <div class="btn-group" role="group">
-                                <button type="submit" name="accion" value="add" class="genric-btn success circle arrow">Add</button>
-                                <!--value must match with switch-->
-                                <button type="submit" name="accion" value="Cancel" class="genric-btn danger circle arrow">Cancel</button>
-                                
-                                
-                                <form method="post">
-                                  <input type="hidden" name="txtID" value="<?php echo $Usertypes['idUsertype']; ?>">
-                                  <input type="submit" name="accion" value="Modify" class="btn-primary">
-                                  <input type="submit" name="accion" value="Delete" class="btn-danger">
-                                </form>
-                          </tr>
-                        <?php } ?>
-
-                      </tbody>
-                    </table>
+                <form method="post" class="forms-sample">
+                  <div class="form-group">
+                    <label for="exampleInputUsername1">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username" />
                   </div>
-                </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" />
+                    <br>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Contraseña</label>
+                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputConfirmPassword1">Confirmar contraseña</label>
+                      <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password" />
+                    </div>
+
+                    <!-- <form method="post"> -->
+                    <input type="hidden" name="txtName" value="<?php echo $Cliente['idCliente'] ?>">
+                    <input type="submit" name="action" value="Add" class="btn btn-primary">
+                    <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                    <input type="submit" name="action" value="Modify" class="btn btn-danger">
+
+                </form>
               </div>
             </div>
-
           </div>
-
-
         </div>
+      </div>
+      <?php
+
+      $ClienteQuery = $pdo->prepare("SELECT * FROM Cliente;");
+      $ClienteQuery->execute();
+      $Listclientes = $ClienteQuery->fetchAll(PDO::FETCH_ASSOC);
+      //var_dump($Listclientes);
+      ?>
+
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-title mb-0">Administradores</p>
+              <div class="table-responsive">
+                <table class="table table-striped table-borderless">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach ($Listclientes as $clientes) { ?>
+                      <tr class="table-row">
+                        <td><?php echo $clientes['idCliente'] ?> </td>
+                        <td><?php echo $clientes['nombre']; ?> </td>
+                        <td><?php echo $clientes['correo']; ?> </td>
+                        <td>
+                          <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                              <form method="post">
+                                <input type="hidden" name="txtID" value="<?php echo $clientes['idCliente']; ?>">
+                                <input type="submit" name="action" value="modify" class="btn btn-primary">
+                                <input type="submit" name="action" value="delete" class="btn btn-danger">
+                              </form>
+                          </form>
+                        </td>
+                      </tr>
+                    <?php } ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          </div>
+        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -468,16 +505,12 @@ include 'global/DbConnection.php';
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
   <!-- plugins:js -->
   <script src="vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
-  <script src="vendors/chart.js/Chart.min.js"></script>
-  <script src="vendors/datatables.net/jquery.dataTables.js"></script>
-  <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
-  <script src="js/dataTables.select.min.js"></script>
-
+  <script src="vendors/typeahead.js/typeahead.bundle.min.js"></script>
+  <script src="vendors/select2/select2.min.js"></script>
   <!-- End plugin js for this page -->
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
@@ -487,8 +520,9 @@ include 'global/DbConnection.php';
   <script src="js/todolist.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="js/dashboard.js"></script>
-  <script src="js/Chart.roundedBarCharts.js"></script>
+  <script src="js/file-upload.js"></script>
+  <script src="js/typeahead.js"></script>
+  <script src="js/select2.js"></script>
   <!-- End custom js for this page-->
 </body>
 

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
+?>
 
 <head>
   <!-- Required meta tags -->
@@ -22,13 +26,62 @@
 </head>
 
 <body>
+  <?php
+  //isset(what we check)-?-if true-:-if false;
+  $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtTipo = (isset($_POST['txtTipo'])) ? $_POST['txtTipo'] : "";
+  $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
+  $txtContraseña = (isset($_POST['txtContraseña'])) ? $_POST['txtContraseña'] : "";
+  $action = (isset($_POST['action'])) ? $_POST['action'] : "";
+
+  switch ($action) {
+    case 'Add':
+      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, tipo, email, contraseña) VALUES (:nombre, :tipo, :email, :contraseña);");
+      $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery->bindParam(':tipo', $txtTipo);
+      $InsertQuery->bindParam(':email', $txtEmail);
+      $InsertQuery->bindParam(':contraseña', $txtContraseña);
+      $InsertQuery->execute();
+      break;
+
+    case 'Select':
+      $SelectQuery = $pdo->prepare("SELECT * FROM Userform WHERE idUsuario=:idUsuario;");
+      $SelectQuery->bindParam(':idUsuario', $txtID);
+      $SelectQuery->execute();
+      $AUserform = $SelectQuery->fetch(PDO::FETCH_LAZY);
+      $txtName = $AUserform['nombre'];
+      $txtTipo = $AUserform['tipo'];
+      $txtEmail = $AUserform['email'];
+      $txtContraseña = $AUserform['contraseña'];
+      break;
+
+    case 'Modify':
+      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, tipo = :tipo, email = :email, contraseña = :contraseña WHERE idUsuario=:id;");
+      $ModifyQuery->bindParam(':nombre', $txtName);
+      $ModifyQuery->bindParam(':tipo', $txtTipo);
+      $ModifyQuery->bindParam(':email', $txtEmail);
+      $ModifyQuery->bindParam(':contraseña', $txtContraseña);
+      $ModifyQuery->bindParam(':id', $txtID);
+      $ModifyQuery->execute();
+      break;
+
+    case 'Delete':
+      $DeleteQuery = $pdo->prepare("DELETE FROM Userform WHERE idUsuario=:idUsuario;");
+      $DeleteQuery->bindParam(':idUsuario', $txtID);
+      $DeleteQuery->execute();
+      break;
+
+    default;
+      echo "Invalid option";
+      break;
+  } ?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2"
-            alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-4" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/LOGO-BARON-EFECTO.png" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -42,20 +95,14 @@
                   <i class="icon-search"></i>
                 </span>
               </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                aria-label="search" aria-describedby="search" />
+              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search" />
             </div>
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-              data-toggle="dropdown">
-              <i class="icon-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-              aria-labelledby="notificationDropdown">
+
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">
                 Notifications
               </p>
@@ -105,9 +152,6 @@
             </div>
           </li>
           <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile" />
-            </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
                 <i class="ti-settings text-primary"></i>
@@ -119,16 +163,9 @@
               </a>
             </div>
           </li>
-          <li class="nav-item nav-settings d-none d-lg-flex">
-            <a class="nav-link" href="#">
-              <i class="icon-ellipsis"></i>
-            </a>
-          </li>
+
         </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-          data-toggle="offcanvas">
-          <span class="icon-menu"></span>
-        </button>
+
       </div>
     </nav>
     <!-- partial -->
@@ -162,17 +199,14 @@
         <i class="settings-close ti-close"></i>
         <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
-              aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
-              aria-controls="chats-section">CHATS</a>
+            <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
           </li>
         </ul>
         <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel"
-            aria-labelledby="todo-section">
+          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
             <div class="add-items d-flex px-3 mb-0">
               <form class="form w-100">
                 <div class="form-group d-flex">
@@ -369,111 +403,122 @@
           <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Formulario cliente</h4>
-
-                <form class="forms-sample">
+              <form method="post">
+                <h4 class="card-title">Formulario empleado</h4>
                   <div class="form-group">
-                    <label for="exampleInputUsername1">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username" />
+                    <label for="txtName">Nombre de usuario</label>
+                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" />
+                    <label for="v">Tipo de empleado</label>
+                    <input type="text" name="txtTipo" id="txtTipo" value="<?php echo $txtTipo; ?>" class="form-control single-input" placeholder="Empleado">
+                    
+                  </div>
+                  <div class="form-group">
+                    <label for="txtEmail">Email</label>
+                    <input type="email" name="txtEmail" id="txtEmail" value="<?php echo $txtEmail; ?>" class="form-control single-input" placeholder="Email">
                     <br>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Contraseña</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputConfirmPassword1">Confirmar contraseña</label>
-                      <input type="password" class="form-control" id="exampleInputConfirmPassword1"
-                        placeholder="Password" />
-                    </div>
-                    <button type="submit" class="btn btn-primary mr-2">
-                      Submit
-                    </button>
-                    <button class="btn btn-light">Cancel</button>
-                  </form>
                   </div>
-                </div>
+                    <div class="form-group">
+                      <label for="txtContraseña
+                      ">Contraseña</label>
+                      <input type="password" name="txtContraseña" id="txtContraseña" value="<?php echo $txtContraseña; ?>" class="form-control single-input" placeholder="Password">
+                    </div>
+                    <input type="submit" name="action" value="Add" class="btn btn-primary">
+                    <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                    <input type="submit" name="action" value="Modify" class="btn btn-danger">
+                </form>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="card-title mb-0">Administradores</p>
-                    <div class="table-responsive">
-                      <table class="table table-striped table-borderless">
-                        <thead>
-                          <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Número</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Javier Gonzalez</td>
-                            <td class="font-weight-bold">javier.gonzalez@hotmail.com</td>
-                            <td class="font-weight-bold">8992345683</td>
-                            <td class="font-weight-medium">
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Abigail Gonzalez</td>
-                            <td class="font-weight-bold">aby-glz03@hotmail.com</td>
-                            <td class="font-weight-bold">8992129723</td>
-                            <td class="font-weight-medium">
-
-                            </td>
-                          </tr>
-                          <tr>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-     
-          
-       
-          
-          
-          
-          <!-- content-wrapper ends -->
-          <!-- partial:partials/_footer.html -->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            </div>
-          </footer>
-          <!-- partial -->
+          </div>
         </div>
-        <!-- main-panel ends -->
       </div>
-      <!-- page-body-wrapper ends -->
+       <?php
+      $UserformQuery = $pdo->prepare("SELECT * FROM Userform;");
+      $UserformQuery->execute();
+      $ListUserform = $UserformQuery->fetchAll(PDO::FETCH_ASSOC);
+      //var_dump($ListCategories);
+      ?>
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-title mb-0">Administradores</p>
+              <div class="table-responsive">
+                <table class="table table-striped table-borderless">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Tipo de empleado</th>
+                      <th>Email</th>
+                      <th>Contraseña</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach ($ListUserform as $Userform) { ?>
+                    <tr class="odd">
+                      <td><?php echo $Userform['idUsuario'] ?> </td>
+                      <td><?php echo $Userform['nombre']; ?> </td>
+                      <td><?php echo $Userform['tipo']; ?> </td>
+                      <td><?php echo $Userform['email']; ?> </td>
+                      <td><?php echo $Userform['contraseña']; ?> </td>
+                      <td>
+                        <form method="POST">
+                          <input type="hidden" name="txtID" value="<?php echo $Userform['idUserform']; ?>">
+                          <input type="submit" name="action" value="Select" class="btn btn-primary">
+                          <input type="submit" name="action" value="Delete" class="btn btn-danger">
+                        </form>
+                      </td>
+                    </tr>
+                  <?php } ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="vendors/typeahead.js/typeahead.bundle.min.js"></script>
-    <script src="vendors/select2/select2.min.js"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="js/off-canvas.js"></script>
-    <script src="js/hoverable-collapse.js"></script>
-    <script src="js/template.js"></script>
-    <script src="js/settings.js"></script>
-    <script src="js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="js/file-upload.js"></script>
-    <script src="js/typeahead.js"></script>
-    <script src="js/select2.js"></script>
-    <!-- End custom js for this page-->
+
+
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+    <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+
+
+      </div>
+
+    </footer>
+    <!-- partial -->
+  </div>
+  <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+  <script src="vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="vendors/typeahead.js/typeahead.bundle.min.js"></script>
+  <script src="vendors/select2/select2.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="js/off-canvas.js"></script>
+  <script src="js/hoverable-collapse.js"></script>
+  <script src="js/template.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="js/file-upload.js"></script>
+  <script src="js/typeahead.js"></script>
+  <script src="js/select2.js"></script>
+  <!-- End custom js for this page-->
 </body>
 
 </html>
