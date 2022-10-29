@@ -26,7 +26,7 @@ include 'global/DbConnection.php';
 </head>
 
 <body>
-<?php
+  <?php
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
@@ -58,7 +58,7 @@ include 'global/DbConnection.php';
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, tipo = :tipo, email = :email, contraseña = :contraseña WHERE idUsuario=:id;");
+      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, tipo = :tipo, password = :password, email = :email WHERE idUsuario=:id;");
       $ModifyQuery->bindParam(':nombre', $txtName);
       $ModifyQuery->bindParam(':tipo', $txtTipo);
       $ModifyQuery->bindParam(':email', $txtEmail);
@@ -401,8 +401,8 @@ include 'global/DbConnection.php';
           <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-              <form method="post">
-                <h4 class="card-title">Formulario empleado</h4>
+                <form method="post">
+                  <h4 class="card-title">Formulario empleado</h4>
                   <div class="form-group">
                     <label for="txtName">Nombre de usuario</label>
                     <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
@@ -410,28 +410,32 @@ include 'global/DbConnection.php';
                   <div class="form-group">
                     <label for="v">Tipo de empleado</label>
                     <input type="text" name="txtTipo" id="txtTipo" value="<?php echo $txtTipo; ?>" class="form-control single-input" placeholder="Empleado">
-                    
+
                   </div>
                   <div class="form-group">
                     <label for="txtEmail">Email</label>
                     <input type="email" name="txtEmail" id="txtEmail" value="<?php echo $txtEmail; ?>" class="form-control single-input" placeholder="Email">
                     <br>
                   </div>
-                    <div class="form-group">
-                      <label for="txtPassword
+                  <div class="form-group">
+                    <label for="txtPassword
                       ">Password</label>
-                      <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
-                    </div>
-                    <input type="submit" name="action" value="Add" class="btn btn-primary">
-                    <input type="submit" name="action" value="Cancel" class="btn btn-danger">
-                    <input type="submit" name="action" value="Modify" class="btn btn-danger">
+                    <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
+                  </div>
+                  <div>
+                  <label for="txtID"></label>
+                  <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
+                  </div>
+                  <input type="submit" name="action" value="Add" class="btn btn-primary">
+                  <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                  <input type="submit" name="action" value="Modify" class="btn btn-danger">
                 </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-       <?php
+      <?php
       $UserformQuery = $pdo->prepare("SELECT * FROM Userform;");
       $UserformQuery->execute();
       $ListUserform = $UserformQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -454,22 +458,22 @@ include 'global/DbConnection.php';
                     </tr>
                   </thead>
                   <tbody>
-                  <?php foreach ($ListUserform as $Userform) { ?>
-                    <tr class="odd">
-                      <td><?php echo $Userform['idUsuario'] ?> </td>
-                      <td><?php echo $Userform['nombre']; ?> </td>
-                      <td><?php echo $Userform['tipo']; ?> </td>
-                      <td><?php echo $Userform['email']; ?> </td>
-                      <td><?php echo $Userform['password']; ?> </td>
-                      <td>
-                        <form method="POST">
-                          <input type="hidden" name="txtID" value="<?php echo $Userform['idUserform']; ?>">
-                          <input type="submit" name="action" value="Select" class="btn btn-primary">
-                          <input type="submit" name="action" value="Delete" class="btn btn-danger">
-                        </form>
-                      </td>
-                    </tr>
-                  <?php } ?>
+                    <?php foreach ($ListUserform as $Userform) { ?>
+                      <tr class="odd">
+                        <td><?php echo $Userform['idUsuario'] ?> </td>
+                        <td><?php echo $Userform['nombre']; ?> </td>
+                        <td><?php echo $Userform['tipo']; ?> </td>
+                        <td><?php echo $Userform['email']; ?> </td>
+                        <td><?php echo $Userform['password']; ?> </td>
+                        <td>
+                          <form method="POST">
+                            <input type="hidden" name="txtID" value="<?php echo $Userform['idUsuario']; ?>">
+                            <input type="submit" name="action" value="Select" class="btn btn-primary">
+                            <input type="submit" name="action" value="Delete" class="btn btn-danger">
+                          </form>
+                        </td>
+                      </tr>
+                    <?php } ?>
                   </tbody>
                 </table>
               </div>
