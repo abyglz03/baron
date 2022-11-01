@@ -26,49 +26,53 @@ include 'global/DbConnection.php';
 </head>
 
 <body>
-  <?php
+<?php
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtCorreo = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
+  $txtPassword = (isset($_POST['txtPassword'])) ? $_POST['txtPassword'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Cliente (Clientes) VALUES
-  (:Clientes)");
-      $InsertQuery->bindParam('Clientes', $txtName);
+      $InsertQuery = $pdo->prepare("INSERT INTO Cliente (nombre, email, password) VALUES (:nombre, :email, :password);");
+      $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery->bindParam(':email', $txtEmail);
+      $InsertQuery->bindParam(':password', $txtPassword);
+      var_dump($pdo);
       $InsertQuery->execute();
       break;
 
     case 'Select':
-      $SelectQuery = $pdo->prepare("SELECT * FROM Cliente Where idCliente=:id");
-      $SelectQuery->bindParam('id', $txtID);
+      $SelectQuery = $pdo->prepare("SELECT * FROM Cliente WHERE idCliente=:idCliente;");
+      $SelectQuery->bindParam(':idCliente', $txtID);
       $SelectQuery->execute();
-      $ACategory = $InsertQuery->fetch(PDO::FETCH_LAZY);
-      $txtName = $ACategory['Cliente'];
+      $ACliente = $SelectQuery->fetch(PDO::FETCH_LAZY);
+      $txtName = $ACliente['nombre'];
+      $txtEmail = $ACliente['email'];
+      $txtPassword = $ACliente['password'];
       break;
 
-    case 'Cancel';
-
+    case 'Modify':
+      $ModifyQuery = $pdo->prepare("UPDATE Cliente SET nombre = :nombre, tipo = :tipo, password = :password, email = :email WHERE idCliente=:id;");
+      $ModifyQuery->bindParam(':nombre', $txtName);
+      $ModifyQuery->bindParam(':email', $txtEmail);
+      $ModifyQuery->bindParam(':password', $txtPassword);
+      $ModifyQuery->bindParam(':id', $txtID);
+      $ModifyQuery->execute();
       break;
-
-    case 'Modify';
-
-      break;
-
 
     case 'Delete':
-      $DeleteQuery = $pdo->prepare("DELETE FROM Cliente WHERE idCliente=:id ");
-      $DeleteQuery->bindParam(':id', $txtID);
+      $DeleteQuery = $pdo->prepare("DELETE FROM Cliente WHERE idCliente=:idCliente;");
+      $DeleteQuery->bindParam(':idCliente', $txtID);
       $DeleteQuery->execute();
       break;
 
     default;
-      #code...
+      echo "Invalid option";
       break;
-  }
-
-  ?>
+  } ?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -411,28 +415,24 @@ include 'global/DbConnection.php';
                 <h4 class="card-title">Formulario cliente</h4>
 
                 <form method="post" class="forms-sample">
-                  <div class="form-group">
-                    <label for="exampleInputUsername1">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username" />
+                <div class="form-group">
+                <label for="txtName">Nombre de usuario</label>
+                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" />
+                    <label for="txtEmail">Email</label>
+                    <input type="email" name="txtEmail" id="txtEmail" value="<?php echo $txtEmail; ?>" class="form-control single-input" placeholder="Email">
                     <br>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Contraseña</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputConfirmPassword1">Confirmar contraseña</label>
-                      <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password" />
-                    </div>
-
+                  </div>
+                  <div class="form-group">
+                    <label for="txtPassword
+                      ">Password</label>
+                    <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
+                  </div>
                     <!-- <form method="post"> -->
-                    <input type="hidden" name="txtName" value="<?php echo $Cliente['idCliente'] ?>">
                     <input type="submit" name="action" value="Add" class="btn btn-primary">
-                    <input type="submit" name="action" value="Cancel" class="btn btn-danger">
-                    <input type="submit" name="action" value="Modify" class="btn btn-danger">
+                  <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                  <input type="submit" name="action" value="Modify" class="btn btn-danger">
 
                 </form>
               </div>
