@@ -27,45 +27,53 @@ include 'global/DbConnection.php';
 </head>
 
 <body>
-<?php
-                                    //isset(what we check)-?-if true-:-if false;
-                                    $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-                                    $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
-                                    $action = (isset($_POST['action'])) ? $_POST['action'] : "";
+  <?php
+  //isset(what we check)-?-if true-:-if false;
+  $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtTipo = (isset($_POST['txtTipo'])) ? $_POST['txtTipo'] : "";
+  $txtPermisos = (isset($_POST['txtPermisos'])) ? $_POST['txtPermisos'] : "";
+  $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
-                                    switch ($action) {
-                                        case 'Add':
-                                            $InsertQuery = $pdo->prepare("INSERT INTO Usertype (usuario) VALUES 
-            (:categoria);");
-                                            $InsertQuery->bindParam(':categoria', $txtName);
-                                            $InsertQuery->execute();
-                                            break;
+  switch ($action) {
+    case 'Add':
+      $InsertQuery = $pdo->prepare("INSERT INTO Usertype (nombre, tipo, permisos) VALUES (:nombre, :tipo, :permisos);");
+      $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery->bindParam(':tipo', $txtTipo);
+      $InsertQuery->bindParam(':permisos', $txtPermisos);
+      var_dump($pdo);
+      $InsertQuery->execute();
+      break;
 
-                                        case 'Select':
-                                            $SelectQuery = $pdo->prepare("SELECT * FROM Usertype WHERE idUsertype=:idUsertype;");
-                                            $SelectQuery->bindParam(':idUsertype', $txtID);
-                                            $SelectQuery->execute();
-                                            $AUsertype = $SelectQuery->fetch(PDO::FETCH_LAZY);
-                                            $txtName = $AUsertype['usuario'];
-                                            break;
+    case 'Select':
+      $SelectQuery = $pdo->prepare("SELECT * FROM Usertype WHERE idUsertype=:idUsertype;");
+      $SelectQuery->bindParam(':idUsertype', $txtID);
+      $SelectQuery->execute();
+      $AUsertype = $SelectQuery->fetch(PDO::FETCH_LAZY);
+      $txtName = $AUsertype['nombre'];
+      $txtTipo = $AUsertype['tipo'];
+      $txtPermisos = $AUsertype['permisos'];
+      break;
 
-                                        case 'Modify':
-                                            $ModifyQuery = $pdo->prepare("UPDATE Usertype SET usuario = :usuario WHERE idUsertype=:id;");
-                                            $ModifyQuery->bindParam(':usuario', $txtName);
-                                            $ModifyQuery->bindParam(':id', $txtID);
-                                            $ModifyQuery->execute();
-                                            break;
+    case 'Modify':
+      $ModifyQuery = $pdo->prepare("UPDATE Usertype SET nombre = :nombre, tipo = :tipo, permisos = :permisos WHERE idUsertype=:id;");
+      $ModifyQuery->bindParam(':nombre', $txtName);
+      $ModifyQuery->bindParam(':tipo', $txtTipo);
+      $ModifyQuery->bindParam(':permisos', $txtPermisos);
+      $ModifyQuery->bindParam(':id', $txtID);
+      $ModifyQuery->execute();
+      break;
 
-                                        case 'Delete':
-                                            $DeleteQuery = $pdo->prepare("DELETE FROM Usertype WHERE idUsertype=:idUsertype;");
-                                            $DeleteQuery->bindParam(':idUsertype', $txtID);
-                                            $DeleteQuery->execute();
-                                            break;
+    case 'Delete':
+      $DeleteQuery = $pdo->prepare("DELETE FROM Usertype WHERE idUsertype=:idUsertype;");
+      $DeleteQuery->bindParam(':idUsertype', $txtID);
+      $DeleteQuery->execute();
+      break;
 
-                                        default;
-                                            echo "Invalid option";
-                                            break;
-                                    } ?>
+    default;
+      echo "Invalid option";
+      break;
+  } ?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -350,9 +358,6 @@ include 'global/DbConnection.php';
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-
-
-
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
               <i class="icon-head menu-icon"></i>
@@ -367,7 +372,6 @@ include 'global/DbConnection.php';
               </ul>
             </div>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" href="pages/documentation/documentation.html">
               <i class="icon-paper menu-icon"></i>
@@ -394,22 +398,42 @@ include 'global/DbConnection.php';
         <div class="content-wrapper">
           <div class="row">
             <div class="col-md-12 grid-margin">
-              <div class="row">
+            <div class="card">
+              <div class="card-body">
+                <form method="POST">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                   <h3 class="font-weight-bold">Bienvenido Administrador</h3>
-
+                  <div class="form-group">
+                    <label for="txtName">Nombre de usuario</label>
+                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Nombre">
+                  </div>
+                  <div class="form-group">
+                    <label for="v">Tipo de empleado</label>
+                    <input type="text" name="txtTipo" id="txtTipo" value="<?php echo $txtTipo; ?>" class="form-control single-input" placeholder="Empleado">
+                  </div>
+                  <div class="form-group">
+                    <label for="txtPermisos">Permisos</label>
+                    <input type="text" name="txtPermisos" id="txtPermisos" value="<?php echo $txtPermisos; ?>" class="form-control single-input" placeholder="Permisos">
+                  </div>
+                  <div>
+                    <label for="txtID"></label>
+                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
+                  </div>
+                  <input type="submit" name="action" value="Add" class="btn btn-primary">
+                  <input type="submit" name="action" value="Cancel" class="btn btn-danger">
+                  <input type="submit" name="action" value="Modify" class="btn btn-danger">
+                  </form>
                 </div>
-
               </div>
             </div>
           </div>
+        </div>
           <?php
           $UsertypeQuery = $pdo->prepare("SELECT * FROM Usertype;");
           $UsertypeQuery->execute();
-          $Listusertypes = $UsertypeQuery->fetchAll(PDO::FETCH_ASSOC);
+          $ListUsertype = $UsertypeQuery->fetchAll(PDO::FETCH_ASSOC);
           //var_dump($ListCategories);
           ?>
-
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
@@ -421,27 +445,23 @@ include 'global/DbConnection.php';
                         <tr>
                           <th>ID</th>
                           <th>Nombre</th>
-                          <th>Usuario</th>
-                          <th>Correo</th>
-                          <th>Cargo</th>
+                          <th>Tipo de empleado</th>
+                          <th>Permisos</th>
                         </tr>
                       </thead>
-
                       <tbody>
-                        <?php foreach ($Listusertypes as $usertypes) { ?>
-                          <tr class="table-row">
-                            <td><?php echo $usertypes['idUsertype'] ?> </td>
-                            <td><?php echo $usertypes['usuario']; ?> </td>
-                            <td><?php echo $usertypes['nombre']; ?> </td>
-                            <td><?php echo $usertypes['correo']; ?> </td>
-                            <td><?php echo $usertypes['cargo']; ?> </td>
+                        <?php foreach ($ListUsertype as $Usertype) { ?>
+                          <tr class="odd">
+                            <td><?php echo $Usertype['idUsertype'] ?> </td>
+                            <td><?php echo $Userform['nombre']; ?> </td>
+                            <td><?php echo $Usertype['tipo']; ?> </td>
+                            <td><?php echo $Usertype['permisos']; ?> </td>
                             <td>
-                            <form method="post">
-                                  <input type="hidden" name="txtName" value="<?php echo $usertypes['idUsertype']; ?>">
-                                  <input type="submit" name="action" value="Add" class="btn btn-primary">
-                                  <input type="submit" name="action" value="Delete" class="btn btn-danger">
-                                  <input type="submit" name="action" value="Modify" class="btn btn-danger">
-                              </form>
+                            <form method="POST">
+                            <input type="hidden" name="txtID" value="<?php echo $Usertype['idUsertype']; ?>">
+                            <input type="submit" name="action" value="Select" class="btn btn-primary">
+                            <input type="submit" name="action" value="Delete" class="btn btn-danger">
+                          </form>
                             </td>
                           </tr>
                         <?php } ?>

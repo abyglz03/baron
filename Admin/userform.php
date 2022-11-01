@@ -410,7 +410,6 @@ include 'global/DbConnection.php';
                   <div class="form-group">
                     <label for="v">Tipo de empleado</label>
                     <input type="text" name="txtTipo" id="txtTipo" value="<?php echo $txtTipo; ?>" class="form-control single-input" placeholder="Empleado">
-
                   </div>
                   <div class="form-group">
                     <label for="txtEmail">Email</label>

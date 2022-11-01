@@ -55,6 +55,7 @@ include 'global/DbConnection.php';
       break;
 
       case 'Modify':
+        echo "mofify";
         $ModifyQuery = $pdo->prepare("UPDATE Cliente SET nombre = :nombre, email = :email, password = :password WHERE idCliente=:id;");
         $ModifyQuery->bindParam(':nombre', $txtName);
         $ModifyQuery->bindParam(':email', $txtEmail);
@@ -424,9 +425,12 @@ include 'global/DbConnection.php';
                     <br>
                   </div>
                   <div class="form-group">
-                    <label for="txtPassword
-                      ">Password</label>
+                    <label for="txtPassword">Password</label>
                     <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
+                  </div>
+                  <div>
+                  <label for="txtID"></label>
+                  <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
                   </div>
                   <input type="submit" name="action" value="Add" class="btn btn-primary">
                   <input type="submit" name="action" value="Cancel" class="btn btn-danger">
@@ -461,18 +465,15 @@ include 'global/DbConnection.php';
                   <tbody>
                     <?php foreach ($ListCliente as $Cliente) { ?>
                       <tr class="odd">
-                        <td><?php echo $Cliente['idCliente'] ?> </td>
+                      <td><?php echo $Cliente['idCliente'] ?> </td>
                         <td><?php echo $Cliente['nombre']; ?> </td>
                         <td><?php echo $Cliente['email']; ?> </td>
-                        <td><?php echo $Cliente['password]']; ?> </td>
+                        <td><?php echo $Cliente['password']; ?> </td>
                         <td>
-                          <form method="POST" enctype="multipart/form-data">
-                            <div class="form-group">
-                              <form method="post">
+                          <form method="POST">
                                 <input type="hidden" name="txtID" value="<?php echo $Cliente['idCliente']; ?>">
                                 <input type="submit" name="action" value="Select" class="btn btn-primary">
                                 <input type="submit" name="action" value="Delete" class="btn btn-danger">
-                              </form>
                           </form>
                         </td>
                       </tr>
