@@ -29,7 +29,7 @@ include 'global/DbConnection.php';
 <?php
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-  $txtCorreo = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
   $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
   $txtPassword = (isset($_POST['txtPassword'])) ? $_POST['txtPassword'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
@@ -54,14 +54,14 @@ include 'global/DbConnection.php';
       $txtPassword = $ACliente['password'];
       break;
 
-    case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Cliente SET nombre = :nombre, tipo = :tipo, password = :password, email = :email WHERE idCliente=:id;");
-      $ModifyQuery->bindParam(':nombre', $txtName);
-      $ModifyQuery->bindParam(':email', $txtEmail);
-      $ModifyQuery->bindParam(':password', $txtPassword);
-      $ModifyQuery->bindParam(':id', $txtID);
-      $ModifyQuery->execute();
-      break;
+      case 'Modify':
+        $ModifyQuery = $pdo->prepare("UPDATE Cliente SET nombre = :nombre, email = :email, password = :password WHERE idCliente=:id;");
+        $ModifyQuery->bindParam(':nombre', $txtName);
+        $ModifyQuery->bindParam(':email', $txtEmail);
+        $ModifyQuery->bindParam(':password', $txtPassword);
+        $ModifyQuery->bindParam(':id', $txtID);
+        $ModifyQuery->execute();
+        break;
 
     case 'Delete':
       $DeleteQuery = $pdo->prepare("DELETE FROM Cliente WHERE idCliente=:idCliente;");
@@ -412,9 +412,8 @@ include 'global/DbConnection.php';
           <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
+              <form method="post">
                 <h4 class="card-title">Formulario cliente</h4>
-
-                <form method="post" class="forms-sample">
                 <div class="form-group">
                 <label for="txtName">Nombre de usuario</label>
                     <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
@@ -429,11 +428,9 @@ include 'global/DbConnection.php';
                       ">Password</label>
                     <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
                   </div>
-                    <!-- <form method="post"> -->
-                    <input type="submit" name="action" value="Add" class="btn btn-primary">
+                  <input type="submit" name="action" value="Add" class="btn btn-primary">
                   <input type="submit" name="action" value="Cancel" class="btn btn-danger">
                   <input type="submit" name="action" value="Modify" class="btn btn-danger">
-
                 </form>
               </div>
             </div>
@@ -441,13 +438,11 @@ include 'global/DbConnection.php';
         </div>
       </div>
       <?php
-
       $ClienteQuery = $pdo->prepare("SELECT * FROM Cliente;");
       $ClienteQuery->execute();
-      $Listclientes = $ClienteQuery->fetchAll(PDO::FETCH_ASSOC);
+      $ListCliente = $ClienteQuery->fetchAll(PDO::FETCH_ASSOC);
       //var_dump($Listclientes);
       ?>
-
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
@@ -459,22 +454,24 @@ include 'global/DbConnection.php';
                     <tr>
                       <th>ID</th>
                       <th>Nombre</th>
-                      <th>Correo</th>
+                      <th>Email</th>
+                      <th>Password</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($Listclientes as $clientes) { ?>
-                      <tr class="table-row">
-                        <td><?php echo $clientes['idCliente'] ?> </td>
-                        <td><?php echo $clientes['nombre']; ?> </td>
-                        <td><?php echo $clientes['correo']; ?> </td>
+                    <?php foreach ($ListCliente as $Cliente) { ?>
+                      <tr class="odd">
+                        <td><?php echo $Cliente['idCliente'] ?> </td>
+                        <td><?php echo $Cliente['nombre']; ?> </td>
+                        <td><?php echo $Cliente['email']; ?> </td>
+                        <td><?php echo $Cliente['password]']; ?> </td>
                         <td>
                           <form method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                               <form method="post">
-                                <input type="hidden" name="txtID" value="<?php echo $clientes['idCliente']; ?>">
-                                <input type="submit" name="action" value="modify" class="btn btn-primary">
-                                <input type="submit" name="action" value="delete" class="btn btn-danger">
+                                <input type="hidden" name="txtID" value="<?php echo $Cliente['idCliente']; ?>">
+                                <input type="submit" name="action" value="Select" class="btn btn-primary">
+                                <input type="submit" name="action" value="Delete" class="btn btn-danger">
                               </form>
                           </form>
                         </td>
@@ -486,6 +483,8 @@ include 'global/DbConnection.php';
             </div>
           </div>
         </div>
+      </div>
+    
 
 
 
@@ -493,9 +492,7 @@ include 'global/DbConnection.php';
 
 
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+        <!-- partial:partials/_footer.html -->  <div class="d-sm-flex justify-content-center justify-content-sm-between">
           </div>
         </footer>
         <!-- partial -->
