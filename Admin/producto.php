@@ -32,21 +32,32 @@ include 'global/DbConnection.php';
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
   $txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
-  $txtCantidad = (isset($_POST['txtCantidad'])) ? $_POST['txtCantidad'] : "";
   $txtMedida = (isset($_POST['txtMedida'])) ? $_POST['txtMedida'] : "";
   $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
   $txtPrecio = (isset($_POST['txtPrecio'])) ? $_POST['txtPrecio'] : "";
+  $txtImage = (isset($_POST['txtOldImg'])) ? $_FILES['txtOldImg'] : "";
+  $txtOldImg = (isset($_FILES['txtImage']['name'])) ? $_FILES['txtImage']['name'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Producto (nombre, descripcion, cantidad, medida, categoria, precio) VALUES (:nombre, :descripcion, :cantidad, :medida, :categoria, :precio);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Producto (nombre, descripcion, medida, categoria, precio, imagen) VALUES (:nombre, :descripcion, :medida, :categoria, :precio, :imagen);");
+      $date = new DateTime();
+      $ImgFileName = ($txtImage != "") ? $date->getTimestamp() . "_" . $_FILES["txtImage"]["name"] : "";  //09789799_image7.jpg
+      //guardar el archivo temporalmente
+      $ImgTmp = $_FILES["txtImage"]["tmp_name"];
+      //si se subio un archivo entonces se mueve a la direccion de la carpeta de las imagenes
+
+      if ($ImgTmp != "")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
+      {
+        move_uploaded_file($ImgTmp, "../img/productImg/" . $ImgFileName);
+      }
       $InsertQuery->bindParam(':nombre', $txtName);
       $InsertQuery->bindParam(':descripcion', $txtDescripcion);
-      $InsertQuery->bindParam(':cantidad', $txtCantidad);
       $InsertQuery->bindParam(':medida', $txtMedida);
       $InsertQuery->bindParam(':categoria', $txtCategoria);
       $InsertQuery->bindParam(':precio', $txtPrecio);
+      $InsertQuery->bindParam(':imagen', $ImgFileName);
       $InsertQuery->execute();
       break;
 
@@ -58,27 +69,75 @@ include 'global/DbConnection.php';
       $txtName = $AProducto['nombre'];
       $txtDescripcion = $AProducto['descripcion'];
       $txtMedida = $AProducto['medida'];
-      $txtCantidad = $AProducto['cantidad'];
       $txtCategoria = $AProducto['categoria'];
       $txtPrecio = $AProducto['precio'];
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Producto SET nombre = :nombre, descripcion = :descripcion, precio = :precio, cantidad = :cantidad, categoria = :categoria, medida = :medida WHERE idProducto=:id;");
+      $ModifyQuery = $pdo->prepare("UPDATE Producto SET nombre = :nombre, descripcion = :descripcion, precio = :precio, categoria = :categoria, medida = :medida WHERE idProducto=:id;");
       $ModifyQuery->bindParam(':id', $txtID);
       $ModifyQuery->bindParam(':nombre', $txtName);
       $ModifyQuery->bindParam(':precio', $txtPrecio);
-      $ModifyQuery->bindParam(':cantidad', $txtCantidad);
       $ModifyQuery->bindParam(':medida', $txtMedida);
       $ModifyQuery->bindParam(':categoria', $txtCategoria);
       $ModifyQuery->bindParam(':descripcion', $txtDescripcion);
       $ModifyQuery->execute();
+      if ($txtImage != "") {
+        $date = new DateTime();
+        //creacion del nuevo nombre de la imagen
+        $ImgFileName = ($txtImage!= "")?$date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";
+        $ImgTmp=$_FILES["txtImage"]["tmp_name"];
+        move_uploaded_file($ImgTmp,"images/".$ImgFileName);
+
+        $ModifyQuery = $pdo->prepare("SELECT imagen FROM Producto WHERE id_producto=:id");
+        $ModifyQuery->bindParam('id',$txtID);
+        $ModifyQuery->execute();
+        $Producto = $ModifyQuery->fetch(PDO::FETCH_LAZY);
+        if (isset($Producto["imagen"]) && ($Producto["imagen"]!="image.jpg")) 
+        {
+          if (file_exists("images/".$Producto["imagen"])) 
+          {
+            unlink("images/".$Producto["imagen"]);
+          }
+        }
+        $ModifyQuery = $pdo->prepare("UPDATE Producto SET imagen = :imagen WHERE idProducto=:id;");
+        $ModifyQuery->bindParam(':imagen',$ImgFileName);
+        $ModifyQuery->bindParam(':id',$txtID);
+        $ModifyQuery->execute();
+      } 
+      else 
+      {
+        $ModifyQuery = $pdo->prepare("UPDATE Producto SET imagen = :imagen WHERE idProducto=:id;");
+        $ModifyQuery->bindParam(':imagen',$ImgFileName);
+        $ModifyQuery->bindParam(':id',$txtID);
+        $ModifyQuery->execute();
+      }
       break;
-      
+
     case 'Delete':
+      $DeleteQuery = $pdo->prepare("DELETE FROM Producto WHERE idProducto=:idProducto;");
+      $DeleteQuery->bindParam(':idProducto',$txtID);
+      $DeleteQuery->execute();
+      $Producto = $DeleteQuery->fetch(PDO::FETCH_LAZY);
+      if (isset($Producto["imagen"]) && ($Producto["imagen"]!="image.jpg"))
+       {
+        if (file_exists("images/".$Producto["imagen"])) {
+          unlink("images/".$Producto["imagen"]);
+        }
+      }
       $DeleteQuery = $pdo->prepare("DELETE FROM Producto WHERE idProducto=:idProducto;");
       $DeleteQuery->bindParam(':idProducto', $txtID);
       $DeleteQuery->execute();
+      //header('Location: ')
+      break;
+      
+    case 'Cancel':
+      $txtName = "";
+      $txtDescripcion = "";
+      $txtMedida = "";
+      $txtCategoria = "";
+      $txtPrecio = "";
+      $txtImage = "";
       break;
 
     default;
@@ -202,10 +261,6 @@ include 'global/DbConnection.php';
                           <input type="text" name="txtDescripcion" id="txtDescripcion" value="<?php echo $txtDescripcion; ?>" class="form-control single-input" placeholder="Descripcion">
                         </div>
                         <div class="form-group">
-                          <label for="txtCantidad">Cantidad</label>
-                          <input type="number" name="txtCantidad" id="txtCantidad" value="<?php echo $txtCantidad; ?>" class="form-control single-input" placeholder="Cantidad">
-                        </div>
-                        <div class="form-group">
                           <label for="Categoria">Medidas </label>
                           <input type="txt" name="txtMedida" id="txtMedida" value="<?php echo $txtMedida; ?>" class="form-control single-input" placeholder="Medidas">
                         </div>
@@ -217,6 +272,13 @@ include 'global/DbConnection.php';
                           <label for="txtPrecio">Precio</label>
                           <input type="price" name="txtPrecio" id="txtPrecio" value="<?php echo $txtPrecio; ?>" class="form-control single-input" placeholder="Precio">
                         </div>
+                        <div class="form-group">
+                          <label for="txtImage"></label>
+                          <input type="hidden" name="txtOldImg" value="<?php echo $txtImage; ?>">
+                          <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
+
+                        </div>
+
                         <label for="txtID"></label>
                         <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
                         <div>
@@ -249,10 +311,10 @@ include 'global/DbConnection.php';
                           <th>ID</th>
                           <th>Nombre</th>
                           <th>Descripcion</th>
-                          <th>Cantidad</th>
                           <th>Medida</th>
                           <th>Categoria</th>
                           <th>Precio</th>
+                          <th>Imagen</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -261,10 +323,10 @@ include 'global/DbConnection.php';
                             <td><?php echo $Producto['idProducto'] ?> </td>
                             <td><?php echo $Producto['nombre']; ?> </td>
                             <td><?php echo $Producto['descripcion']; ?> </td>
-                            <td><?php echo $Producto['cantidad']; ?> </td>
                             <td><?php echo $Producto['medida']; ?> </td>
                             <td><?php echo $Producto['categoria']; ?> </td>
                             <td><?php echo $Producto['precio']; ?> </td>
+                            <td><img src=”images/<?php echo $Producto['imagen']; ?>” width=”50%”><?php echo $Producto['imagen']; ?></td>
                             <td>
                               <form method="POST">
                                 <input type="hidden" name="txtID" value="<?php echo $Producto['idProducto']; ?>">
