@@ -70,6 +70,12 @@ include 'global/DbConnection.php';
       $DeleteQuery->execute();
       break;
 
+      case 'Cancel':
+        $txtName = "";
+        $txtTipo = "";
+        $txtPermisos = "";
+        break;
+
     default;
       echo "Invalid option";
       break;
@@ -453,7 +459,7 @@ include 'global/DbConnection.php';
                         <?php foreach ($ListUsertype as $Usertype) { ?>
                           <tr class="odd">
                             <td><?php echo $Usertype['idUsertype'] ?> </td>
-                            <td><?php echo $Userform['nombre']; ?> </td>
+                            <td><?php echo $Usertype['nombre']; ?> </td>
                             <td><?php echo $Usertype['tipo']; ?> </td>
                             <td><?php echo $Usertype['permisos']; ?> </td>
                             <td>
