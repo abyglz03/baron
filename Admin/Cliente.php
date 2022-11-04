@@ -70,6 +70,12 @@ include 'global/DbConnection.php';
       $DeleteQuery->execute();
       break;
 
+      case 'Cancel':
+        $txtName = "";
+        $txtEmail = "";
+        $txtPassword = "";
+        break;
+
     default;
       echo "Invalid option";
       break;

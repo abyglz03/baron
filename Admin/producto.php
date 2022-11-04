@@ -336,7 +336,6 @@ include 'global/DbConnection.php';
                             </td>
                           </tr>
                         <?php } ?>
-
                       </tbody>
                     </table>
                   </div>

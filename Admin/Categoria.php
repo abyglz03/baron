@@ -60,6 +60,10 @@ include 'global/DbConnection.php';
                                             $DeleteQuery->bindParam(':idCategoria', $txtID);
                                             $DeleteQuery->execute();
                                             break;
+                                            
+                                            case 'Cancel':
+                                                $txtName = "";
+                                                break;
 
                                         default;
                                             echo "Invalid option";
