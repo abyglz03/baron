@@ -247,7 +247,7 @@ include 'global/DbConnection.php';
                 <div class="col-md-6 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <form method="POST">
+                      <form method="POST" enctype="multipart/form-data">
                         <h4 class="card-title">Crear Producto</h4>
                         <div class="form-group">
                           <label for="txtName">Nombre</label>
@@ -260,6 +260,7 @@ include 'global/DbConnection.php';
                           <label for="Categoria">Medidas </label>
                           <input type="txt" name="txtMedida" id="txtMedida" value="<?php echo $txtMedida; ?>" class="form-control single-input" placeholder="Medidas">
                         </div>
+
                         <div class="form-group">
                           <label for="txtPrecio">Precio</label>
                           <input type="price" name="txtPrecio" id="txtPrecio" value="<?php echo $txtPrecio; ?>" class="form-control single-input" placeholder="Precio">
