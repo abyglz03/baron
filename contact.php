@@ -134,25 +134,24 @@ try {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 ?>
-
           <form method="post">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Nombre">
+                  <input class="form-control valid" name="name" id="name" type="text" placeholder="Nombre">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="correo">
+                  <input class="form-control valid" name="email" id="email" type="email" placeholder="correo">
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Asunto">
+              <input class="form-control valid" name="asunto" id="asunto" type="text" placeholder="Asunto">
             </div>
             <div class="form-group">
-              <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Mensaje"></textarea>
+              <textarea name="mensaje" id="mensaje" cols="30" rows="7" class="form-control " placeholder="Mensaje"></textarea>
             </div>
             <div class="form-group">
               <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
