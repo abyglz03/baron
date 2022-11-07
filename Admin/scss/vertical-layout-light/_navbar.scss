@@ -62,11 +62,11 @@
 
   .navbar-menu-wrapper {
     background: $navbar-default-bg;
-    transition: width $action-transition-duration $action-transition-timing-function;
+    transition: width$action-transition-duration $action-transition-timing-function;
     -webkit-transition: width $action-transition-duration $action-transition-timing-function;
     -moz-transition: width $action-transition-duration $action-transition-timing-function;
     -ms-transition: width $action-transition-duration $action-transition-timing-function;
-    color: $navbar-menu-color;
+    color:white $navbar-menu-color;
     padding-right: 2.375rem;
     padding-left: 2.375rem;
     width: calc(100% - #{$sidebar-width-lg});
