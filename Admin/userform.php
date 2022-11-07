@@ -30,16 +30,14 @@ include 'global/DbConnection.php';
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
-  $txtTipo = (isset($_POST['txtTipo'])) ? $_POST['txtTipo'] : "";
   $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
   $txtPassword = (isset($_POST['txtPassword'])) ? $_POST['txtPassword'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, tipo, email, password) VALUES (:nombre, :tipo, :email, :password);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, email, password) VALUES (:nombre, :email, :password);");
       $InsertQuery->bindParam(':nombre', $txtName);
-      $InsertQuery->bindParam(':tipo', $txtTipo);
       $InsertQuery->bindParam(':email', $txtEmail);
       $InsertQuery->bindParam(':password', $txtPassword);
       var_dump($pdo);
@@ -52,15 +50,13 @@ include 'global/DbConnection.php';
       $SelectQuery->execute();
       $AUserform = $SelectQuery->fetch(PDO::FETCH_LAZY);
       $txtName = $AUserform['nombre'];
-      $txtTipo = $AUserform['tipo'];
       $txtEmail = $AUserform['email'];
       $txtPassword = $AUserform['password'];
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, tipo = :tipo, password = :password, email = :email WHERE idUsuario=:id;");
+      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, password = :password, email = :email WHERE idUsuario=:id;");
       $ModifyQuery->bindParam(':nombre', $txtName);
-      $ModifyQuery->bindParam(':tipo', $txtTipo);
       $ModifyQuery->bindParam(':email', $txtEmail);
       $ModifyQuery->bindParam(':password', $txtPassword);
       $ModifyQuery->bindParam(':id', $txtID);
@@ -75,7 +71,6 @@ include 'global/DbConnection.php';
 
       case 'Cancel':
         $txtName = "";
-        $txtTipo = "";
         $txtEmail = "";
         $txtPassword = "";
         break;
@@ -414,10 +409,6 @@ include 'global/DbConnection.php';
                   <div class="form-group">
                     <label for="txtName">Nombre de usuario</label>
                     <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
-                  </div>
-                  <div class="form-group">
-                    <label for="v">Tipo de empleado</label>
-                    <input type="text" name="txtTipo" id="txtTipo" value="<?php echo $txtTipo; ?>" class="form-control single-input" placeholder="Empleado">
                   </div>
                   <div class="form-group">
                     <label for="txtEmail">Email</label>

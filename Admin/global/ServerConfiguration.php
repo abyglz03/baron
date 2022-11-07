@@ -1,6 +1,6 @@
 <?php 
 define("SERVER", "localhost");
-define("USER", "root");
+define("USER", "barronro_aby");
 define("PASSWORD", "");
-define("DB", "baronrossodb");
+define("DB", "barronro_Abi");
 ?>
