@@ -36,18 +36,18 @@ include 'global/DbConnection.php';
   $txtPrecio = (isset($_POST['txtPrecio'])) ? $_POST['txtPrecio'] : "";
   $txtImage = (isset($_POST['txtOldImg'])) ? $_FILES['txtOldImg'] : "";
   $txtOldImg = (isset($_FILES['txtImage']['name'])) ? $_FILES['txtImage']['name'] : "";
+
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
       $InsertQuery = $pdo->prepare("INSERT INTO Producto (nombre, descripcion, medida, precio, imagen) VALUES (:nombre, :descripcion, :medida, :precio, :imagen);");
       $date = new DateTime();
-      $ImgFileName = ($txtImage != "") ? $date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";  //09789799_image7.jpg
+      $ImgFileName = ($txtImage!="")?$date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";  //09789799_image7.jpg
       //guardar el archivo temporalmente
-      $ImgTmp = $_FILES["txtImage"]["tmp_name"];
+      $ImgTmp=$_FILES["txtImage"]["tmp_name"];
       //si se subio un archivo entonces se mueve a la direccion de la carpeta de las imagenes
-
-      if ($ImgTmp != "")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
+      if($ImgTmp!= "")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
       {
         move_uploaded_file($ImgTmp, "images/".$ImgFileName);
       }
@@ -68,6 +68,8 @@ include 'global/DbConnection.php';
       $txtDescripcion = $AProducto['descripcion'];
       $txtMedida = $AProducto['medida'];
       $txtPrecio = $AProducto['precio'];
+      $txtImage = $AProducto['imagen'];
+      $txtOldImg = $AProducto['imagen'];
       break;
 
     case 'Modify':
@@ -78,13 +80,12 @@ include 'global/DbConnection.php';
       $ModifyQuery->bindParam(':medida', $txtMedida);
       $ModifyQuery->bindParam(':descripcion', $txtDescripcion);
       $ModifyQuery->execute();
-
-      if ($txtImage != "") {
+      if ($txtImage!= "") {
         $date = new DateTime();
         //creacion del nuevo nombre de la imagen
-        $ImgFileName = ($txtImage!= "") ? $date->getTimestamp() . "_" . $_FILES["txtImage"]["name"]:"";
+        $ImgFileName = ($txtImage!= "")?$date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";
         $ImgTmp = $_FILES["txtImage"]["tmp_name"];
-        move_uploaded_file($ImgTmp, "images/" . $ImgFileName);
+        move_uploaded_file($ImgTmp, "images/". $ImgFileName);
 
         $ModifyQuery = $pdo->prepare("SELECT imagen FROM Producto WHERE id_producto=:id");
         $ModifyQuery->bindParam('id',$txtID);
