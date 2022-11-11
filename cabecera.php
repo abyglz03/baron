@@ -41,7 +41,7 @@
     <div class="container">
         <a class="navbar-brand wobble-hvr animated" href="index.html"><img src="dist/img/LOGO-BARON-EFECTO.png" width="80px" height="95px" alt="" /></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="oi oi-menu"></span> Menu
+            <span class="oi oi-menu"></span> Menú
         </button>
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
@@ -49,7 +49,7 @@
                     <a href="index.html" class="nav-link">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a href="menu.html" class="nav-link">Menu</a>
+                    <a href="menu.html" class="nav-link">Menú</a>
                 </li>
                 <li class="nav-item">
                     <a href="services.html" class="nav-link">Promociones</a>

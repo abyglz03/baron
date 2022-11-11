@@ -343,7 +343,7 @@ include 'global/DbConnection.php';
             <div class="card">
               <div class="card-body">
                 <form method="post">
-                  <h4 class="card-title">Formulario empleado</h4>
+                  <h4 class="card-title">Usuarios</h4>
                   <div class="form-group">
                     <label for="txtName">Nombre de usuario</label>
                     <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">

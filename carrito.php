@@ -1,12 +1,14 @@
+<!DOCTYPE html>
+<html lang="zxx">
 <!-- Carrito de compras -->
 <?php
-require 'db/conexion.php';
-//Conexión a la base de datos
-
-
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
+include 'cartlogic';
 include_once 'cabecera.php';
-echo "<title>Carrito</title>";
-?>
+
+echo "<title>Carrito</title>"; ?>
+
 
 <!-- libreia de jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -22,9 +24,19 @@ echo "<title>Carrito</title>";
 <div class="card" style="background-color: #121618;">
     <div class="card-header">
         <h3 class="card-title">Carrito de compras</h3>
+        <?php if (!empty($_SESSION['CARRITO'])) { ?>
+            <table class="table table-dark table-striped">
+            </table>
+        <?php } else { ?>
+            <div class="alert alert-success">
+                No hay productos en el carrito
+            </div>
     </div>
-    <div class="card-body">
-        <table class="table table-dark table-striped">
+<?php } ?>
+<div class="card-body">
+    <table class="table table-dark table-striped">
+        <?php $total = 0; ?>
+        <?php foreach ($_SESSION['CARRITO'] as $indice => $Producto) { ?>
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
@@ -39,45 +51,22 @@ echo "<title>Carrito</title>";
             </thead>
             <tbody>
                 <tr>
-                    <td>Rosso Pizza 14"</td>
-                    <td>Peperoni con queso 1</td>
-                    <td>$ 215</td>
-                    <td>1</td>
-                    <td>Pizza</td>
+                    <td width="40%"><?php echo $Producto['NOMBRE'] ?></td>
+                    <td width="40%"><?php echo $Producto['DESCRIPCION'] ?></td>
+                    <td width="20%" class="text-center"><?php echo $Producto['PRECIO'] ?></td>
+                    <td width="15%" class="text-center">$<?php echo $Producto['CANTIDAD'] ?></td>
+                    <td width="15%" class="text-center">$<?php echo $Producto['CATEGORIA'] ?></td>
                     <td><img src="dist/img/rosso.JPEG" alt="pizza peperoni" width="100px"></td>
-                    <td>$ 215</td>
-                    <td><button type="button" class="btn btn-primary">Agregar</button></td>
-                    <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-                
+                    <td width="20%" class="text-center">$<?php echo number_format($Producto['PRECIO'] * $Producto['CANTIDAD'], 2); ?> </td>
+                    </td>
+                    <td width="5%">
+                        <form action="" method="post">
+                            <input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($Producto['ID'], COD, KEY); ?>">
+                    <input<button type="button" class="btn btn-primary" type="submit" name="btn-action" value="Agregar">Agregar</button></input>
+                    <input<button type="button" class="btn btn-danger" type="submit" name="btn-action" value="Eliminar">Eliminar</button></input>
+                    </form>
+                    </td>
                 </tr>
-                <tr>
-                    <td>Pizza Mexicana 14"</td>
-                    <td>Carne, chorizo, jamon, tocino, jalapeño, cebolla y queso </td>
-                    <td>$ 250</td>
-                    <td>1</td>
-                    <td>Pizza</td>
-                    <td><img src="dist/img/hawaiana.JPEG" alt="piza hawaina" width="100px"></td>
-                    <td>$250</td>
-                    <td><button type="button" class="btn btn-primary">Agregar</button></td>
-                    <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-                </tr>
-                <tr>
-                    <td>Pizza boneless 9"</td>
-                    <td>Pizza con boneless y salsa de tu elección</td>
-                    <td>$ 199</td>
-                    <td>1</td>
-                    <td>Pizza</td>
-                    <td><img src="dist/img/pboneless.JPEG" alt="pizza boneless" width="100px"></td>
-                    <td>$ 199</td>
-                    <td><button type="button" class="btn btn-primary">Agregar</button></td>
-                    <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Total</td>
-                    <td> $ 664</td>
-                    <td></td>
+                <?php $total=$total+($Producto['PRECIO']*$Producto['CANTIDAD']); ?>
+            <?php } ?>
+
