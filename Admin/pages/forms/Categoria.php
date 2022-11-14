@@ -9,7 +9,7 @@ include '../../../global/DbConnection.php';
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Admin Usuarios</title>
+    <title>Admin Categoria</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="vendors/feather/feather.css">
     <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -304,7 +304,6 @@ include '../../../global/DbConnection.php';
                         <div class="col-md-12 grid-margin">
                             <div class="row">
                                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">Bienvenido Administrador</h3>
 
                                 </div>
                             </div>

@@ -98,7 +98,7 @@ include 'global/DbConnection.php';
 			
 			<div class="col-lg-4 d-flex ftco-animate">
 				<div class="services-wrap d-flex">
-					<a href="#" class="img"><img src="<--?php echo 'Admin/pages/forms/image/'.$producto['imagen'];?>" alt="imagen de producto"></a>
+					<a href="#" class="img"><img src="<--?php echo '../Admin/pages/forms/image/'.$producto['imagen'];?>" alt="imagen de producto"></a>
 				</div>
 			</div>
 			<h6 class="product-title"><?php echo $Producto['nombre']; ?></h6>

@@ -1,9 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include 'Admin/global/ServerConfiguration.php';
-include 'Admin/global/DbConnection.php';
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
 ?>
+<?php
+require "PHPMailer/SMTP.php";
+require "PHPMailer/PHPMailer.php";
+require "PHPMailer/Exception.php";
+
+$txtName = (isset($_POST['name'])) ? $_POST['name'] : "";
+$txtEmail = (isset($_POST['email'])) ? $_POST['email'] : "";
+$txtSubject = (isset($_POST['subject'])) ? $_POST['subject'] : "";
+$txtMessage = (isset($_POST['message'])) ? $_POST['message'] : "";
+$result = "";
+$error = "";
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+
+//Create an instance; passing `true` enables exceptions
+try {
+
+  if (isset($_POST['submitB'])) {
+    //Server settings
+    $mail = new PHPMailer(true);
+    $mail->SMTPDebug = 0;                      //Enable verbose debug output
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = 'smtp.titan.email';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'contacto@abi.barronrosso.space';          //SMTP username
+    $mail->Password   = 'Clave123';                       //SMTP password
+    $mail->SMTPSecure = 'ssl';            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    //Recipients
+    $mail->setFrom('contacto@abi.barronrosso.space', 'Contacto');
+    $mail->addAddress('contacto@abi.barronrosso.space', 'Contacto');     //Add a recipient
+    //$mail->addAddress('ellen@example.com');               //Name is optional
+    //$mail->addReplyTo('info@example.com', 'Information');
+    //$mail->addCC('cc@example.com');
+    //$mail->addBCC('bcc@example.com');
+
+    //Attachments
+    //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+    //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+    //Content
+    //$mail->isHTML(true);                                  //Set email format to HTML
+    //$mail->Subject = 'Here is the subject';
+    //$mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->isHTML(true);
+    $mail->addReplyTo($_POST['email'], $_POST['name']);
+    $mail->addAddress($_POST['email']);
+    $mail->Subject = 'Form Submission:' . $_POST['asunto'];
+    $mail->Body = '<h3>El cliente ' . $_POST['name'] . '<br> con correo : ' . $_POST['email'] . '<br>Message: ' . $_POST['mensaje'] . '</h3>';
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    echo 'Message has been sent';
+  }
+} catch (Exception $e) {
+  echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
+?>
+
 <head>
   <title>Pizza - Free Bootstrap 4 Template by Colorlib</title>
   <meta charset="utf-8">
@@ -36,10 +99,8 @@ include 'Admin/global/DbConnection.php';
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-      <a class="navbar-brand wobble-hvr animated" href="index.html"><img src="dist/img/LOGO-BARON-EFECTO.png"
-          width="80px" height="95px" alt="" /></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-        aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand wobble-hvr animated" href="index.html"><img src="dist/img/LOGO-BARON-EFECTO.png" width="80px" height="95px" alt="" /></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="oi oi-menu"></span> Menú
       </button>
       <div class="collapse navbar-collapse" id="ftco-nav">
@@ -89,88 +150,34 @@ include 'Admin/global/DbConnection.php';
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-6 ftco-animate">
-        <?php
-        $result = "";
-        $error  = "";
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
-  $txtName = (isset($_POST['name']))?$_POST['name']:"";
-   $txtEmail = (isset($_POST['email']))?$_POST['email']:"";
-   $txtSubject = (isset($_POST['subject']))?$_POST['subject']:"";
-   $txtMessage = (isset($_POST['message']))?$_POST['message']:""; 
-
-try{   
-  if(isset($_POST['submitB'])){
-    
-    require 'PHPMailer/Exception.php';
-    require 'PHPMailer/PHPMailer.php';
-    require 'PHPMailer/SMTP.php';
-//Load Composer's autoloader
-require 'vendor/autoload.php';
-
-//Create an instance; passing `true` enables exceptions
-$mail = new PHPMailer(true);
-
-
-    //Server settings
-    $mail->SMTPDebug = 0;                      //Enable verbose debug output
-    $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'smtp.titan.email';                     //Set the SMTP server to send through
-    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'contacto@abibarronrosso.space';                     //SMTP username
-    $mail->Password   = 'Clave123';                               //SMTP password
-    $mail->SMTPSecure = 'ssl';            //Enable implicit TLS encryption
-    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-
-    //Recipients
-    $mail->setFrom('contacto@abibarronrosso.space', 'Contacto');
-    $mail->addAddress('contacto@abibarronrosso.space', 'Contacto');
-    //$mail->addCC('cc@example.com');
-
-
-    //Attachments
-    //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-    //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-
-    //Content
-    $mail->isHTML(true); 
-    $mail->addReplyTo($_POST['email'],$_POST['name']);    
-    $mail->addAddress($_POST['email']);//correo del cliente aqui. Pero en form contacto, se pone el mismo correo                                 //Set email format to HTML4_
-    $mail->Subject = 'Form submission:' .$_POST['subject'];
-    $mail->Body    = '<h3>El cliente' .$_POST['name'].'<br>Con correo: '.$_POST['email'].'<br>Message: '.$_POST['message'].' </h3>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-    $mail->send();
-    echo 'Message has been sent';
-  }
-} catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-}
-?>
-          <form class="form-contact contact_form"  method="POST" ">
+          <form class="form-contact contact_form" method="POST">
             <div class="row">
-              <div class="col-md-6">
+              <div>
+                <h5><?= $result; ?> </h5>
+              </div>
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <input class="form-control valid" name="name" id="name" type="text" placeholder="Nombre">
+                  <input class="form-control " name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Ingresa tu nombre'" placeholder="Ingresa tu nombre">
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <input class="form-control valid" name="email" id="email" type="email" placeholder="correo">
+                  <input class="form-control " name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Ingresa tu correo'" placeholder="Ingresa tu correo">
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Escribe tu mensaje'" placeholder="Escribe tu mensaje"></textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <input class="form-control" name="subject" id="subject" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Asunto'" placeholder="Asunto">
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <input class="form-control valid" name="asunto" id="asunto" type="text" placeholder="Asunto">
-            </div>
-            <div class="form-group">
-              <textarea name="mensaje" id="mensaje" cols="30" rows="7" class="form-control " placeholder="Mensaje"></textarea>
-            </div>
-            <div class="form-group">
-              <input type="submit" value="Send Message" href="abibarronrosso.space class="btn btn-primary py-3 px-5">
+            <div class="form-group mt-3">
+              <button type="submit" name="submitB" value="submitB" class="button  boxed-btn">Enviar</button>
             </div>
           </form>
         </div>
@@ -181,11 +188,11 @@ $mail = new PHPMailer(true);
   <div id="map"></div>
   <p>
     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  	Copyright &copy;
-		<script>
-			document.write(new Date().getFullYear());
-		</script>
-		Los derechos estan reservados por Abigail Gonzalez
+    Copyright &copy;
+    <script>
+      document.write(new Date().getFullYear());
+    </script>
+    Los derechos estan reservados por Abigail Gonzalez
     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
   </p>
   </div>
@@ -198,8 +205,7 @@ $mail = new PHPMailer(true);
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
       <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-        stroke="#F96D00" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
     </svg></div>
 
 
@@ -217,8 +223,7 @@ $mail = new PHPMailer(true);
   <script src="js/bootstrap-datepicker.js"></script>
   <script src="js/jquery.timepicker.min.js"></script>
   <script src="js/scrollax.min.js"></script>
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
 

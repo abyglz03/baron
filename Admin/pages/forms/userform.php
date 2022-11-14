@@ -9,7 +9,7 @@ include '../../../global/DbConnection.php';
   <!-- Required meta tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <title>Skydash Admin</title>
+  <title>Admin Usuario</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css" />
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css" />
@@ -343,6 +343,8 @@ include '../../../global/DbConnection.php';
             <div class="card">
               <div class="card-body">
                 <form method="post">
+                <h3 class="font-weight-bold">Bienvenido Administrador</h3>
+                <br>
                   <h4 class="card-title">Usuarios</h4>
                   <div class="form-group">
                     <label for="txtName">Nombre de usuario</label>
