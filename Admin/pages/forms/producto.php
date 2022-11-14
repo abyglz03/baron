@@ -33,25 +33,27 @@ include '../../../global/DbConnection.php';
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
   $txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
   $txtPrecio = (isset($_POST['txtPrecio'])) ? $_POST['txtPrecio'] : "";
+  $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
   $txtImage = (isset($_FILES['txtImage']['name'])) ? $_FILES['txtImage']['name'] : "";
   $txtOldImg = (isset($_POST['txtOldImg'])) ? $_POST['txtOldImg'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Producto (nombre, descripcion, precio, imagen) VALUES (:nombre, :descripcion, :precio, :imagen);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Producto (nombre, descripcion, precio, imagen, categoria) VALUES (:nombre, :descripcion, :precio, :imagen, :categoria);");
 
       $date = new DateTime();
-      $ImgFileName = ($txtImage!="")?$date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";  //09789799_image7.jpg
+      $ImgFileName = ($txtImage != "") ? $date->getTimestamp() . "_" . $_FILES["txtImage"]["name"] : "";  //09789799_image7.jpg
       //guardar el archivo temporalmente
       $ImgTmp = $_FILES["txtImage"]["tmp_name"];
       //si se subio un archivo entonces se mueve a la direccion de la carpeta de las imagenes
-      if($ImgTmp!="")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
+      if ($ImgTmp != "")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
       {
-        move_uploaded_file($ImgTmp, "image/".$ImgFileName);
+        move_uploaded_file($ImgTmp, "image/" . $ImgFileName);
       }
 
       $InsertQuery->bindParam(':nombre', $txtName);
       $InsertQuery->bindParam(':descripcion', $txtDescripcion);
+      $InsertQuery->bindParam(':categoria', $txtCategoria);
       $InsertQuery->bindParam(':precio', $txtPrecio);
       $InsertQuery->bindParam(':imagen', $ImgFileName);
       $InsertQuery->execute();
@@ -66,50 +68,46 @@ include '../../../global/DbConnection.php';
       $txtName = $AProducto['nombre'];
       $txtDescripcion = $AProducto['descripcion'];
       $txtPrecio = $AProducto['precio'];
+      $txtCategoria = $Aproducto['categoria'];
       $txtImage = $AProducto['imagen'];
       $txtOldImg = $AProducto['imagen'];
       break;
 
     case 'Modify':
-      $ModifyQuery=$pdo->prepare("UPDATE Producto SET nombre=:nombre, descripcion=:descripcion, precio=:precio WHERE idProducto=:id;");
+      $ModifyQuery = $pdo->prepare("UPDATE Producto SET nombre=:nombre, descripcion=:descripcion, precio=:precio, categoria=:categoria  WHERE idProducto=:id;");
       $ModifyQuery->bindParam(':id', $txtID);
       $ModifyQuery->bindParam(':nombre', $txtName);
       $ModifyQuery->bindParam(':precio', $txtPrecio);
       $ModifyQuery->bindParam(':descripcion', $txtDescripcion);
+      $ModifyQuery->bindParam(':categoria', $txtCategoria);
       $ModifyQuery->execute();
-     
-      if ($txtImage!="") 
-      {
-        $date= new DateTime();
-        $ImgFileName=($txtImage!="")?$date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";
-        $ImgTmp=$_FILES["txtImage"]["tmp_name"];
 
-        move_uploaded_file($ImgTmp,"imagen/".$ImgFileName);
+      if ($txtImage != "") {
+        $date = new DateTime();
+        $ImgFileName = ($txtImage != "") ? $date->getTimestamp() . "_" . $_FILES["txtImage"]["name"] : "";
+        $ImgTmp = $_FILES["txtImage"]["tmp_name"];
 
-        $ModifyQuery=$pdo->prepare("SELECT imagen FROM Producto WHERE idProducto=:id");
-        $ModifyQuery->bindParam('id',$txtID);
+        move_uploaded_file($ImgTmp, "imagen/" . $ImgFileName);
+
+        $ModifyQuery = $pdo->prepare("SELECT imagen FROM Producto WHERE idProducto=:id");
+        $ModifyQuery->bindParam('id', $txtID);
         $ModifyQuery->execute();
-        $Producto=$ModifyQuery->fetch(PDO::FETCH_LAZY);
+        $Producto = $ModifyQuery->fetch(PDO::FETCH_LAZY);
       }
 
-        if (isset($Producto["imagen"])&&($Producto["imagen"]!="image.jpg")) 
-        {
+      if (isset($Producto["imagen"]) && ($Producto["imagen"] != "image.jpg")) {
 
-          if (file_exists("image/".$Producto["imagen"])) 
-          {
-            unlink("image/".$Producto["imagen"]);
-          }
-        
+        if (file_exists("image/" . $Producto["imagen"])) {
+          unlink("image/" . $Producto["imagen"]);
+        }
 
-        $ModifyQuery=$pdo->prepare("UPDATE Producto SET imagen=:imagen WHERE idProducto=:id;");
+
+        $ModifyQuery = $pdo->prepare("UPDATE Producto SET imagen=:imagen WHERE idProducto=:id;");
         $ModifyQuery->bindParam(':imagen', $ImgFileName);
         $ModifyQuery->bindParam(':id', $txtID);
         $ModifyQuery->execute();
-        }
-
-      else 
-      {
-        $ModifyQuery=$pdo->prepare("UPDATE Producto SET imagen=:imagen WHERE idProducto=:id;");
+      } else {
+        $ModifyQuery = $pdo->prepare("UPDATE Producto SET imagen=:imagen WHERE idProducto=:id;");
         $ModifyQuery->bindParam(':imagen', $ImgFileName);
         $ModifyQuery->bindParam(':id', $txtID);
         $ModifyQuery->execute();
@@ -117,18 +115,17 @@ include '../../../global/DbConnection.php';
       break;
 
     case 'Delete':
-      $DeleteQuery=$pdo->prepare("SELECT imagen FROM Producto WHERE idProducto=:id;");
+      $DeleteQuery = $pdo->prepare("SELECT imagen FROM Producto WHERE idProducto=:id;");
       $DeleteQuery->bindParam(':id', $txtID);
       $DeleteQuery->execute();
-      $Producto=$DeleteQuery->fetch(PDO::FETCH_LAZY);
+      $Producto = $DeleteQuery->fetch(PDO::FETCH_LAZY);
 
-      if (isset($Producto["imagen"])&&($Producto["imagen"]!="image.jpg")) 
-      {
-        if (file_exists("image/".$Producto["imagen"])) {
-          unlink("image/".$Producto["imagen"]);
+      if (isset($Producto["imagen"]) && ($Producto["imagen"] != "image.jpg")) {
+        if (file_exists("image/" . $Producto["imagen"])) {
+          unlink("image/" . $Producto["imagen"]);
         }
       }
-      $DeleteQuery=$pdo->prepare("DELETE FROM Producto WHERE idProducto=:id;");
+      $DeleteQuery = $pdo->prepare("DELETE FROM Producto WHERE idProducto=:id;");
       $DeleteQuery->bindParam(':id', $txtID);
       $DeleteQuery->execute();
       //header('Location: ')
@@ -138,6 +135,7 @@ include '../../../global/DbConnection.php';
       $txtName = "";
       $txtDescripcion = "";
       $txtPrecio = "";
+      $txtCategoria = "";
       $txtImage = "";
       $txtOldImg = "";
       break;
@@ -146,12 +144,12 @@ include '../../../global/DbConnection.php';
       echo "Invalid option";
       break;
   } ?>
-    <?php
-              $ProductoQuery = $pdo->prepare("SELECT*FROM Producto;");
-              $ProductoQuery->execute();
-              $ListProducto = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
-              //var_dump($ListProducto);
-              ?>
+  <?php
+  $ProductoQuery = $pdo->prepare("SELECT*FROM Producto;");
+  $ProductoQuery->execute();
+  $ListProducto = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
+  //var_dump($ListProducto);
+  ?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -249,6 +247,10 @@ include '../../../global/DbConnection.php';
                           <label for="txtDescripcion">Descripcion</label>
                           <input type="text" name="txtDescripcion" id="txtDescripcion" value="<?php echo $txtDescripcion; ?>" class="form-control single-input" placeholder="Descripcion">
                         </div>
+                        <div class="form-group">
+                          <label for="txtDescripcion">Categoria</label>
+                          <input type="text" name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>" class="form-control single-input" placeholder="Categoria">
+                        </div>
 
                         <div class="form-group">
                           <label for="txtPrecio">Precio</label>
@@ -286,6 +288,7 @@ include '../../../global/DbConnection.php';
                           <th>ID</th>
                           <th>Nombre</th>
                           <th>Descripcion</th>
+                          <th>Categoria</th>
                           <th>Precio</th>
                           <th>Imagen</th>
                         </tr>
@@ -296,6 +299,7 @@ include '../../../global/DbConnection.php';
                             <td><?php echo $Producto['idProducto'] ?> </td>
                             <td><?php echo $Producto['nombre']; ?> </td>
                             <td><?php echo $Producto['descripcion']; ?> </td>
+                            <td><?php echo $Producto['categoria']; ?></td>
                             <td><?php echo $Producto['precio']; ?> </td>
                             <td><img src="image/<?php echo $Producto['imagen']; ?>" width=”50%”><?php echo $Producto['imagen']; ?></td>
                             <td>
