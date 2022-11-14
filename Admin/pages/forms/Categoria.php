@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include 'global/ServerConfiguration.php';
-include 'global/DbConnection.php';
+include '../../../global/ServerConfiguration.php';
+include '../../../global/DbConnection.php';
 ?>
 
 <head>
@@ -21,7 +21,7 @@ include 'global/DbConnection.php';
     <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
     <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="images/favicon.png" />
 </head>
@@ -73,8 +73,8 @@ include 'global/DbConnection.php';
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="pro.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo"></a>
-        <a class="navbar-brand brand-logo-mini" href="pro.html"><img src="images/LOGO-BARON-EFECTO.png" alt="logo"></a>
+        <a class="navbar-brand brand-logo mr-5" href="pro.html"><img src="../../images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo"></a>
+        <a class="navbar-brand brand-logo-mini" href="pro.html"><img src="../../images/LOGO-BARON-EFECTO.png" alt="logo"></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

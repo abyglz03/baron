@@ -50,7 +50,7 @@ echo "<title>Carrito</title>"; ?>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr>h
                     <td width="40%"><?php echo $Producto['NOMBRE'] ?></td>
                     <td width="40%"><?php echo $Producto['DESCRIPCION'] ?></td>
                     <td width="20%" class="text-center"><?php echo $Producto['PRECIO'] ?></td>

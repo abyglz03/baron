@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include 'Admin/global/ServerConfiguration.php';
-include 'Admin/global/DbConnection.php';
+include 'global/ServerConfiguration.php';
+include 'global/DbConnection.php';
 ?>
 <head>
-	<title>Pizza - Free Bootstrap 4 Template by Colorlib</title>
+	<title>Menú</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -78,10 +78,10 @@ include 'Admin/global/DbConnection.php';
 	<div class="container-wrap">
 		<div class="row no-gutters d-flex">
 			<?php
-			$ProductoQuery = $pdo->prepare("SELECT * FROM Producto;");
+			$ProductoQuery = $pdo->prepare("SELECT * FROM Producto");
 			$ProductoQuery->execute();
 			$ListProducto = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
-			?>php }?>
+			?>
 <div class="tab-content" id="nav-tabContent">
 	<?php if($message!=""){ ?>
 	<div class="alert alert-success">
@@ -98,83 +98,22 @@ include 'Admin/global/DbConnection.php';
 			
 			<div class="col-lg-4 d-flex ftco-animate">
 				<div class="services-wrap d-flex">
-					<a href="#" class="img"><img src="<?php echo 'Admin/pages/forms/images/' .$producto['Productimage'];?>" alt=""></a>
-					<div class="text p-4">
-						<h3><?php echo $Producto['nombre'];?></h3>
-						<p><?php echo $Producto['descripcion'];?></p>
-						<p><?php echo $Producto['precio'];?> </p>
-					</div>
+					<a href="#" class="img"><img src="<--?php echo 'Admin/pages/forms/image/'.$producto['imagen'];?>" alt="imagen de producto"></a>
 				</div>
 			</div>
-			<!-- <div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
-					<a href="#" class="img" style="background-image: url(dist/img/hawaiana.JPEG);"></a>
-					<div class="text p-4">
-						<h3>Pizza Hawaiana</h3>
-						<p>Piña, jamon y jalapeño</p>
-						<p class="price"> 9" <span>$199</span> <br> 14" <span>$215</span> </p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
-					<a href="#" class="img" style="background-image: url(dist/img/mexicana.JPEG);"></a>
-					<div class="text p-4">
-						<h3>Pizza Mexicana</h3>
-						<p>Carne, chorizo, jamon, tocino, jalapeño, cebolla y queso </p>
-						<p class="price"> 9" <span>$140</span> <br> 14" <span>$250</span> </p>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
-					<a href="#" class="img order-lg-last" style="background-image: url(dist/img/chicken\ serrano.JPEG);"></a>
-					<div class="text p-4">
-						<h3>Pizza chicken serrano</h3>
-						<p>Pollo, queso y rodajas de chile serrano. </p>
-						<p class="price"> 9" <span>$199</span> <br> 14" <span>$215</span>
-							<>
-						</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
-					<a href="#" class="img order-lg-last" style="background-image: url(dist/img/4\ quesos.JPEG);"></a>
-					<div class="text p-4">
-						<h3>Pizza 4 quesos</h3>
-						<p>Mozzarella, parmesano, ricota, chihuahua.</p>
-						<p class="price">9" <span>$199</span> <br> 14" <span>$215</span></p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
-					<a href="#" class="img order-lg-last" style="background-image: url(dist/img/pboneless.JPEG);"></a>
-					<div class="text p-4">
-						<h3>Pizza boneless</h3>
-						<p>Pizza con boneless y salsa de tu elección</p>
-						<p class="price">9" <span>$199</span> <br> 14" <span>$215</span> </p>
-					</div> -->
-				</div>
-			</div>
-		</div>
-	</div>
+			<h6 class="product-title"><?php echo $Producto['nombre']; ?></h6>
+                      <p><?php echo $Producto['descripcion']; ?></p>
+                      <div class="product-price-wrap">
+                      <div class="product-price"><?php echo $Producto['precio'];?>.00 MXN</div>
+                      </div>
 	<div class="">
 		<form action="" method="post">
-			<input type="hidden" name="id" id="id" value="<?php  //echo openssl_encrypt($idProducto['idProducto'],COD KEY);?> >
-			<input type="hidden" name="nombre" id="nombre" value="<?php // echo openssl_encrypt($idProducto['nombre'],COD,KEY);?>" >
-			<input type="hidden" name="descripcion" id="descripcion"
-				value="<?php //echo openssl_encrypt($idProducto['descripcion'],COD,KEY);?>">
-			<input type="hidden" name="cantidad" id="cantidad" value="<?php //echo openssl_encrypt(1,COD,KEY);?>">
-			<input type="hidden" name="medida" id="medida"
-				value="<?php //echo openssl_encrypt($idProducto['medida'],COD,KEY);?>">
-				<input type="hidden" name="categoria" id="categoria"
-				value="<?php //echo openssl_encrypt($idProducto['categoria'],COD,KEY);?>">
-				<input type="hidden" name="precio" id="precio" value="<?php //echo openssl_encrypt($idProducto['precio'],COD,KEY);?>">
+			<input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($idProducto['idProducto'],COD, KEY)?>">
+			<input type="hidden" name="nombre" id="nombre" value="<?php echo openssl_encrypt($idProducto['nombre'],COD,KEY)?>" >
+			<input type="hidden" name="descripcion" id="descripcion"value="<?php echo openssl_encrypt($idProducto['descripcion'],COD,KEY);?>">
+				<input type="hidden" name="precio" id="precio" value="<?php echo openssl_encrypt($idProducto['precio'],COD,KEY)?>">
 			<input type="hidden" name="imagen" id="imagen"
-				value="<?php //echo openssl_encrypt($idProducto['imagen'],COD,KEY);?>">
+				value="<?php echo openssl_encrypt($idProducto['imagen'],COD,KEY)?>">
 			<button class="button button-contactForm boxed-btn" name="btnAccion" value="Agregar" type="submit">
 				Agregar al carrito
 			</button>
@@ -184,7 +123,7 @@ include 'Admin/global/DbConnection.php';
 		<a href="carrito.php" class="btn btn-primary center">Ordenar</a>
 	</div>
 	<br>
-
+	<?php } ?>
 	<p>
 		<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 		Copyright &copy;
@@ -197,7 +136,7 @@ include 'Admin/global/DbConnection.php';
 	</div>
 	</div>
 	</div>
-	<?php } ?>
+
 	</footer>
 
 

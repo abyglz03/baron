@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include '../global/ServerConfiguration.php';
-include '../global/DbConnection.php';
+include '../../../global/ServerConfiguration.php';
+include '../../../global/DbConnection.php';
 ?>
 
 <head>
@@ -21,7 +21,7 @@ include '../global/DbConnection.php';
   <link rel="stylesheet" type="text/css" href="js/select.dataTables.min.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../images/favicon.png" />
 </head>
@@ -47,7 +47,7 @@ include '../global/DbConnection.php';
       //si se subio un archivo entonces se mueve a la direccion de la carpeta de las imagenes
       if($ImgTmp!="")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
       {
-        move_uploaded_file($ImgTmp, "../baron/Admin/imagenes/". $ImgFileName);
+        move_uploaded_file($ImgTmp, "image/".$ImgFileName);
       }
 
       $InsertQuery->bindParam(':nombre', $txtName);
@@ -71,7 +71,7 @@ include '../global/DbConnection.php';
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Producto SET nombre=:nombre, descripcion=:descripcion, precio=:precio WHERE idProducto=:id;");
+      $ModifyQuery=$pdo->prepare("UPDATE Producto SET nombre=:nombre, descripcion=:descripcion, precio=:precio WHERE idProducto=:id;");
       $ModifyQuery->bindParam(':id', $txtID);
       $ModifyQuery->bindParam(':nombre', $txtName);
       $ModifyQuery->bindParam(':precio', $txtPrecio);
@@ -84,7 +84,7 @@ include '../global/DbConnection.php';
         $ImgFileName=($txtImage!="")?$date->getTimestamp()."_".$_FILES["txtImage"]["name"]:"";
         $ImgTmp=$_FILES["txtImage"]["tmp_name"];
 
-        move_uploaded_file($ImgTmp,"baron/Admin/imagenes/".$ImgFileName);
+        move_uploaded_file($ImgTmp,"imagen/".$ImgFileName);
 
         $ModifyQuery=$pdo->prepare("SELECT imagen FROM Producto WHERE idProducto=:id");
         $ModifyQuery->bindParam('id',$txtID);
@@ -95,9 +95,9 @@ include '../global/DbConnection.php';
         if (isset($Producto["imagen"])&&($Producto["imagen"]!="image.jpg")) 
         {
 
-          if (file_exists("baron/Admin/imagenes/".$Producto["imagen"])) 
+          if (file_exists("image/".$Producto["imagen"])) 
           {
-            unlink("baron/Admin/imagenes/".$Producto["imagen"]);
+            unlink("image/".$Producto["imagen"]);
           }
         
 
@@ -122,12 +122,13 @@ include '../global/DbConnection.php';
       $DeleteQuery->execute();
       $Producto=$DeleteQuery->fetch(PDO::FETCH_LAZY);
 
-      if (isset($Producto["imagen"])&&($Producto["imagen"]!="image.jpg")) {
-        if (file_exists("baron/Admin/imagenes/".$Producto["imagen"])) {
-          unlink("baron/Admin/imagenes/".$Producto["imagen"]);
+      if (isset($Producto["imagen"])&&($Producto["imagen"]!="image.jpg")) 
+      {
+        if (file_exists("image/".$Producto["imagen"])) {
+          unlink("image/".$Producto["imagen"]);
         }
       }
-      $DeleteQuery = $pdo->prepare("DELETE FROM Producto WHERE idProducto=:id;");
+      $DeleteQuery=$pdo->prepare("DELETE FROM Producto WHERE idProducto=:id;");
       $DeleteQuery->bindParam(':id', $txtID);
       $DeleteQuery->execute();
       //header('Location: ')
@@ -155,8 +156,8 @@ include '../global/DbConnection.php';
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="Producto.html"><img src="images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo"></a>
-        <a class="navbar-brand brand-logo-mini" href="Producto.html"><img src="images/LOGO-BARON-EFECTO.png" alt="logo"></a>
+        <a class="navbar-brand brand-logo mr-5" href="Producto.html"><img src="../../images/LOGO-BARON-EFECTO.png" class="mr-2" alt="logo"></a>
+        <a class="navbar-brand brand-logo-mini" href="Producto.html"><img src="../../images/LOGO-BARON-EFECTO.png" alt="logo"></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -254,7 +255,7 @@ include '../global/DbConnection.php';
                           <input type="price" name="txtPrecio" id="txtPrecio" value="<?php echo $txtPrecio; ?>" class="form-control single-input" placeholder="Precio">
                         </div>
                         <div class="form-group">
-                          <label for="txtImage"></label>
+                          <label for="txtImage">Imagen</label>
                           <input type="hidden" name="txtOldImg" value="<?php echo $txtImage; ?>">
                           <input type="file" name="txtImage" id="txtImage" class="form-control" placeholder="Image">
                         </div>
@@ -296,7 +297,7 @@ include '../global/DbConnection.php';
                             <td><?php echo $Producto['nombre']; ?> </td>
                             <td><?php echo $Producto['descripcion']; ?> </td>
                             <td><?php echo $Producto['precio']; ?> </td>
-                            <td><img src="baron/Admin/imagenes/<?php echo $Producto['imagen']; ?>" width=”50%”><?php echo $Producto['imagen']; ?></td>
+                            <td><img src="image/<?php echo $Producto['imagen']; ?>" width=”50%”><?php echo $Producto['imagen']; ?></td>
                             <td>
                               <form method="POST">
                                 <input type="hidden" name="txtID" value="<?php echo $Producto['idProducto']; ?>">
