@@ -9644,11 +9644,11 @@ h5,
   border-color: #fac564;
 }
 .ftco-navbar-light .navbar-nav > .nav-item.active > a {
-  color: #f7f7f7;
+  color: #fff;
 }
 .ftco-navbar-light .navbar-toggler {
   border: none;
-  color: f7f7f7 !important;
+  color: floralwhite !important;
   cursor: pointer;
   padding-right: 0;
   text-transform: uppercase;
