@@ -249,7 +249,7 @@ include '../../../global/DbConnection.php';
                         </div>
                         <div class="form-group">
                           <label for="txtDescripcion">Categoria</label>
-                          <input type="text" name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>" class="form-control single-input" placeholder="Categoria">
+                          <input type="hidden" name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>" class="form-control single-input" placeholder="Categoria">
                         </div>
 
                         <div class="form-group">

@@ -3,6 +3,7 @@
 <?php
 include 'global/ServerConfiguration.php';
 include 'global/DbConnection.php';
+include 'cartogic.php';
 ?>
 <head>
 	<title>Menú</title>
@@ -40,7 +41,7 @@ include 'global/DbConnection.php';
 					width="80px" height="95px" alt="" /></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
 				aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="oi oi-menu"></span> Menu
+				<span class="oi oi-menu"></span> Menú
 			</button>
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav ml-auto">
@@ -48,7 +49,7 @@ include 'global/DbConnection.php';
 						<a href="index.html" class="nav-link">Inicio</a>
 					</li>
 					<li class="nav-item">
-						<a href="menu.html" class="nav-link">Menu</a>
+						<a href="menu.html" class="nav-link">Menú</a>
 					</li>
 					<li class="nav-item">
 						<a href="blog.html" class="nav-link">Blog</a>
@@ -62,12 +63,14 @@ include 'global/DbConnection.php';
 		</div>
 	</nav>
 	<!-- END nav -->
-
-
-
-
-
-
+	<div class="tab-content" id="nav-tabContent">
+        <?php if ($mensaje!="Productos") { ?>
+             <div class="">
+               <?php echo $mensaje; ?>
+              <div class="button-warp"><a href="Carrito.php" class="ml-2 btn btn-white btn-outline-white">Ver Carrito</a></div>
+                 </div>
+           <?php } ?>
+      </div>	
 	<div class="container">
 		<div class="row justify-content-center mb-4 pb-3">
 			<div class="heading-section ftco-animate text-center">
@@ -77,63 +80,60 @@ include 'global/DbConnection.php';
 	</div>
 	<div class="container-wrap">
 		<div class="row no-gutters d-flex">
-			<?php
-			$ProductoQuery = $pdo->prepare("SELECT * FROM Producto");
-			$ProductoQuery->execute();
-			$ListProducto = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
-			?>
-<div class="tab-content" id="nav-tabContent">
-	<?php if($message!=""){ ?>
-	<div class="alert alert-success">
-		<?php echo $mensaje; ?>
-		<a href="carrito.php" class="badge badge-success"> Ver carrito</a>
-		<?php } ?>
-	</div>
-</div>
-
-
-			<?php
-			foreach($ListProducto as $Producto){
-			?>
+			<?php 
+                      $ProductoQuery=$pdo->prepare("SELECT * FROM Producto");
+                      $ProductoQuery->execute();
+                      $listProducto=$ProductoQuery->fetchALL(PDO::FETCH_ASSOC);
+                      ?>
+                    <?php
+                    foreach($listProducto as $Producto){
+                    ?>
+			<div class="col-lg-4 d-flex ftco-animate">
+				<div class="services-wrap d-flex">
+				<img src="<?php echo 'Admin/pages/forms/image/'.$Producto['imagen']; ?>" alt=""
+                            width="161" height="162" />	
+				
 			
 			<div class="col-lg-4 d-flex ftco-animate">
 				<div class="services-wrap d-flex">
-					<a href="#" class="img"><img src="<--?php echo 'Admin/pages/forms/image/'.$producto['imagen'];?>" alt="imagen de producto"></a>
+					<div class="text p-4">
+					<article class="product wow fadeInLeft">
+                        <div class="product-figure"> 
+                        </div>
+                        <div class="product-rating"><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span
+                        class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span>
+                      </div>
+                      <h3 class="product-title"><?php echo $Producto['nombre']; ?></h3>
+                      <p><?php echo $Producto['descripcion']; ?></p>
+											
+
+                      <div class="product-price-wrap"><p><?php echo $Producto['precio'];?>.00 MXN</p></div>
+										</div>
+					
+                    <div class="product-button">
+                      <form action="" method="post">
+                        <input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($Producto['idProducto'],COD,KEY) ?>">
+                        <input type="hidden" name="nombre" id="nombre" value="<?php echo openssl_encrypt($Producto['nombre'],COD,KEY) ?>">
+                        <input type="hidden" name="descripcion" id="descripcion" value="<?php echo openssl_encrypt($Producto['descripcion'],COD,KEY) ?>">
+                        <input type="hidden" name="precio" id="precio" value="<?php echo openssl_encrypt($Producto['precio'],COD,KEY) ?>">
+                        <input type="hidden" name="imagen" id="imagen" value="<?php echo openssl_encrypt($Producto['imagen'],COD,KEY) ?>">
+												
+                        <div class="button-wrap"><a class="ml-2 btn btn-white btn-outline-white" href="carrito.php" name="btnAction">Añadir al carrito</a></div>                      
+                      </form>
+					</div>
 				</div>
 			</div>
-			<h6 class="product-title"><?php echo $Producto['nombre']; ?></h6>
-                      <p><?php echo $Producto['descripcion']; ?></p>
-                      <div class="product-price-wrap">
-                      <div class="product-price"><?php echo $Producto['precio'];?>.00 MXN</div>
-                      </div>
-	<div class="">
-		<form action="" method="post">
-			<input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($idProducto['idProducto'],COD, KEY)?>">
-			<input type="hidden" name="nombre" id="nombre" value="<?php echo openssl_encrypt($idProducto['nombre'],COD,KEY)?>" >
-			<input type="hidden" name="descripcion" id="descripcion"value="<?php echo openssl_encrypt($idProducto['descripcion'],COD,KEY);?>">
-				<input type="hidden" name="precio" id="precio" value="<?php echo openssl_encrypt($idProducto['precio'],COD,KEY)?>">
-			<input type="hidden" name="imagen" id="imagen"
-				value="<?php echo openssl_encrypt($idProducto['imagen'],COD,KEY)?>">
-			<button class="button button-contactForm boxed-btn" name="btnAccion" value="Agregar" type="submit">
-				Agregar al carrito
-			</button>
+			</article>
+		</div>
+	</div>
 
-		</form>
-		<br>
-		<a href="carrito.php" class="btn btn-primary center">Ordenar</a>
+	
+	
+		<?php } ?> 
 	</div>
 	<br>
-	<?php } ?>
-	<p>
-		<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-		Copyright &copy;
-		<script>
-			document.write(new Date().getFullYear());
-		</script>
-		Los derechos estan reservados por Abigail Gonzalez
-		<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-	</p>
-	</div>
+
+
 	</div>
 	</div>
 

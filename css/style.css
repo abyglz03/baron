@@ -5254,7 +5254,7 @@ input[type="button"].btn-block {
 
 .alert-success {
   color: #155724;
-  background-color: #d4edda;
+  background-color: #ffff;
   border-color: #c3e6cb;
 }
 .alert-success hr {
@@ -8131,7 +8131,7 @@ button.bg-dark:focus {
 }
 
 .p-4 {
-  padding: 1.5rem !important;
+  padding: 0.2rem !important;
 }
 
 .pt-4,
@@ -9492,7 +9492,7 @@ body {
   line-height: 1.8;
   font-weight: 300;
   color: gray;
-  *//background: url(../images/bg_4.jpg) no-repeat fixed;
+  background: url() no-repeat fixed;
   background-size: cover;
 }
 body.menu-show {
@@ -9644,11 +9644,11 @@ h5,
   border-color: #fac564;
 }
 .ftco-navbar-light .navbar-nav > .nav-item.active > a {
-  color: #fac564;
+  color: #f7f7f7;
 }
 .ftco-navbar-light .navbar-toggler {
   border: none;
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: f7f7f7 !important;
   cursor: pointer;
   padding-right: 0;
   text-transform: uppercase;

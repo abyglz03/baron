@@ -1,0 +1,11 @@
+	<?php
+			$ProductoQuery = $pdo->prepare("SELECT * FROM Producto");
+			$ProductoQuery->execute();
+			$ListProducto = $ProductoQuery->fetchAll(PDO::FETCH_ASSOC);
+			?>
+<div class="tab-content" id="nav-tabContent">
+	<?php if($message!=""){ ?>
+	<div class="alert alert-success">
+		<?php echo $mensaje; ?>
+		<a href="carrito.php" class="badge badge-success"> Ver carrito</a>
+		<?php } ?>
