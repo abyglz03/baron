@@ -96,7 +96,7 @@ include 'cartogic.php';
 			
 			<div class="col-lg-4 d-flex ftco-animate">
 				<div class="services-wrap d-flex">
-					<div class="text p-4">
+
 					<article class="product wow fadeInLeft">
                         <div class="product-figure"> 
                         </div>
@@ -108,7 +108,7 @@ include 'cartogic.php';
 											
 
                       <div class="product-price-wrap"><p><?php echo $Producto['precio'];?>.00 MXN</p></div>
-										</div>
+										
 					
                     <div class="product-button">
                       <form action="" method="post">
