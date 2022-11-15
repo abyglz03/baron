@@ -50,7 +50,7 @@ echo "<title>Carrito</title>"; ?>
                 </tr>
             </thead>
             <tbody>
-                <tr>h
+                <tr>
                     <td width="40%"><?php echo $Producto['NOMBRE'] ?></td>
                     <td width="40%"><?php echo $Producto['DESCRIPCION'] ?></td>
                     <td width="20%" class="text-center"><?php echo $Producto['PRECIO'] ?></td>
@@ -69,4 +69,5 @@ echo "<title>Carrito</title>"; ?>
                 </tr>
                 <?php $total=$total+($Producto['PRECIO']*$Producto['CANTIDAD']); ?>
             <?php } ?>
-
+            </tbody>
+    </table>
