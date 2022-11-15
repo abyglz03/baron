@@ -48,7 +48,7 @@ include '../../../global/DbConnection.php';
       //si se subio un archivo entonces se mueve a la direccion de la carpeta de las imagenes
       if ($ImgTmp != "")  //si no es igual a nulo / si no esta vacīa/ si tiene informacion
       {
-        move_uploaded_file($ImgTmp, "image/" . $ImgFileName);
+        move_uploaded_file($ImgTmp, "image/". $ImgFileName);
       }
 
       $InsertQuery->bindParam(':nombre', $txtName);
