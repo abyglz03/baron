@@ -68,7 +68,7 @@ try {
 ?>
 
 <head>
-  <title>Pizza - Free Bootstrap 4 Template by Colorlib</title>
+  <title>Contacto</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -76,7 +76,7 @@ try {
   <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nothing+You+Could+Do" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="dist/img/baron-logo.png"/>
   <link rel="stylesheet" href="css/animate.css">
 
   <link rel="stylesheet" href="css/owl.carousel.min.css">

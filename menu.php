@@ -14,7 +14,7 @@ include 'cartlogic.php';
 	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Nothing+You+Could+Do" rel="stylesheet">
 
-	<link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+	<link rel="stylesheet" href="dist/img/LOGO-BARON-EFECTO.png">
 	<link rel="stylesheet" href="css/animate.css">
 
 	<link rel="stylesheet" href="css/owl.carousel.min.css">
