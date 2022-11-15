@@ -3,7 +3,7 @@
 <?php
 include 'global/ServerConfiguration.php';
 include 'global/DbConnection.php';
-include 'cartogic.php';
+include 'cartlogic.php';
 ?>
 <head>
 	<title>Menú</title>
@@ -64,10 +64,10 @@ include 'cartogic.php';
 	</nav>
 	<!-- END nav -->
 	<div class="tab-content" id="nav-tabContent">
-        <?php if ($mensaje!="Productos") { ?>
+        <?php if ($mensaje!="Producto") { ?>
              <div class="">
                <?php echo $mensaje; ?>
-              <div class="button-warp"><a href="Carrito.php" class="ml-2 btn btn-white btn-outline-white">Ver Carrito</a></div>
+              <div class="button-warp"><a href="carrito.php" class="ml-2 btn btn-white btn-outline-white">Ver Carrito</a></div>
                  </div>
            <?php } ?>
       </div>	
