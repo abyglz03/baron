@@ -118,7 +118,7 @@ include 'cartlogic.php';
                         <input type="hidden" name="precio" id="precio" value="<?php echo openssl_encrypt($Producto['precio'],COD,KEY) ?>">
                         <input type="hidden" name="imagen" id="imagen" value="<?php echo openssl_encrypt($Producto['imagen'],COD,KEY) ?>">
 												
-                        <div class="button-wrap"><a class="ml-2 btn btn-white btn-outline-white" href="carrito.php" name="btnAction">Añadir al carrito</a></div>                      
+                        <div class="nav-item"><a href="carrito.php" class="nav-link">Añadir al carrito</a></div>                      
                       </form>
 					</div>
 				</div>

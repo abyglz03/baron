@@ -11,7 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/2.2.1/mdb.min.css" rel="stylesheet" />
     <!-- Estilos -->
     <link rel="stylesheet" href="css/estilos.css" />
-    <!-- Icono -->c
+    <!-- Icono -->
 
 
 
@@ -43,23 +43,19 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> Menú
         </button>
-        <div class="collapse navbar-collapse" id="ftco-nav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a href="index.html" class="nav-link">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a href="menu.html" class="nav-link">Menú</a>
-                </li>
-                <li class="nav-item">
-                    <a href="services.html" class="nav-link">Promociones</a>
-                </li>
-                <li class="nav-item">
-                    <a href="blog.html" class="nav-link">Blog</a>
-                </li>
+				<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+						<a href="index.php" class="nav-link">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a href="menu.php" class="nav-link">Menú</a>
+					</li>
+					<li class="nav-item">
+						<a href="blog.html" class="nav-link">Blog</a>
+					</li>
 
-                <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contacto</a>
+					<li class="nav-item">
+						<a href="contact.php" class="nav-link">Contacto</a>
                 </li>
             </ul>
         </div>
