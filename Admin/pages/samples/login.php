@@ -1,68 +1,53 @@
+<!doctype html>
 <?php
-session_start();?>
-<?php
-ob_start();
-require_once("global/ServerConfiguration.php");
-require_once("global/DbConnection.php");
-?>
-<!DOCTYPE html>
-<?php
+include '../../../global/ServerConfiguration.php';
+include '../../../global/DbConnection.php';
+session_start();
 
-if (isset($_POST["login"])) 
-{
-  if (!empty($_POST['email']) && !empty($_POST['password'])) {
+if (isset($_POST['login'])) {
+  if (!empty($_POST['email']) && !empty($_POST['password']))
+
     $email = $_POST['email'];
-    $password = $_POST['password'];
-    $query = $pdo->prepare("SELECT * FROM usuario WHERE email = :email");
-    $query->bindParam("email", $email);
-    $query->execute();
-    $result = $query->fetch(PDO::FETCH_ASSOC);
-    $passBD = $result['password'];
+  $password = $_POST['password'];
 
-    if (!$result) {
-      echo '<p class="error">La combinacion del usuario y la contrasena son invalidos</p>';
-    } 
-    //else 
-    {
+  $query = $pdo->prepare("SELECT * FROM cliente WHERE correoelectronico=:email");
+  $query->bindParam(":email", $email, PDO::PARAM_STR);
+  $query->execute();
 
-      if ($result['email'] == $email) {
-        if (password_verify($contrasena_usuario, $passBD)) {
-          $_SESSION['idUsuario'] = $result['idUsuario'];
-          $_SESSION['idUsuartype'] = $result['idUsuartype'];
-          $_SESSION['nombre'] = $result['nombre'];
-          $_SESSION['email'] = $result['email'];
-
-          header("Location: Producto.php");
-        } else {
-          $message = "contrasena invalida";
-        }
-      } else {
-        $message = "email invalido :)";
-      }
-    }
+  $result = $query->fetch(PDO::FETCH_ASSOC);
+  $passBD = $result['password'];
+  if (!$result) {
+    echo '<p class="Correo y contraseña con incorrectos!</p>';
   } else {
-    $message = "Todos los campos son requeridos";
+    if ($result['correoelectronico'] == $email) {
+      if (password_verify($password, $passBD)) {
+        $_SESSION['session_username'] = $email;
+        $_SESSION['session_idUsuario'] = $result['idUsuario'];
+        header("Location: index.php");
+      } else {
+        $message = "Contraseña invalida";
+      }
+    } else {
+      $message = "Correo invalido";
+    }
   }
+} else {
+  $message = "Todos los campos son requeridos";
 }
 ?>
-<html lang="en">
+<html lang="zxx">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="../../vendors/feather/feather.css">
-  <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <!-- End plugin css for this page -->
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Barón Rosso | Inicio de Sesion</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/Logo.ico">
   <!-- inject:css -->
   <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="../../images/favicon.png" />
+
 </head>
 
 <body>
@@ -73,48 +58,110 @@ if (isset($_POST["login"]))
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="../../images/logo.svg" alt="logo">
+                <img src="../../images/baron-logo.png" alt="logo">
               </div>
-              <h4>Hello! let's get started</h4>
-              <h6 class="font-weight-light">Sign in to continue.</h6>
+              <h4>Hola! Bienvenido devuelta</h4>
+              <h6 class="font-weight-light">Inicia sesion para continuar.</h6>
               <form class="pt-3">
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
+                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Nombre de usuario">
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Contraseña">
                 </div>
                 <div class="mt-3">
-                  <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN IN</a>
+                  <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../forms/indexsk.html">Iniciar sesion</a>
                 </div>
                 <div class="my-2 d-flex justify-content-between align-items-center">
-                  
-                  
+                  <div class="form-check">
+                    <label class="form-check-label text-muted">
+                      <input type="checkbox" class="form-check-input">
+                    </label>
+                  </div>
+
                 </div>
-                
-                
+
+                <div class="text-center mt-4 font-weight-light">
+                  No tienes una cuenta? <a href="register.php" class="text-primary">Registrate</a>
+                </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-      <!-- content-wrapper ends -->
+
+
+      <?php if (!isset($_SESSION["session_Idcliente"])) { ?>
+
+      <?php } else { ?>
+
+      <?php } ?>
+      </ul>
+      </nav>
     </div>
-    <!-- page-body-wrapper ends -->
+    <!-- Header Right -->
+
   </div>
-  <!-- container-scroller -->
-  <!-- plugins:js -->
-  <script src="../../vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="../../js/off-canvas.js"></script>
-  <script src="../../js/hoverable-collapse.js"></script>
-  <script src="../../js/template.js"></script>
-  <script src="../../js/settings.js"></script>
-  <script src="../../js/todolist.js"></script>
-  <!-- endinject -->
+  <!-- Mobile Menu -->
+  <div class="col-12">
+    <div class="mobile_menu d-block d-lg-none"></div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <!-- Header End -->
+  </header>
+  <main>
+    <!-- Hero Area Start-->
+
+    <!-- Hero Area End-->
+    <!--================login_part Area ================= -->
+    <section class="login_part section_padding ">
+      <div class="container">
+        <div class="row align-items-center">
+
+
+          <!-- Footer End-->
+          </footer>
+          <!--? Search model Begin -->
+
+          <!-- Search model end -->
+
+          <!-- JS here -->
+
+          <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+          <!-- Jquery, Popper, Bootstrap -->
+          <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+          <script src="./assets/js/popper.min.js"></script>
+          <script src="./assets/js/bootstrap.min.js"></script>
+          <!-- Jquery Mobile Menu -->
+          <script src="./assets/js/jquery.slicknav.min.js"></script>
+
+          <!-- Jquery Slick , Owl-Carousel Plugins -->
+          <script src="./assets/js/owl.carousel.min.js"></script>
+          <script src="./assets/js/slick.min.js"></script>
+
+          <!-- One Page, Animated-HeadLin -->
+          <script src="./assets/js/wow.min.js"></script>
+          <script src="./assets/js/animated.headline.js"></script>
+          <script src="./assets/js/jquery.magnific-popup.js"></script>
+
+          <!-- Scrollup, nice-select, sticky -->
+          <script src="./assets/js/jquery.scrollUp.min.js"></script>
+          <script src="./assets/js/jquery.nice-select.min.js"></script>
+          <script src="./assets/js/jquery.sticky.js"></script>
+
+          <!-- contact js -->
+          <script src="./assets/js/contact.js"></script>
+          <script src="./assets/js/jquery.form.js"></script>
+          <script src="./assets/js/jquery.validate.min.js"></script>
+          <script src="./assets/js/mail-script.js"></script>
+          <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+          <!-- Jquery Plugins, main Jquery -->
+          <script src="./assets/js/plugins.js"></script>
+          <script src="./assets/js/main.js"></script>
+
 </body>
 
 </html>

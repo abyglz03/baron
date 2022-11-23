@@ -5,6 +5,7 @@ include 'global/ServerConfiguration.php';
 include 'global/DbConnection.php';
 include 'cartlogic.php';
 ?>
+
 <head>
 	<title>Menú</title>
 	<meta charset="utf-8">
@@ -37,15 +38,13 @@ include 'cartlogic.php';
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a class="navbar-brand wobble-hvr animated" href="index.html"><img src="dist/img/LOGO-BARON-EFECTO.png"
-					width="80px" height="95px" alt="" /></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-				aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+			<a class="navbar-brand wobble-hvr animated" href="index.html"><img src="dist/img/LOGO-BARON-EFECTO.png" width="80px" height="95px" alt="" /></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="oi oi-menu"></span> Menú
 			</button>
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav ml-auto">
-						<li class="nav-item">
+					<li class="nav-item">
 						<a href="index.php" class="nav-link">Inicio</a>
 					</li>
 					<li class="nav-item">
@@ -64,74 +63,77 @@ include 'cartlogic.php';
 	</nav>
 	<!-- END nav -->
 	<div class="tab-content" id="nav-tabContent">
-        <?php if ($mensaje!="Producto") { ?>
-             <div class="">
-               <?php echo $mensaje; ?>
-              <div class="button-warp"><a href="carrito.php" class="ml-2 btn btn-white btn-outline-white">Ver Carrito</a></div>
-                 </div>
-           <?php } ?>
-      </div>	
+		<?php if ($mensaje != "Producto") { ?>
+			<div class="">
+				<?php echo $mensaje; ?>
+				<div class="button-warp"><a href="carrito.php" class="ml-2 btn btn-white btn-outline-white">Ver Carrito</a></div>
+			</div>
+			
+		<?php } ?>
+	</div>
 	<div class="container">
 		<div class="row justify-content-center mb-4 pb-3">
 			<div class="heading-section ftco-animate text-center">
 				<h2 class="mb-6">Nuestro menú</h2>
+			
 			</div>
 		</div>
 	</div>
 	<div class="container-wrap">
 		<div class="row no-gutters d-flex">
-			<?php 
-                      $ProductoQuery=$pdo->prepare("SELECT * FROM Producto");
-                      $ProductoQuery->execute();
-                      $listProducto=$ProductoQuery->fetchALL(PDO::FETCH_ASSOC);
-                      ?>
-                    <?php
-                    foreach($listProducto as $Producto){
-                    ?>
-			<div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
-				<img src="<?php echo 'Admin/pages/forms/image/'.$Producto['imagen']; ?>" alt=""
-                            width="161" height="162" />	
-				
-			
-			<div class="col-lg-4 d-flex ftco-animate">
-				<div class="services-wrap d-flex">
+			<?php
+			$ProductoQuery = $pdo->prepare("SELECT * FROM Producto");
+			$ProductoQuery->execute();
+			$listProducto = $ProductoQuery->fetchALL(PDO::FETCH_ASSOC);
+			?>
+			<?php
+				//var_dump($_SESSION);
+			foreach ($listProducto as $Producto) {
+			?>
+				<div class="col-lg-4 d-flex ftco-animate">
+					<div class="services-wrap d-flex">
+						<img src="<?php echo 'Admin/pages/forms/image/' . $Producto['imagen']; ?>" alt="" width="161" height="162" />
 
-					<article class="product wow fadeInLeft">
-                        <div class="product-figure"> 
-                        </div>
-                        <div class="product-rating"><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span
-                        class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span>
-                      </div>
-                      <h3 class="product-title"><?php echo $Producto['nombre']; ?></h3>
-                      <p><?php echo $Producto['descripcion']; ?></p>
-											
 
-                      <div class="product-price-wrap"><p><?php echo $Producto['precio'];?>.00 MXN</p></div>
-										
-					
-                    <div class="product-button">
-                      <form action="" method="post">
-                        <input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($Producto['idProducto'],COD,KEY) ?>">
-                        <input type="hidden" name="nombre" id="nombre" value="<?php echo openssl_encrypt($Producto['nombre'],COD,KEY) ?>">
-                        <input type="hidden" name="descripcion" id="descripcion" value="<?php echo openssl_encrypt($Producto['descripcion'],COD,KEY) ?>">
-                        <input type="hidden" name="precio" id="precio" value="<?php echo openssl_encrypt($Producto['precio'],COD,KEY) ?>">
-                        <input type="hidden" name="imagen" id="imagen" value="<?php echo openssl_encrypt($Producto['imagen'],COD,KEY) ?>">
-												
-                        <div class="nav-item"><a href="carrito.php" class="nav-link">Añadir al carrito</a></div>                      
-                      </form>
+						<div class="col-lg-4 d-flex ftco-animate">
+							<div class="services-wrap d-flex">
+
+								<article class="product wow fadeInLeft">
+									<div class="product-figure">
+									</div>
+									<div class="product-rating"><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span><span class="mdi mdi-star"></span>
+									</div>
+									<h3 class="product-title"><?php echo $Producto['nombre']; ?></h3>
+									<p><?php echo $Producto['descripcion']; ?></p>
+
+
+									<div class="product-price-wrap">
+										<p><?php echo $Producto['precio']; ?>.00 MXN</p>
+									</div>
+
+
+									<div class="product-button">
+										<form action="" method="post">
+											<input type="hidden" name="id" id="id" value="<?php echo openssl_encrypt($Producto['idProducto'], COD, KEY) ?>">
+											<input type="hidden" name="nombre" id="nombre" value="<?php echo openssl_encrypt($Producto['nombre'], COD, KEY) ?>">
+											<input type="hidden" name="descripcion" id="descripcion" value="<?php echo openssl_encrypt($Producto['descripcion'], COD, KEY) ?>">
+											<input type="hidden" name="precio" id="precio" value="<?php echo openssl_encrypt($Producto['precio'], COD, KEY) ?>">
+											<input type="hidden" name="imagen" id="imagen" value="<?php echo openssl_encrypt($Producto['imagen'], COD, KEY) ?>">
+
+											<div><button type="submit" value="Agregar" class="btn btn-primary" name="Action">Añadir al carrito</button></div>
+										</form>
+									</div>
+							</div>
+						</div>
+						</article>
 					</div>
 				</div>
-			</div>
-			</article>
-		</div>
-	</div>
 
-	
-	
-		<?php } ?> 
-	</div>
-	<br>
+
+
+			<?php } ?>
+		</div>
+		<br>
 
 
 	</div>
@@ -144,8 +146,7 @@ include 'cartlogic.php';
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
 			<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-				stroke="#F96D00" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
 		</svg></div>
 
 
@@ -163,8 +164,7 @@ include 'cartlogic.php';
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/jquery.timepicker.min.js"></script>
 	<script src="js/scrollax.min.js"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 	<script src="js/google-map.js"></script>
 	<script src="js/main.js"></script>
 

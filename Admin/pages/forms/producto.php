@@ -57,7 +57,7 @@ include '../../../global/DbConnection.php';
       $InsertQuery->bindParam(':precio', $txtPrecio);
       $InsertQuery->bindParam(':imagen', $ImgFileName);
       $InsertQuery->execute();
-      var_dump($ImgFileName);
+      //var_dump($ImgFileName);
       break;
 
     case 'Select':

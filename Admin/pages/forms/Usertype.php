@@ -31,16 +31,12 @@ include '../../../global/DbConnection.php';
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
-  $txtTipo = (isset($_POST['txtTipo'])) ? $_POST['txtTipo'] : "";
-  $txtPermisos = (isset($_POST['txtPermisos'])) ? $_POST['txtPermisos'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Usertype (nombre, tipo, permisos) VALUES (:nombre, :tipo, :permisos);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Usertype (nombre) VALUES (:nombre);");
       $InsertQuery->bindParam(':nombre', $txtName);
-      $InsertQuery->bindParam(':tipo', $txtTipo);
-      $InsertQuery->bindParam(':permisos', $txtPermisos);
       var_dump($pdo);
       $InsertQuery->execute();
       break;
@@ -51,15 +47,11 @@ include '../../../global/DbConnection.php';
       $SelectQuery->execute();
       $AUsertype = $SelectQuery->fetch(PDO::FETCH_LAZY);
       $txtName = $AUsertype['nombre'];
-      $txtTipo = $AUsertype['tipo'];
-      $txtPermisos = $AUsertype['permisos'];
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Usertype SET nombre = :nombre, tipo = :tipo, permisos = :permisos WHERE idUsertype=:id;");
+      $ModifyQuery = $pdo->prepare("UPDATE Usertype SET nombre = :nombre WHERE idUsertype=:id;");
       $ModifyQuery->bindParam(':nombre', $txtName);
-      $ModifyQuery->bindParam(':tipo', $txtTipo);
-      $ModifyQuery->bindParam(':permisos', $txtPermisos);
       $ModifyQuery->bindParam(':id', $txtID);
       $ModifyQuery->execute();
       break;
@@ -72,8 +64,6 @@ include '../../../global/DbConnection.php';
 
       case 'Cancel':
         $txtName = "";
-        $txtTipo = "";
-        $txtPermisos = "";
         break;
 
     default;
@@ -321,17 +311,10 @@ include '../../../global/DbConnection.php';
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                   <h3 class="font-weight-bold">Bienvenido Administrador</h3>
                   <div class="form-group">
-                    <label for="txtName">Nombre de usuario</label>
-                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Nombre">
+                    <label for="txtName">Tipo de usuario</label>
+                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Usuario">
                   </div>
-                  <div class="form-group">
-                    <label for="v">Tipo de empleado</label>
-                    <input type="text" name="txtTipo" id="txtTipo" value="<?php echo $txtTipo; ?>" class="form-control single-input" placeholder="Empleado">
-                  </div>
-                  <div class="form-group">
-                    <label for="txtPermisos">Permisos</label>
-                    <input type="text" name="txtPermisos" id="txtPermisos" value="<?php echo $txtPermisos; ?>" class="form-control single-input" placeholder="Permisos">
-                  </div>
+
                   <div>
                     <label for="txtID"></label>
                     <input type="hidden" name="txtID" id="txtID" value="<?php echo $txtID; ?>" class="form-control single-input" placeholder="ID">
@@ -362,8 +345,6 @@ include '../../../global/DbConnection.php';
                         <tr>
                           <th>ID</th>
                           <th>Nombre</th>
-                          <th>Tipo de empleado</th>
-                          <th>Permisos</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -371,8 +352,6 @@ include '../../../global/DbConnection.php';
                           <tr class="odd">
                             <td><?php echo $Usertype['idUsertype'] ?> </td>
                             <td><?php echo $Usertype['nombre']; ?> </td>
-                            <td><?php echo $Usertype['tipo']; ?> </td>
-                            <td><?php echo $Usertype['permisos']; ?> </td>
                             <td>
                             <form method="POST">
                             <input type="hidden" name="txtID" value="<?php echo $Usertype['idUsertype']; ?>">

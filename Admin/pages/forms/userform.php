@@ -390,7 +390,6 @@ include '../../../global/DbConnection.php';
                     <tr>
                       <th>ID</th>
                       <th>Nombre</th>
-                      <th>Tipo de empleado</th>
                       <th>Email</th>
                       <th>Password</th>
                     </tr>
@@ -400,7 +399,6 @@ include '../../../global/DbConnection.php';
                       <tr class="odd">
                         <td><?php echo $Userform['idUsuario'] ?> </td>
                         <td><?php echo $Userform['nombre']; ?> </td>
-                        <td><?php echo $Userform['tipo']; ?> </td>
                         <td><?php echo $Userform['email']; ?> </td>
                         <td><?php echo $Userform['password']; ?> </td>
                         <td>

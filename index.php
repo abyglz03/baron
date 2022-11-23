@@ -64,11 +64,9 @@ include 'global/DbConnection.php';
 						<a href="contact.php" class="nav-link">Contacto</a>
 					</li>
 					<li class="nav-item">
-						<a href="login.php" class="nav-link">Iniciar sesion</a>
+						<a href="Admin/pages/samples/login.php" class="nav-link">Iniciar sesion</a>
 					</li>
-					<li class="nav-item">
-						<a href="contact.php" class="nav-link">Registrarse</a>
-					</li>
+					
 				</ul>
 			</div>
 		</div>

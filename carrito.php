@@ -1,3 +1,4 @@
+<i class="fas fa-php    "></i>
 <!DOCTYPE html>
 <html lang="en">
 <!-- Carrito de compras -->
@@ -71,24 +72,45 @@ include 'cartlogic';
     <?php if(!empty($_SESSION['CARRITO'])) { ?>
             <table class="table table-dark table-striped">
             </table>
+            
         <?php } else { ?>
             <div class="alert alert-success">
                 No hay productos en el carrito
+                
             </div>
+            
     </div>
-<?php } ?>
+<?php }
+var_dump($_SESSION); ?>
     <div class="card-body">
         <table class="table table-dark table-striped">
+        <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Categoria</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                    <?php $total = 0; ?>
+
+                <tr> 
+            </thead>
+            <tbody
+
         <?php $total = 0; ?>
+        
         <?php foreach ($_SESSION['CARRITO'] as $indice => $Producto) { ?>
             
-            <td width="40%"><?php echo $Producto['nombre'] ?></td>
-                    <td width="40%"><?php echo $Producto['descripcion'] ?></td>
-                    <td width="20%" class="text-center"><?php echo $Producto['precio'] ?></td>
-                    <td width="15%" class="text-center">$<?php echo $Producto['cantidad'] ?></td>
-                    <td width="15%" class="text-center">$<?php echo $Producto['categoria'] ?></td>
-                    <td><img src="dist/img/rosso.JPEG" alt="pizza peperoni" width="100px"></td>
-                    <td width="20%" class="text-center">$<?php echo number_format($Producto['precio'] * $Producto['cantidad'], 2); ?> </td>
+            <td width="40%"><?php echo $Producto['NOMBRE'] ?></td>
+                    <td width="40%"><?php echo $Producto['DESCRIPCION'] ?></td>
+                    <td width="20%" class="text-center"><?php echo $Producto['PRECIO'] ?></td>
+                    <td width="15%" class="text-center">$<?php echo $Producto['CANTIDAD'] ?></td>
+                    <td width="15%" class="text-center">$<?php echo $Producto['CATEGORIA'] ?></td>
+                    <td width="15%" class="text-center"><img class="wow fadeInDown animated" src="<?php echo 'Admin/pages/forms/image'. $Producto['IMAGEN'] ?></td>
+                    <td width="20%" class="text-center">$<?php echo number_format($Producto['PRECIO'] * $Producto['CANTIDAD'], 2); ?> </td>
                     </td>
                     <td width="5%">
 
@@ -99,24 +121,11 @@ include 'cartlogic';
                 </form>
                 </td>
                 </tr>
-                <?php $total = $total + ($Producto['precio'] * $Producto['cantidad']); ?>
+                <?php $total = $total + ($Producto['PRECIO'] * $Producto['CANTIDAD']); ?>
+        </tbody>
                 <?php } ?>
                 
-                <thead>
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Total</th>
-                    <th scope="col"></th>
-                    <?php $total = 0; ?>
-
-                <tr> 
-            </thead>
-            <tbody>
+            
                 <tr>
                     <td>Rosso Pizza 14"</td>
                     <td>Peperoni con queso 1</td>
@@ -127,7 +136,7 @@ include 'cartlogic';
                     <td>$ 215</td>
                     <td><button type="button" class="btn btn-primary">Agregar</button></td>
                     <td><button type="button" class="btn btn-danger">Eliminar</button></td>
-        </tbody>
+        
                 </tr>
         </table>
             
