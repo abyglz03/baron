@@ -1,5 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include '../../../global/ServerConfiguration.php';
+include '../../../global/DbConnection.php';
+session_start();
+
+if (isset($_POST["register"])) {
+  if (!empty($_POST['email']) && !empty($_POST['password'])) {
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $password_hash = password_hash($password, PASSWORD_BCRYPT);
+    $query = $pdo->prepare("SELECT * FROM cliente WHERE correo=:email");
+    $query->bindParam(":email", $email);
+    $query->execute();
+
+    if ($query->rowCount() > 0) {
+      echo '<p class = "error">El email ya se encuentra registrado</p>';
+    } else if ($query->rowCount() == 0) {
+      $query = $pdo->prepare("INSERT INTO cliente (nombre, apellido, direccion, codigopostal, correo, contrasena)
+            VALUES(:nombre, :apellido, :direccion, :codigopostal, :email, :password_hash)");
+     
+   
+      $query->bindParam(":email", $email);
+      $query->bindParam(":password_hash", $password_hash);
+      $result = $query->execute();
+
+      if ($result) {
+        $message = "Cuenta correctamente creada :)";
+      } else {
+        $message = "Error al ingresar los datos, intenta de nuevo!";
+      }
+    }
+  } else {
+    $message = "Intento enviar el formulario vacio";
+  }
+}
+if (!empty($message)) {
+  echo  '<p class = "error">" . $message . "</p>';
+} ?>
 
 <head>
   <!-- Required meta tags -->
@@ -27,28 +64,22 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="../../images/logo.svg" alt="logo">
+              <img src="../../images/baron-logo.png" alt="logo">
               </div>
-              <h4>New here?</h4>
-              <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
+              <h4>Bienvenido Administrador <3</h4>
+              <h6 class="font-weight-light"></h6>
               <form class="pt-3">
-                <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" id="exampleInputUsername1" placeholder="Username">
-                </div>
-                <div class="form-group">
+              <div>
                   <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
                 </div>
-               
+               <br>
                 <div class="form-group">
                   <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
                 </div>
                
                 <div class="mt-3">
                   <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN UP</a>
-                </div>
-                <div class="text-center mt-4 font-weight-light">
-                  Already have an account? <a href="login.html" class="text-primary">Login</a>
-                </div>
+                
               </form>
             </div>
           </div>
