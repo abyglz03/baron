@@ -30,16 +30,22 @@ include '../../../global/DbConnection.php';
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtApel = (isset($_POST['txtApel'])) ? $_POST['txtApel'] : "";
   $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
   $txtPassword = (isset($_POST['txtPassword'])) ? $_POST['txtPassword'] : "";
+  $txtDir = (isset($_POST['txtDir'])) ? $_POST['txtDir'] : "";
+  $txtCodp = (isset($_POST['txtCodp'])) ? $_POST['txtCodp'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Cliente (nombre, email, password) VALUES (:nombre, :email, :password);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Cliente (nombre, apellido, email, password, direccion, codigo_postal) VALUES (:nombre, :apellido, :email, :password, :direccion, :codigo_postal);");
       $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery->bindParam(':apellido', $txtApel);
       $InsertQuery->bindParam(':email', $txtEmail);
       $InsertQuery->bindParam(':password', $txtPassword);
+      $InsertQuery->bindParam(':direccion', $txtDir);
+      $InsertQuery->bindParam(':codigo_postal', $txtCodp);
       var_dump($pdo);
       $InsertQuery->execute();
       break;
@@ -50,17 +56,22 @@ include '../../../global/DbConnection.php';
       $SelectQuery->execute();
       $ACliente = $SelectQuery->fetch(PDO::FETCH_LAZY);
       $txtName = $ACliente['nombre'];
+      $txtApel = $ACliente['apellido'];
       $txtEmail = $ACliente['email'];
       $txtPassword = $ACliente['password'];
+      $txtDir = $ACliente['direccion'];
+      $txtCodp = $ACliente['codigo_postal'];
       break;
 
       case 'Modify':
         echo "mofify";
-        $ModifyQuery = $pdo->prepare("UPDATE Cliente SET nombre = :nombre, email = :email, password = :password WHERE idCliente=:id;");
+        $ModifyQuery = $pdo->prepare("UPDATE Cliente SET nombre = :nombre, apellido = :apellido, email = :email, password = :password, direccion = :direccion, codigo_postal = :codigo_postal WHERE idCliente=:id;");
         $ModifyQuery->bindParam(':nombre', $txtName);
+        $ModifyQuery->bindParam(':apellido', $txtApel);
         $ModifyQuery->bindParam(':email', $txtEmail);
         $ModifyQuery->bindParam(':password', $txtPassword);
-        $ModifyQuery->bindParam(':id', $txtID);
+        $ModifyQuery->bindParam(':direccion', $txtDir);
+        $ModifyQuery->bindParam(':codigo_postal', $txtCodp);
         $ModifyQuery->execute();
         break;
 
@@ -72,8 +83,11 @@ include '../../../global/DbConnection.php';
 
       case 'Cancel':
         $txtName = "";
+        $txtApel = "";
         $txtEmail = "";
         $txtPassword = "";
+        $txtDir = "";
+        $txtCodp = "";
         break;
 
     default;
@@ -345,8 +359,12 @@ include '../../../global/DbConnection.php';
               <form method="post">
                 <h4 class="card-title">Formulario cliente</h4>
                 <div class="form-group">
-                <label for="txtName">Nombre de usuario</label>
+                <label for="txtName">Nombre</label>
                     <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                <label for="txtApel">Apellido</label>
+                    <input type="text" name="txtApel" id="txtApel" value="<?php echo $txtApel; ?>" class="form-control single-input" placeholder="Apellido">
                   </div>
                   <div class="form-group">
                     <label for="txtEmail">Email</label>
@@ -356,6 +374,14 @@ include '../../../global/DbConnection.php';
                   <div class="form-group">
                     <label for="txtPassword">Password</label>
                     <input type="password" name="txtPassword" id="txtPassword" value="<?php echo $txtPassword; ?>" class="form-control single-input" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                <label for="txtDir">Direccion</label>
+                    <input type="text" name="txtDir" id="txtDir" value="<?php echo $txtDir; ?>" class="form-control single-input" placeholder="Direccion">
+                  </div>
+                  <div class="form-group">
+                <label for="txtCodp">Codigo Postal</label>
+                    <input type="text" name="txtCodp" id="txtCodp" value="<?php echo $txtCodp; ?>" class="form-control single-input" placeholder="Codigo Postal">
                   </div>
                   <div>
                   <label for="txtID"></label>
@@ -387,8 +413,11 @@ include '../../../global/DbConnection.php';
                     <tr>
                       <th>ID</th>
                       <th>Nombre</th>
+                      <th>Apellido</th>
                       <th>Email</th>
                       <th>Password</th>
+                      <th>Direccion</th>
+                      <th>Codigo Postal</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -396,8 +425,11 @@ include '../../../global/DbConnection.php';
                       <tr class="odd">
                       <td><?php echo $Cliente['idCliente'] ?> </td>
                         <td><?php echo $Cliente['nombre']; ?> </td>
+                        <td><?php echo $Cliente['apellido']; ?> </td>
                         <td><?php echo $Cliente['email']; ?> </td>
                         <td><?php echo $Cliente['password']; ?> </td>
+                        <td><?php echo $Cliente['direccion']; ?> </td>
+                        <td><?php echo $Cliente['codigo_postal']; ?> </td>
                         <td>
                           <form method="POST">
                                 <input type="hidden" name="txtID" value="<?php echo $Cliente['idCliente']; ?>">

@@ -30,13 +30,13 @@ include '../../../global/DbConnection.php';
   <?php
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-  $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtRango = (isset($_POST['txtRango'])) ? $_POST['txtRango'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Usertype (nombre) VALUES (:nombre);");
-      $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery = $pdo->prepare("INSERT INTO Usertype (rango) VALUES (:rango);");
+      $InsertQuery->bindParam(':rango', $txtRango);
       var_dump($pdo);
       $InsertQuery->execute();
       break;
@@ -46,12 +46,12 @@ include '../../../global/DbConnection.php';
       $SelectQuery->bindParam(':idUsertype', $txtID);
       $SelectQuery->execute();
       $AUsertype = $SelectQuery->fetch(PDO::FETCH_LAZY);
-      $txtName = $AUsertype['nombre'];
+      $txtRango = $AUsertype['rango'];
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Usertype SET nombre = :nombre WHERE idUsertype=:id;");
-      $ModifyQuery->bindParam(':nombre', $txtName);
+      $ModifyQuery = $pdo->prepare("UPDATE Usertype SET rango = :rango WHERE idUsertype=:id;");
+      $ModifyQuery->bindParam(':rango', $txtRango);
       $ModifyQuery->bindParam(':id', $txtID);
       $ModifyQuery->execute();
       break;
@@ -63,7 +63,7 @@ include '../../../global/DbConnection.php';
       break;
 
       case 'Cancel':
-        $txtName = "";
+        $txtRango = "";
         break;
 
     default;
@@ -311,8 +311,8 @@ include '../../../global/DbConnection.php';
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                   <h3 class="font-weight-bold">Bienvenido Administrador</h3>
                   <div class="form-group">
-                    <label for="txtName">Tipo de usuario</label>
-                    <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Usuario">
+                    <label for="txtRango">Tipo de usuario</label>
+                    <input type="text" name="txtRango" id="txtRango" value="<?php echo $txtRango; ?>" class="form-control single-input" placeholder="Rango">
                   </div>
 
                   <div>
@@ -344,14 +344,14 @@ include '../../../global/DbConnection.php';
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Nombre</th>
+                          <th>Rango</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php foreach ($ListUsertype as $Usertype) { ?>
                           <tr class="odd">
                             <td><?php echo $Usertype['idUsertype'] ?> </td>
-                            <td><?php echo $Usertype['nombre']; ?> </td>
+                            <td><?php echo $Usertype['rango']; ?> </td>
                             <td>
                             <form method="POST">
                             <input type="hidden" name="txtID" value="<?php echo $Usertype['idUsertype']; ?>">

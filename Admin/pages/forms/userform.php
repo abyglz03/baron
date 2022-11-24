@@ -30,14 +30,16 @@ include '../../../global/DbConnection.php';
   //isset(what we check)-?-if true-:-if false;
   $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
   $txtName = (isset($_POST['txtName'])) ? $_POST['txtName'] : "";
+  $txtApel = (isset($_POST['txtApel'])) ? $_POST['txtApel'] : "";
   $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
   $txtPassword = (isset($_POST['txtPassword'])) ? $_POST['txtPassword'] : "";
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
 
   switch ($action) {
     case 'Add':
-      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, email, password) VALUES (:nombre, :email, :password);");
+      $InsertQuery = $pdo->prepare("INSERT INTO Userform (nombre, apellido, email, password) VALUES (:nombre, :apellido, :email, :password);");
       $InsertQuery->bindParam(':nombre', $txtName);
+      $InsertQuery->bindParam(':apellido', $txtApel);
       $InsertQuery->bindParam(':email', $txtEmail);
       $InsertQuery->bindParam(':password', $txtPassword);
       var_dump($pdo);
@@ -50,13 +52,15 @@ include '../../../global/DbConnection.php';
       $SelectQuery->execute();
       $AUserform = $SelectQuery->fetch(PDO::FETCH_LAZY);
       $txtName = $AUserform['nombre'];
+      $txtApel = $AUserform['apellido'];
       $txtEmail = $AUserform['email'];
       $txtPassword = $AUserform['password'];
       break;
 
     case 'Modify':
-      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, password = :password, email = :email WHERE idUsuario=:id;");
+      $ModifyQuery = $pdo->prepare("UPDATE Userform SET nombre = :nombre, apellido = :apellido, password = :password, email = :email WHERE idUsuario=:id;");
       $ModifyQuery->bindParam(':nombre', $txtName);
+      $ModifyQuery->bindParam(':apellido', $txtApel);
       $ModifyQuery->bindParam(':email', $txtEmail);
       $ModifyQuery->bindParam(':password', $txtPassword);
       $ModifyQuery->bindParam(':id', $txtID);
@@ -71,6 +75,7 @@ include '../../../global/DbConnection.php';
 
       case 'Cancel':
         $txtName = "";
+        $txtApel = "";
         $txtEmail = "";
         $txtPassword = "";
         break;
@@ -347,8 +352,12 @@ include '../../../global/DbConnection.php';
                 <br>
                   <h4 class="card-title">Usuarios</h4>
                   <div class="form-group">
-                    <label for="txtName">Nombre de usuario</label>
+                    <label for="txtName">Nombre</label>
                     <input type="text" name="txtName" id="txtName" value="<?php echo $txtName; ?>" class="form-control single-input" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                  <label for="txtName">Apellido</label>
+                    <input type="text" name="txtApel" id="txtApel" value="<?php echo $txtApel; ?>" class="form-control single-input" placeholder="Username">
                   </div>
                   <div class="form-group">
                     <label for="txtEmail">Email</label>
@@ -390,6 +399,7 @@ include '../../../global/DbConnection.php';
                     <tr>
                       <th>ID</th>
                       <th>Nombre</th>
+                      <th>Apellido</th>
                       <th>Email</th>
                       <th>Password</th>
                     </tr>
@@ -399,6 +409,7 @@ include '../../../global/DbConnection.php';
                       <tr class="odd">
                         <td><?php echo $Userform['idUsuario'] ?> </td>
                         <td><?php echo $Userform['nombre']; ?> </td>
+                        <td><?php echo $Userform['apellido']; ?> </td>
                         <td><?php echo $Userform['email']; ?> </td>
                         <td><?php echo $Userform['password']; ?> </td>
                         <td>
